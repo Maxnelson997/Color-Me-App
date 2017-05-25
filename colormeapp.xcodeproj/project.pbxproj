@@ -1,0 +1,800 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		07D4346A6F1FA2156B00600A /* Pods_colormeapp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D11F19A9AD8759EC66D42C82 /* Pods_colormeapp.framework */; };
+		4DEA54FDBA194F6D330CE70D /* Pods_colormeappTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57B6C45CD75CCD6FD887C21A /* Pods_colormeappTests.framework */; };
+		7914BA1E1ED5CD9600EE9F7D /* ScalarFilterParamater.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7914BA1D1ED5CD9600EE9F7D /* ScalarFilterParamater.swift */; };
+		7914BA201ED5CDB800EE9F7D /* FilteredImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7914BA1F1ED5CDB800EE9F7D /* FilteredImageView.swift */; };
+		792C1D341ED38CFA00D242AF /* ColorMeSingleton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 792C1D331ED38CFA00D242AF /* ColorMeSingleton.swift */; };
+		792C1D361ED3954900D242AF /* MNColorMeCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = 792C1D351ED3954900D242AF /* MNColorMeCells.swift */; };
+		792C1D3B1ED3C26B00D242AF /* ControlCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 792C1D3A1ED3C26B00D242AF /* ControlCollection.swift */; };
+		79C704C41ED387F30086400E /* CameraController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79C704C31ED387F30086400E /* CameraController.swift */; };
+		79E847441ED28924001B6C3C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79E847431ED28924001B6C3C /* AppDelegate.swift */; };
+		79E847461ED28924001B6C3C /* MenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79E847451ED28924001B6C3C /* MenuController.swift */; };
+		79E8474C1ED28924001B6C3C /* colormeapp.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 79E8474A1ED28924001B6C3C /* colormeapp.xcdatamodeld */; };
+		79E8474E1ED28924001B6C3C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 79E8474D1ED28924001B6C3C /* Assets.xcassets */; };
+		79E847511ED28924001B6C3C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 79E8474F1ED28924001B6C3C /* LaunchScreen.storyboard */; };
+		79E8475C1ED28924001B6C3C /* colormeappTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79E8475B1ED28924001B6C3C /* colormeappTests.swift */; };
+		79E847671ED28924001B6C3C /* colormeappUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79E847661ED28924001B6C3C /* colormeappUITests.swift */; };
+		79E847751ED292DF001B6C3C /* EditController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79E847741ED292DF001B6C3C /* EditController.swift */; };
+		79E847771ED29304001B6C3C /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79E847761ED29304001B6C3C /* Extensions.swift */; };
+		79E8477B1ED2939B001B6C3C /* PSButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79E8477A1ED2939B001B6C3C /* PSButton.swift */; };
+		79E8477D1ED293DA001B6C3C /* PSLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79E8477C1ED293DA001B6C3C /* PSLabel.swift */; };
+		79E8477F1ED29EC3001B6C3C /* Fonts in Resources */ = {isa = PBXBuildFile; fileRef = 79E8477E1ED29EC3001B6C3C /* Fonts */; };
+		AACE055604D52B21DDF9CA51 /* Pods_colormeappUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9E3149E9C5167B4C7A025907 /* Pods_colormeappUITests.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		79E847581ED28924001B6C3C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 79E847381ED28924001B6C3C /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 79E8473F1ED28924001B6C3C;
+			remoteInfo = colormeapp;
+		};
+		79E847631ED28924001B6C3C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 79E847381ED28924001B6C3C /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 79E8473F1ED28924001B6C3C;
+			remoteInfo = colormeapp;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		0BE1FA8D50AD2E85EBA16A7D /* Pods-colormeappTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-colormeappTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-colormeappTests/Pods-colormeappTests.release.xcconfig"; sourceTree = "<group>"; };
+		16B1A4BFCA66AE6B6A2A0860 /* Pods-colormeappTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-colormeappTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-colormeappTests/Pods-colormeappTests.debug.xcconfig"; sourceTree = "<group>"; };
+		3BE5868D3657099C1866BF0C /* Pods-colormeapp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-colormeapp.debug.xcconfig"; path = "Pods/Target Support Files/Pods-colormeapp/Pods-colormeapp.debug.xcconfig"; sourceTree = "<group>"; };
+		57B6C45CD75CCD6FD887C21A /* Pods_colormeappTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_colormeappTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		5E0EC3C00C093CA60D8222C2 /* Pods-colormeapp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-colormeapp.release.xcconfig"; path = "Pods/Target Support Files/Pods-colormeapp/Pods-colormeapp.release.xcconfig"; sourceTree = "<group>"; };
+		7914BA1D1ED5CD9600EE9F7D /* ScalarFilterParamater.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScalarFilterParamater.swift; sourceTree = "<group>"; };
+		7914BA1F1ED5CDB800EE9F7D /* FilteredImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilteredImageView.swift; sourceTree = "<group>"; };
+		792C1D331ED38CFA00D242AF /* ColorMeSingleton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorMeSingleton.swift; sourceTree = "<group>"; };
+		792C1D351ED3954900D242AF /* MNColorMeCells.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MNColorMeCells.swift; sourceTree = "<group>"; };
+		792C1D3A1ED3C26B00D242AF /* ControlCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ControlCollection.swift; sourceTree = "<group>"; };
+		79C704C31ED387F30086400E /* CameraController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraController.swift; sourceTree = "<group>"; };
+		79E847401ED28924001B6C3C /* colormeapp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = colormeapp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		79E847431ED28924001B6C3C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		79E847451ED28924001B6C3C /* MenuController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuController.swift; sourceTree = "<group>"; };
+		79E8474B1ED28924001B6C3C /* colormeapp.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = colormeapp.xcdatamodel; sourceTree = "<group>"; };
+		79E8474D1ED28924001B6C3C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		79E847501ED28924001B6C3C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		79E847521ED28924001B6C3C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		79E847571ED28924001B6C3C /* colormeappTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = colormeappTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		79E8475B1ED28924001B6C3C /* colormeappTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = colormeappTests.swift; sourceTree = "<group>"; };
+		79E8475D1ED28924001B6C3C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		79E847621ED28924001B6C3C /* colormeappUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = colormeappUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		79E847661ED28924001B6C3C /* colormeappUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = colormeappUITests.swift; sourceTree = "<group>"; };
+		79E847681ED28924001B6C3C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		79E847741ED292DF001B6C3C /* EditController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditController.swift; sourceTree = "<group>"; };
+		79E847761ED29304001B6C3C /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		79E8477A1ED2939B001B6C3C /* PSButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PSButton.swift; sourceTree = "<group>"; };
+		79E8477C1ED293DA001B6C3C /* PSLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PSLabel.swift; sourceTree = "<group>"; };
+		79E8477E1ED29EC3001B6C3C /* Fonts */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Fonts; path = colormeapp/Fonts; sourceTree = "<group>"; };
+		90BB437BD7F929AF80D7DD14 /* Pods-colormeappUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-colormeappUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-colormeappUITests/Pods-colormeappUITests.release.xcconfig"; sourceTree = "<group>"; };
+		9E3149E9C5167B4C7A025907 /* Pods_colormeappUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_colormeappUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D11F19A9AD8759EC66D42C82 /* Pods_colormeapp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_colormeapp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E65A185E960094B1EC9B4E53 /* Pods-colormeappUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-colormeappUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-colormeappUITests/Pods-colormeappUITests.debug.xcconfig"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		79E8473D1ED28924001B6C3C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				07D4346A6F1FA2156B00600A /* Pods_colormeapp.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		79E847541ED28924001B6C3C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4DEA54FDBA194F6D330CE70D /* Pods_colormeappTests.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		79E8475F1ED28924001B6C3C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AACE055604D52B21DDF9CA51 /* Pods_colormeappUITests.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		3D641AF8D3D75886C3C86CF3 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				D11F19A9AD8759EC66D42C82 /* Pods_colormeapp.framework */,
+				57B6C45CD75CCD6FD887C21A /* Pods_colormeappTests.framework */,
+				9E3149E9C5167B4C7A025907 /* Pods_colormeappUITests.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		792C1D371ED3A88900D242AF /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				79C704C31ED387F30086400E /* CameraController.swift */,
+				79E847451ED28924001B6C3C /* MenuController.swift */,
+				79E847741ED292DF001B6C3C /* EditController.swift */,
+				7914BA1D1ED5CD9600EE9F7D /* ScalarFilterParamater.swift */,
+				7914BA1F1ED5CDB800EE9F7D /* FilteredImageView.swift */,
+			);
+			name = Controllers;
+			sourceTree = "<group>";
+		};
+		792C1D391ED3A8A400D242AF /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				792C1D3A1ED3C26B00D242AF /* ControlCollection.swift */,
+				792C1D331ED38CFA00D242AF /* ColorMeSingleton.swift */,
+				792C1D351ED3954900D242AF /* MNColorMeCells.swift */,
+				79E847761ED29304001B6C3C /* Extensions.swift */,
+				79E8477A1ED2939B001B6C3C /* PSButton.swift */,
+				79E8477C1ED293DA001B6C3C /* PSLabel.swift */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		79E847371ED28924001B6C3C = {
+			isa = PBXGroup;
+			children = (
+				79E8477E1ED29EC3001B6C3C /* Fonts */,
+				79E847421ED28924001B6C3C /* colormeapp */,
+				79E8475A1ED28924001B6C3C /* colormeappTests */,
+				79E847651ED28924001B6C3C /* colormeappUITests */,
+				79E847411ED28924001B6C3C /* Products */,
+				F87F3E1AF26C8252A7FE2F62 /* Pods */,
+				3D641AF8D3D75886C3C86CF3 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		79E847411ED28924001B6C3C /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				79E847401ED28924001B6C3C /* colormeapp.app */,
+				79E847571ED28924001B6C3C /* colormeappTests.xctest */,
+				79E847621ED28924001B6C3C /* colormeappUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		79E847421ED28924001B6C3C /* colormeapp */ = {
+			isa = PBXGroup;
+			children = (
+				79E847431ED28924001B6C3C /* AppDelegate.swift */,
+				792C1D371ED3A88900D242AF /* Controllers */,
+				792C1D391ED3A8A400D242AF /* Model */,
+				79E8474D1ED28924001B6C3C /* Assets.xcassets */,
+				79E8474F1ED28924001B6C3C /* LaunchScreen.storyboard */,
+				79E847521ED28924001B6C3C /* Info.plist */,
+				79E8474A1ED28924001B6C3C /* colormeapp.xcdatamodeld */,
+			);
+			path = colormeapp;
+			sourceTree = "<group>";
+		};
+		79E8475A1ED28924001B6C3C /* colormeappTests */ = {
+			isa = PBXGroup;
+			children = (
+				79E8475B1ED28924001B6C3C /* colormeappTests.swift */,
+				79E8475D1ED28924001B6C3C /* Info.plist */,
+			);
+			path = colormeappTests;
+			sourceTree = "<group>";
+		};
+		79E847651ED28924001B6C3C /* colormeappUITests */ = {
+			isa = PBXGroup;
+			children = (
+				79E847661ED28924001B6C3C /* colormeappUITests.swift */,
+				79E847681ED28924001B6C3C /* Info.plist */,
+			);
+			path = colormeappUITests;
+			sourceTree = "<group>";
+		};
+		F87F3E1AF26C8252A7FE2F62 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				3BE5868D3657099C1866BF0C /* Pods-colormeapp.debug.xcconfig */,
+				5E0EC3C00C093CA60D8222C2 /* Pods-colormeapp.release.xcconfig */,
+				16B1A4BFCA66AE6B6A2A0860 /* Pods-colormeappTests.debug.xcconfig */,
+				0BE1FA8D50AD2E85EBA16A7D /* Pods-colormeappTests.release.xcconfig */,
+				E65A185E960094B1EC9B4E53 /* Pods-colormeappUITests.debug.xcconfig */,
+				90BB437BD7F929AF80D7DD14 /* Pods-colormeappUITests.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		79E8473F1ED28924001B6C3C /* colormeapp */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 79E8476B1ED28924001B6C3C /* Build configuration list for PBXNativeTarget "colormeapp" */;
+			buildPhases = (
+				13FF1E11BD03D1BFCEF960FF /* [CP] Check Pods Manifest.lock */,
+				79E8473C1ED28924001B6C3C /* Sources */,
+				79E8473D1ED28924001B6C3C /* Frameworks */,
+				79E8473E1ED28924001B6C3C /* Resources */,
+				62227F5C9ED36B4B10563D59 /* [CP] Embed Pods Frameworks */,
+				D911AB8E51F2345C8EEE82A5 /* [CP] Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = colormeapp;
+			productName = colormeapp;
+			productReference = 79E847401ED28924001B6C3C /* colormeapp.app */;
+			productType = "com.apple.product-type.application";
+		};
+		79E847561ED28924001B6C3C /* colormeappTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 79E8476E1ED28924001B6C3C /* Build configuration list for PBXNativeTarget "colormeappTests" */;
+			buildPhases = (
+				E4C6A5480719036997B85E29 /* [CP] Check Pods Manifest.lock */,
+				79E847531ED28924001B6C3C /* Sources */,
+				79E847541ED28924001B6C3C /* Frameworks */,
+				79E847551ED28924001B6C3C /* Resources */,
+				D4C0993A32A18C6275B4F4C6 /* [CP] Embed Pods Frameworks */,
+				9CC80244D5BAA061E30C61B7 /* [CP] Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				79E847591ED28924001B6C3C /* PBXTargetDependency */,
+			);
+			name = colormeappTests;
+			productName = colormeappTests;
+			productReference = 79E847571ED28924001B6C3C /* colormeappTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		79E847611ED28924001B6C3C /* colormeappUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 79E847711ED28924001B6C3C /* Build configuration list for PBXNativeTarget "colormeappUITests" */;
+			buildPhases = (
+				94AA3982FBBC12771DFF614D /* [CP] Check Pods Manifest.lock */,
+				79E8475E1ED28924001B6C3C /* Sources */,
+				79E8475F1ED28924001B6C3C /* Frameworks */,
+				79E847601ED28924001B6C3C /* Resources */,
+				035824F2D635D6D410B28EBD /* [CP] Embed Pods Frameworks */,
+				2B721138DDD0233D460D096E /* [CP] Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				79E847641ED28924001B6C3C /* PBXTargetDependency */,
+			);
+			name = colormeappUITests;
+			productName = colormeappUITests;
+			productReference = 79E847621ED28924001B6C3C /* colormeappUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		79E847381ED28924001B6C3C /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0830;
+				LastUpgradeCheck = 0830;
+				ORGANIZATIONNAME = Maxnelson;
+				TargetAttributes = {
+					79E8473F1ED28924001B6C3C = {
+						CreatedOnToolsVersion = 8.3.2;
+						DevelopmentTeam = G49JC8TMW5;
+						ProvisioningStyle = Automatic;
+					};
+					79E847561ED28924001B6C3C = {
+						CreatedOnToolsVersion = 8.3.2;
+						DevelopmentTeam = G49JC8TMW5;
+						ProvisioningStyle = Automatic;
+						TestTargetID = 79E8473F1ED28924001B6C3C;
+					};
+					79E847611ED28924001B6C3C = {
+						CreatedOnToolsVersion = 8.3.2;
+						DevelopmentTeam = G49JC8TMW5;
+						ProvisioningStyle = Automatic;
+						TestTargetID = 79E8473F1ED28924001B6C3C;
+					};
+				};
+			};
+			buildConfigurationList = 79E8473B1ED28924001B6C3C /* Build configuration list for PBXProject "colormeapp" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 79E847371ED28924001B6C3C;
+			productRefGroup = 79E847411ED28924001B6C3C /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				79E8473F1ED28924001B6C3C /* colormeapp */,
+				79E847561ED28924001B6C3C /* colormeappTests */,
+				79E847611ED28924001B6C3C /* colormeappUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		79E8473E1ED28924001B6C3C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				79E8477F1ED29EC3001B6C3C /* Fonts in Resources */,
+				79E847511ED28924001B6C3C /* LaunchScreen.storyboard in Resources */,
+				79E8474E1ED28924001B6C3C /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		79E847551ED28924001B6C3C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		79E847601ED28924001B6C3C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		035824F2D635D6D410B28EBD /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-colormeappUITests/Pods-colormeappUITests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		13FF1E11BD03D1BFCEF960FF /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		2B721138DDD0233D460D096E /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-colormeappUITests/Pods-colormeappUITests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		62227F5C9ED36B4B10563D59 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-colormeapp/Pods-colormeapp-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		94AA3982FBBC12771DFF614D /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		9CC80244D5BAA061E30C61B7 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-colormeappTests/Pods-colormeappTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		D4C0993A32A18C6275B4F4C6 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-colormeappTests/Pods-colormeappTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		D911AB8E51F2345C8EEE82A5 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-colormeapp/Pods-colormeapp-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		E4C6A5480719036997B85E29 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		79E8473C1ED28924001B6C3C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				792C1D341ED38CFA00D242AF /* ColorMeSingleton.swift in Sources */,
+				79E8477B1ED2939B001B6C3C /* PSButton.swift in Sources */,
+				79E847771ED29304001B6C3C /* Extensions.swift in Sources */,
+				7914BA1E1ED5CD9600EE9F7D /* ScalarFilterParamater.swift in Sources */,
+				79E847461ED28924001B6C3C /* MenuController.swift in Sources */,
+				7914BA201ED5CDB800EE9F7D /* FilteredImageView.swift in Sources */,
+				792C1D3B1ED3C26B00D242AF /* ControlCollection.swift in Sources */,
+				79E847751ED292DF001B6C3C /* EditController.swift in Sources */,
+				79E847441ED28924001B6C3C /* AppDelegate.swift in Sources */,
+				79E8477D1ED293DA001B6C3C /* PSLabel.swift in Sources */,
+				79C704C41ED387F30086400E /* CameraController.swift in Sources */,
+				792C1D361ED3954900D242AF /* MNColorMeCells.swift in Sources */,
+				79E8474C1ED28924001B6C3C /* colormeapp.xcdatamodeld in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		79E847531ED28924001B6C3C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				79E8475C1ED28924001B6C3C /* colormeappTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		79E8475E1ED28924001B6C3C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				79E847671ED28924001B6C3C /* colormeappUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		79E847591ED28924001B6C3C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 79E8473F1ED28924001B6C3C /* colormeapp */;
+			targetProxy = 79E847581ED28924001B6C3C /* PBXContainerItemProxy */;
+		};
+		79E847641ED28924001B6C3C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 79E8473F1ED28924001B6C3C /* colormeapp */;
+			targetProxy = 79E847631ED28924001B6C3C /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		79E8474F1ED28924001B6C3C /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				79E847501ED28924001B6C3C /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		79E847691ED28924001B6C3C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		79E8476A1ED28924001B6C3C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		79E8476C1ED28924001B6C3C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3BE5868D3657099C1866BF0C /* Pods-colormeapp.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = G49JC8TMW5;
+				INFOPLIST_FILE = colormeapp/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.maxnelson.colormeapp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+			};
+			name = Debug;
+		};
+		79E8476D1ED28924001B6C3C /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 5E0EC3C00C093CA60D8222C2 /* Pods-colormeapp.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = G49JC8TMW5;
+				INFOPLIST_FILE = colormeapp/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.maxnelson.colormeapp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+			};
+			name = Release;
+		};
+		79E8476F1ED28924001B6C3C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 16B1A4BFCA66AE6B6A2A0860 /* Pods-colormeappTests.debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEVELOPMENT_TEAM = G49JC8TMW5;
+				INFOPLIST_FILE = colormeappTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.maxnelson.colormeappTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/colormeapp.app/colormeapp";
+			};
+			name = Debug;
+		};
+		79E847701ED28924001B6C3C /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0BE1FA8D50AD2E85EBA16A7D /* Pods-colormeappTests.release.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEVELOPMENT_TEAM = G49JC8TMW5;
+				INFOPLIST_FILE = colormeappTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.maxnelson.colormeappTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/colormeapp.app/colormeapp";
+			};
+			name = Release;
+		};
+		79E847721ED28924001B6C3C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = E65A185E960094B1EC9B4E53 /* Pods-colormeappUITests.debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				DEVELOPMENT_TEAM = G49JC8TMW5;
+				INFOPLIST_FILE = colormeappUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.maxnelson.colormeappUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+				TEST_TARGET_NAME = colormeapp;
+			};
+			name = Debug;
+		};
+		79E847731ED28924001B6C3C /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 90BB437BD7F929AF80D7DD14 /* Pods-colormeappUITests.release.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				DEVELOPMENT_TEAM = G49JC8TMW5;
+				INFOPLIST_FILE = colormeappUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.maxnelson.colormeappUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+				TEST_TARGET_NAME = colormeapp;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		79E8473B1ED28924001B6C3C /* Build configuration list for PBXProject "colormeapp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				79E847691ED28924001B6C3C /* Debug */,
+				79E8476A1ED28924001B6C3C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		79E8476B1ED28924001B6C3C /* Build configuration list for PBXNativeTarget "colormeapp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				79E8476C1ED28924001B6C3C /* Debug */,
+				79E8476D1ED28924001B6C3C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		79E8476E1ED28924001B6C3C /* Build configuration list for PBXNativeTarget "colormeappTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				79E8476F1ED28924001B6C3C /* Debug */,
+				79E847701ED28924001B6C3C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		79E847711ED28924001B6C3C /* Build configuration list for PBXNativeTarget "colormeappUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				79E847721ED28924001B6C3C /* Debug */,
+				79E847731ED28924001B6C3C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		79E8474A1ED28924001B6C3C /* colormeapp.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				79E8474B1ED28924001B6C3C /* colormeapp.xcdatamodel */,
+			);
+			currentVersion = 79E8474B1ED28924001B6C3C /* colormeapp.xcdatamodel */;
+			path = colormeapp.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
+	};
+	rootObject = 79E847381ED28924001B6C3C /* Project object */;
+}

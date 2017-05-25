@@ -1,0 +1,317 @@
+//
+//  MNColorMeCells.swift
+//  colormeapp
+//
+//  Created by Max Nelson on 5/22/17.
+//  Copyright © 2017 Maxnelson. All rights reserved.
+//
+
+import UIKit
+
+class recentCell:UICollectionViewCell {
+    var imageView:UIImageView = {
+        var imageView = UIImageView()
+        imageView.isUserInteractionEnabled = true
+        imageView.layer.cornerRadius = 5
+        imageView.layer.masksToBounds = true
+        imageView.layer.borderWidth = 1
+        imageView.layer.borderColor = UIColor.MNBlack.cgColor
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.tintColor = .white
+        return imageView
+    }()
+    
+    override func awakeFromNib() {
+        contentView.addSubview(imageView)
+        NSLayoutConstraint.activate([
+            imageView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            imageView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            imageView.topAnchor.constraint(equalTo: topAnchor),
+            imageView.bottomAnchor.constraint(equalTo: bottomAnchor)
+        ])
+    }
+    
+    override func prepareForReuse() {
+        imageView.removeFromSuperview()
+    }
+}
+
+class ControlCell:UICollectionViewCell {
+    
+    var imageView:UIImageView = {
+        var imageView = UIImageView()
+        imageView.isUserInteractionEnabled = true
+        imageView.layer.masksToBounds = true
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.tintColor = .white
+        return imageView
+    }()
+    
+    var label:UILabel = {
+        let l = UILabel()
+        l.font = UIFont.MNExoFontFifteenReg
+        l.translatesAutoresizingMaskIntoConstraints = false
+        l.textColor = .white
+        l.textAlignment = .center
+        return l
+    }()
+    
+    override func awakeFromNib() {
+        
+        contentView.addSubview(imageView)
+        contentView.addSubview(label)
+        
+        NSLayoutConstraint.activate([
+            imageView.leadingAnchor.constraint(greaterThanOrEqualTo: leadingAnchor),
+            imageView.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor),
+            imageView.centerXAnchor.constraint(equalTo: centerXAnchor),
+            imageView.topAnchor.constraint(greaterThanOrEqualTo: topAnchor),
+            imageView.bottomAnchor.constraint(equalTo: label.topAnchor),
+            imageView.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 0.4),
+            imageView.widthAnchor.constraint(equalTo: imageView.heightAnchor)
+            
+            ])
+        
+        NSLayoutConstraint.activate([
+            label.leadingAnchor.constraint(equalTo: leadingAnchor),
+            label.trailingAnchor.constraint(equalTo: trailingAnchor),
+            label.topAnchor.constraint(equalTo: imageView.bottomAnchor),
+            label.bottomAnchor.constraint(equalTo: bottomAnchor),
+            label.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 0.5)
+            ])
+        
+    }
+    
+    override func prepareForReuse() {
+        imageView.removeFromSuperview()
+    }
+    
+}
+
+class AdjustControlCell:UICollectionViewCell {
+    
+    
+
+
+    var imageView:UIImageView = {
+        var imageView = UIImageView()
+        imageView.isUserInteractionEnabled = true
+        imageView.layer.masksToBounds = true
+        imageView.tintColor = .white
+        return imageView
+    }()
+    
+    var label:UILabel = {
+        let l = UILabel()
+        l.font = UIFont.MNExoFontTenReg
+        l.textColor = .white
+        l.textAlignment = .center
+        return l
+    }()
+    
+    var slider:UISlider = {
+        let l = UISlider()
+        l.thumbTintColor = UIColor.MNLighterBlue
+        l.tintColor = UIColor.MNGray
+        l.backgroundColor = .clear
+        return l
+    }()
+    
+    var seeEyeFilter:CIFilter!
+    var scalarFilterParam:ScalarFilterParameter!
+    
+    var delegate:ParameterAdjustmentDelegate!
+    func sliderValueDidChange(_ sender: AnyObject?) {
+        
+        if delegate != nil {
+            //            cellsFilter.setValue(slider.value, forKey: parameter.key)
+            delegate!.parameterValueDidChange(ScalarFilterParameter(key: scalarFilterParam.key, value: slider.value), newfilter: seeEyeFilter)
+            
+        }
+    }
+    
+    var exists:Bool = false
+    
+    
+    override func awakeFromNib() {
+        
+        self.clipsToBounds = true
+        contentView.addSubview(imageView)
+        contentView.addSubview(label)
+        contentView.addSubview(slider)
+        
+        if !exists {
+            slider.frame = CGRect(x: contentView.frame.maxX, y: 0, width: contentView.frame.width*3, height: contentView.frame.height)
+            imageView.frame = CGRect(x: 0, y: contentView.frame.height * 0.2, width: contentView.frame.width, height: contentView.frame.height * 0.4)
+            imageView.transform = CGAffineTransform(scaleX: 0.4, y: 1)
+            
+            label.frame = CGRect(x: 0, y: contentView.frame.maxY - (contentView.frame.height * 0.5), width: contentView.frame.width, height: contentView.frame.height * 0.5)
+            
+            slider.minimumValue = scalarFilterParam.minimumValue!
+            slider.maximumValue = scalarFilterParam.maximumValue!
+            slider.value = scalarFilterParam.currentValue
+            slider.addTarget(self, action: #selector(self.sliderValueDidChange(_:)), for: .valueChanged)
+            exists = true
+        }
+
+        
+    }
+    
+    override func prepareForReuse() {
+        imageView.removeFromSuperview()
+        slider.removeFromSuperview()
+  
+    }
+    
+}
+protocol SetFilter {
+    func ApplyFilter(filter:UIImage!)
+}
+class FilterPackControlCell:UICollectionViewCell, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
+    
+    
+    
+    var imageView:UIImageView = {
+        var imageView = UIImageView()
+        imageView.isUserInteractionEnabled = true
+        imageView.layer.masksToBounds = true
+        imageView.tintColor = .white
+        return imageView
+    }()
+    
+    var label:UILabel = {
+        let l = UILabel()
+        l.font = UIFont.MNExoFontFifteenReg
+        l.textColor = .white
+        l.textAlignment = .center
+        
+        return l
+    }()
+    
+    var delegate:SetFilter!
+    
+    var filtersCollection:ControlCollection = ControlCollection()
+
+    var filterPack:[filterObj] = []
+    
+    override func awakeFromNib() {
+        self.clipsToBounds = true
+        filtersCollection.translatesAutoresizingMaskIntoConstraints = true
+        filtersCollection.frame = CGRect(x: contentView.frame.maxX, y: 0, width: contentView.frame.width * CGFloat(filterPack.count) + 15 * CGFloat(filterPack.count), height: contentView.frame.height)
+        filtersCollection.dataSource = self
+        filtersCollection.delegate = self
+        filtersCollection.register(FilterCell.self, forCellWithReuseIdentifier: "filtercell")
+        
+        contentView.addSubview(imageView)
+        contentView.addSubview(label)
+        contentView.addSubview(filtersCollection)
+
+        imageView.frame = CGRect(x: 0, y: contentView.frame.height * 0.2, width: contentView.frame.width, height: contentView.frame.height * 0.4)
+        imageView.transform = CGAffineTransform(scaleX: 0.4, y: 1)
+        
+        label.frame = CGRect(x: 0, y: contentView.frame.maxY - (contentView.frame.height * 0.5), width: contentView.frame.width, height: contentView.frame.height * 0.5)
+        
+        
+//        NSLayoutConstraint.activate([
+//            imageView.leadingAnchor.constraint(greaterThanOrEqualTo: leadingAnchor),
+//            imageView.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor),
+//            imageView.centerXAnchor.constraint(equalTo: centerXAnchor),
+//            imageView.topAnchor.constraint(greaterThanOrEqualTo: topAnchor),
+//            imageView.bottomAnchor.constraint(equalTo: label.topAnchor),
+//            imageView.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 0.4),
+//            imageView.widthAnchor.constraint(equalTo: imageView.heightAnchor)
+//            
+//            ])
+        
+//        NSLayoutConstraint.activate([
+//            label.leadingAnchor.constraint(equalTo: leadingAnchor),
+//            label.trailingAnchor.constraint(equalTo: trailingAnchor),
+//            label.bottomAnchor.constraint(equalTo: bottomAnchor),
+//            label.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 0.5)
+//            ])
+//        
+    }
+    
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "filtercell", for: indexPath) as! FilterCell
+        cell.awakeFromNib()
+        cell.imageView.image = filterPack[indexPath.item].image
+        cell.label.text = filterPack[indexPath.item].name
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: collectionView.frame.height, height: collectionView.frame.height)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return filterPack.count
+    }
+    
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 1
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        delegate?.ApplyFilter(filter: filterPack[indexPath.item].image)
+    }
+    
+    override func prepareForReuse() {
+        imageView.removeFromSuperview()
+    }
+    
+}
+
+
+class FilterCell:UICollectionViewCell {
+    
+    var imageView:UIImageView = {
+        var imageView = UIImageView()
+        imageView.isUserInteractionEnabled = true
+        imageView.layer.masksToBounds = true
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.tintColor = .white
+        return imageView
+    }()
+    
+    var label:UILabel = {
+        let l = UILabel()
+        l.font = UIFont.MNExoFontFifteenReg
+        l.translatesAutoresizingMaskIntoConstraints = false
+        l.textColor = .white
+        l.textAlignment = .center
+        return l
+    }()
+    
+    override func awakeFromNib() {
+        
+        contentView.addSubview(imageView)
+        contentView.addSubview(label)
+        
+        NSLayoutConstraint.activate([
+            imageView.leadingAnchor.constraint(greaterThanOrEqualTo: leadingAnchor),
+            imageView.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor),
+            imageView.centerXAnchor.constraint(equalTo: centerXAnchor),
+            imageView.topAnchor.constraint(greaterThanOrEqualTo: topAnchor),
+            imageView.bottomAnchor.constraint(equalTo: label.topAnchor),
+            imageView.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 0.4),
+            imageView.widthAnchor.constraint(equalTo: imageView.heightAnchor)
+            
+            ])
+        
+        NSLayoutConstraint.activate([
+            label.leadingAnchor.constraint(equalTo: leadingAnchor),
+            label.trailingAnchor.constraint(equalTo: trailingAnchor),
+            label.topAnchor.constraint(equalTo: imageView.bottomAnchor),
+            label.bottomAnchor.constraint(equalTo: bottomAnchor),
+            label.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 0.5)
+            ])
+        
+    }
+    
+    override func prepareForReuse() {
+        imageView.removeFromSuperview()
+    }
+    
+}
