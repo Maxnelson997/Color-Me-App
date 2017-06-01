@@ -12,14 +12,24 @@ import CoreImage
 import GLKit
 import OpenGLES
 
+
 protocol ParameterAdjustmentDelegate {
-    func parameterValueDidChange(_ param: ScalarFilterParameter, newfilter: CIFilter)
+    func parameterValueDidChange(_ param: ScalarFilterParameter, location:Int)
+    func ChainAdjustValues()
 }
 
 
+
+
 class FilteredImageView: GLKView, ParameterAdjustmentDelegate {
-    
+
+    var appDelegate:AppDelegate = UIApplication.shared.delegate as! AppDelegate
     var ciContext: CIContext!
+
+    func resetFilters() {
+        self.appDelegate.singleton.filters = [CIFilter(name: "CIColorControls")!, CIFilter(name: "CIHighlightShadowAdjust")!, CIFilter(name: "CIExposureAdjust")!, CIFilter(name: "CIHueAdjust")!]
+        self.filter = self.appDelegate.singleton.filters[0]
+    }
     
     var filter: CIFilter! {
         didSet {
@@ -30,8 +40,11 @@ class FilteredImageView: GLKView, ParameterAdjustmentDelegate {
     var inputImage: UIImage! {
         didSet {
             setNeedsDisplay()
+            //resetFilters()
         }
     }
+    
+    var delegate1:SetFilter!
     
     override init(frame: CGRect) {
         super.init(frame: frame, context: EAGLContext(api: .openGLES2))
@@ -48,15 +61,22 @@ class FilteredImageView: GLKView, ParameterAdjustmentDelegate {
     
     override func draw(_ rect: CGRect) {
         if ciContext != nil && inputImage != nil && filter != nil {
-            let inputCIImage = CIImage(image: inputImage)
-            filter.setValue(inputCIImage, forKey: kCIInputImageKey)
+            
+            var originalimage:CIImage = CIImage(image: appDelegate.singleton.imagePicked)!
+            
+            for filters in appDelegate.singleton.filters {
+                filters.setValue(originalimage, forKey: kCIInputImageKey)
+                originalimage = filters.outputImage!
+                print("times: ")
+            }
+            
             if filter.outputImage != nil {
                 clearBackground()
-                
-                let inputBounds = inputCIImage?.extent
+                let inputBounds = originalimage.extent
                 let drawableBounds = CGRect(x: 0, y: 0, width: self.drawableWidth, height: self.drawableHeight)
-                let targetBounds = imageBoundsForContentMode(inputBounds!, toRect: drawableBounds)
-                ciContext.draw(filter.outputImage!, in: targetBounds, from: inputBounds!)
+                let targetBounds = imageBoundsForContentMode(inputBounds, toRect: drawableBounds)
+                ciContext.draw(originalimage, in: targetBounds, from: inputBounds)
+                delegate1.ApplyToCropView(image: UIImage(ciImage: originalimage))
             }
         }
     }
@@ -121,16 +141,18 @@ class FilteredImageView: GLKView, ParameterAdjustmentDelegate {
         }
     }
     
-    func parameterValueDidChange(_ parameter: ScalarFilterParameter, newfilter: CIFilter) {
+    func ChainAdjustValues() {
+
         
+    }
+    
+    func parameterValueDidChange(_ parameter: ScalarFilterParameter, location:Int) {
         //self.inputImage = UIImage(ciImage: filter.outputImage!)
-        let img = filter.outputImage!
+
+        let param = parameter
+        print(param.key)
         
-        filter = newfilter
-        
-        filter.setValue(img, forKey: "inputImage")
-        
-        filter.setValue(parameter.currentValue, forKey: parameter.key)
+        filter.setValue(param.currentValue, forKey: param.key)
         setNeedsDisplay()
     }
 }

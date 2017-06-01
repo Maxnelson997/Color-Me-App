@@ -101,7 +101,7 @@ class MenuController: UIViewController, UIImagePickerControllerDelegate, UINavig
     
     func setupUIandConstraints() {
         background = UIImageView(frame: view.frame)
-        background.image = #imageLiteral(resourceName: "tropical")
+        background.image = #imageLiteral(resourceName: "IMG_4820")
         background.contentMode = .scaleAspectFill
         background.transform = CGAffineTransform(scaleX: 1.1, y: 1.1)
         view.addSubview(background)

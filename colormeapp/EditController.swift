@@ -7,8 +7,66 @@
 //
 
 import UIKit
+import AKImageCropperView
 
-class EditController: UIViewController {
+extension EditController: AKImageCropperViewDelegate {
+    
+    func imageCropperViewDidChangeCropRect(view: AKImageCropperView, cropRect rect: CGRect) {
+        print("New crop rectangle: \(rect)")
+    }
+    
+    func cropImageAction() {
+        cropView.image = cropView.croppedImage
+        filteredImageView.inputImage = cropView.image
+        cropView.hideOverlayView(animationDuration: 0.3)
+        updateFilters()
+    }
+    
+    func showHideOverlayAction() {
+        if cropView.isOverlayViewActive {
+            cropView.hideOverlayView(animationDuration: 0.3)
+        } else {
+            cropView.showOverlayView(animationDuration: 0.3)
+        }
+    }
+     
+    func rotateAction() {
+        angle += .pi/2
+        cropView.rotate(angle, withDuration: 0.3, completion: { _ in
+            if self.angle == 2 * .pi {
+                self.angle = 0.0
+            }
+        })
+        
+    }
+    
+    
+}
+
+class EditController: UIViewController, SetFilter {
+    var angle: Double = 0.0
+    var applyyet:Bool = false
+    
+    func ApplyToCropView(image: UIImage!) {
+        self.cropView.image = image
+        print("edited image applied to cropview")
+    }
+    
+    func ApplyFilter(filter: UIImage!) {
+        appDelegate.singleton.imagePicked = filter
+        filteredImageView.inputImage = filter
+        
+    }
+    
+    func backTappedToCloseCV() {
+        tappedIndexPath = nil
+        filterControlsCollection.performBatchUpdates({
+            self.filterControlsCollection.collectionViewLayout.invalidateLayout()
+            self.filterControlsCollection.reloadData()
+        }, completion: { finished in
+            self.appDelegate.navigationController.popViewController(animated: true)
+        })
+    }
     
     var appDelegate:AppDelegate!
     
@@ -20,8 +78,12 @@ class EditController: UIViewController {
         i.translatesAutoresizingMaskIntoConstraints = false
        return i
     }()
+    
     var imageViewConstraints:[NSLayoutConstraint]!
     var filteredImageView:FilteredImageView!
+    var cropView:AKImageCropperView!
+    var cropperImageViewConstraints:[NSLayoutConstraint]!
+    var imView:UIImageView!
     
     var mainControlsLayoutGuide:UILayoutGuide = UILayoutGuide()
     var mainControlsLayoutGuideConstraints:[NSLayoutConstraint]!
@@ -75,9 +137,9 @@ class EditController: UIViewController {
     //exposureadjust: exposure
     //hueadjust: colors
     //remaining needed is intensity and temperature
-    var CIFilters:[CIFilter] = [CIFilter(name: "CIColorControls")!, CIFilter(name: "CIHighlightShadowAdjust")!, CIFilter(name: "CIExposureAdjust")!, CIFilter(name: "CIHueAdjust")!]
+   
     //var CIFilters:[CIFilter] = [CIFilter(name: "CIColorControls")!,  CIFilter(name: "CIExposureAdjust")!, CIFilter(name: "CISepiaTone")!, CIFilter(name: "CIHueAdjust")!, CIFilter(name: "CIVignette")!, CIFilter(name: "CIVibrance")!, CIFilter(name: "CIGloom")!]
-    
+
     var descriptors:[[ScalarFilterParameter]] = []
     
     func getFilterParameterDescriptors() -> [ScalarFilterParameter] {
@@ -100,10 +162,11 @@ class EditController: UIViewController {
         }
         
     }
+
     
     func getKeys() {
-        for i in 0 ..< CIFilters.count {
-            curFilter = CIFilters[i]
+        for i in 0 ..< appDelegate.singleton.filters.count {
+            curFilter = appDelegate.singleton.filters[i]
             print(curFilter)
             descriptors.append(getFilterParameterDescriptors())
             print(descriptors[i].count)
@@ -114,15 +177,26 @@ class EditController: UIViewController {
         }
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+         applyyet = true
+        appDelegate = UIApplication.shared.delegate as! AppDelegate
+        updateFilters()
+        filteredImageView.inputImage = appDelegate.singleton.imagePicked
+        
+     
+
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        appDelegate = UIApplication.shared.delegate as! AppDelegate
-        view.backgroundColor = UIColor.MNGray
+       
         
+        view.backgroundColor = UIColor.MNGray
+        appDelegate = UIApplication.shared.delegate as! AppDelegate
+
         getKeys()
         updateFilters()
+        
         
         filteredImageView = FilteredImageView(frame: view.bounds)
         filteredImageView.inputImage = appDelegate.singleton.imagePicked
@@ -130,27 +204,35 @@ class EditController: UIViewController {
         filteredImageView.clipsToBounds = true
         filteredImageView.translatesAutoresizingMaskIntoConstraints = false
         filteredImageView.backgroundColor = UIColor.MNBlack.withAlphaComponent(0.8)
-        filteredImageView.filter = CIFilters[0]
+        filteredImageView.delegate1 = self
+        filteredImageView.filter = appDelegate.singleton.filters[0]
+        filteredImageView.alpha = 0
         view.addSubview(filteredImageView)
         
-
+        cropView = AKImageCropperView(frame: view.bounds)
+        cropView.delegate = self
+        cropView.image = appDelegate.singleton.imagePicked
+        cropView.backgroundColor = UIColor.clear
+        cropView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(cropView)
         
         
         mainControlsImages = [#imageLiteral(resourceName: "move"),#imageLiteral(resourceName: "rgb-symbol"),#imageLiteral(resourceName: "settings-2"),#imageLiteral(resourceName: "bucket-with-paint")]
         mainControlsText = ["crop", "filters", "adjust", "paint"]
         
-        cropControlsImages = [#imageLiteral(resourceName: "rotate-arrow"),#imageLiteral(resourceName: "fit"),#imageLiteral(resourceName: "reload-4"),#imageLiteral(resourceName: "check")]
-        cropControlsText = ["reset", "crop", "rotate", "finish"]
+        cropControlsImages = [#imageLiteral(resourceName: "fit"),#imageLiteral(resourceName: "reload-4"),#imageLiteral(resourceName: "check")]
+        cropControlsText = ["crop", "rotate", "finish"]
         
         paintControlsImages = [#imageLiteral(resourceName: "one-finger-click"),#imageLiteral(resourceName: "bucket-with-paint"),#imageLiteral(resourceName: "speech-bubble"),#imageLiteral(resourceName: "rotate-arrow")]
         paintControlsText = ["draw", "paint", "text", "undo"]
         
-        adjustControlsImages = [[#imageLiteral(resourceName: "haze-1"),#imageLiteral(resourceName: "brightness-symbol"),#imageLiteral(resourceName: "contrast-symbol")],[#imageLiteral(resourceName: "pie-chart"), #imageLiteral(resourceName: "circular-frames"),#imageLiteral(resourceName: "star-1"), #imageLiteral(resourceName: "cloudy-1")],[#imageLiteral(resourceName: "spray-bottle-with-dots") ],[#imageLiteral(resourceName: "snowflake")],[#imageLiteral(resourceName: "devil")]]
-        adjustControlsText = [["saturation","brightness", "contrast"] ,["radius","shadows","highlights", "exposure"], ["colors"],["temperature"], ["intensity"]]
+        adjustControlsImages = [[#imageLiteral(resourceName: "haze-1"),#imageLiteral(resourceName: "brightness-symbol"),#imageLiteral(resourceName: "contrast-symbol")],[#imageLiteral(resourceName: "pie-chart"), #imageLiteral(resourceName: "circular-frames"),#imageLiteral(resourceName: "star-1")], [#imageLiteral(resourceName: "cloudy-1")],[#imageLiteral(resourceName: "spray-bottle-with-dots") ],[#imageLiteral(resourceName: "snowflake")],[#imageLiteral(resourceName: "devil")]]
+        adjustControlsText = [["saturation","brightness", "contrast"] ,["radius","shadows","highlights"], ["exposure"], ["colors"],["temperature"], ["intensity"]]
         
-        filterControlsImages = [#imageLiteral(resourceName: "three-layers"),#imageLiteral(resourceName: "three-layers"),#imageLiteral(resourceName: "three-layers"),#imageLiteral(resourceName: "three-layers")]
-        filterControlsText = ["pack 0", "pack 1", "pack 2", "pack 3"]
+        filterControlsImages = [#imageLiteral(resourceName: "three-layers"),#imageLiteral(resourceName: "three-layers"),#imageLiteral(resourceName: "three-layers"),#imageLiteral(resourceName: "three-layers"),#imageLiteral(resourceName: "three-layers")]
+        filterControlsText = ["pack 0", "pack 1", "pack 2", "pack 3", "pack 4"]
         
+
         mainControlsCollection.dataSource = self
         mainControlsCollection.delegate = self
         cropControlsCollection.dataSource = self
@@ -162,15 +244,6 @@ class EditController: UIViewController {
         filterControlsCollection.dataSource = self
         filterControlsCollection.delegate = self
         
-        view.addLayoutGuide(mainControlsLayoutGuide)
-        view.addLayoutGuide(controlsLayoutGuide)
-        view.addSubview(controlsStack)
-        view.addSubview(mainControlsCollection)
- 
-        controlsStack.addSubview(cropControlsCollection)
-        controlsStack.addSubview(paintControlsCollection)
-        controlsStack.addSubview(adjustControlsCollection)
-        controlsStack.addSubview(filterControlsCollection)
         
 
     
@@ -180,6 +253,14 @@ class EditController: UIViewController {
             filteredImageView.topAnchor.constraint(equalTo: view.topAnchor, constant: appDelegate.navigationController.navigationBar.frame.height),
             filteredImageView.bottomAnchor.constraint(equalTo: controlsLayoutGuide.topAnchor),
             filteredImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor)
+        ]
+        
+        cropperImageViewConstraints = [
+            cropView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            cropView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            cropView.topAnchor.constraint(equalTo: view.topAnchor, constant: appDelegate.navigationController.navigationBar.frame.height + 10),
+            cropView.bottomAnchor.constraint(equalTo: controlsLayoutGuide.topAnchor),
+            cropView.centerXAnchor.constraint(equalTo: view.centerXAnchor)
         ]
 
         //TOP CONTROLS LAYOUT GUIDE
@@ -260,7 +341,19 @@ class EditController: UIViewController {
             mainControlsCollection.widthAnchor.constraint(equalToConstant: 60*4 + 55)
         ]
         
+        
+        view.addLayoutGuide(mainControlsLayoutGuide)
+        view.addLayoutGuide(controlsLayoutGuide)
+        view.addSubview(controlsStack)
+        view.addSubview(mainControlsCollection)
+        
+        controlsStack.addSubview(cropControlsCollection)
+        controlsStack.addSubview(paintControlsCollection)
+        controlsStack.addSubview(adjustControlsCollection)
+        controlsStack.addSubview(filterControlsCollection)
+        
         NSLayoutConstraint.activate(imageViewConstraints)
+        NSLayoutConstraint.activate(cropperImageViewConstraints)
         NSLayoutConstraint.activate(controlsLayoutGuideConstraints)
         NSLayoutConstraint.activate(controlsStackConstraints)
         
@@ -271,103 +364,95 @@ class EditController: UIViewController {
         
         NSLayoutConstraint.activate(mainControlsLayoutGuideConstraints)
         NSLayoutConstraint.activate(mainControlsConstraints)
-        
+
+        showControls(cvTag: 0)
     }
 
+    override func viewDidDisappear(_ animated: Bool) {
+        showControls(cvTag: 0)
+    }
 
     
     func showControls(cvTag:Int) {
+        
+        var hideTheseCollections:[ControlCollection] = []
+        var showThisCollection:ControlCollection!
+        
         switch cvTag {
         case 0:
-            self.cropControlsCollection.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
-            UIView.animateKeyframes(withDuration: 0.65, delay: 0, options: .calculationModeCubic, animations: {
-                UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: 0.25, animations: {
-                    self.paintControlsCollection.isHidden = true
-                    self.adjustControlsCollection.isHidden = true
-                    self.filterControlsCollection.isHidden = true
-                    self.cropControlsCollection.transform = CGAffineTransform(scaleX: 1, y: 0.1)
-                })
-                UIView.addKeyframe(withRelativeStartTime: 0.25, relativeDuration: 0.4, animations: {
-                    self.cropControlsCollection.isHidden = false
-                    self.cropControlsCollection.transform = CGAffineTransform(scaleX: 1, y: 1)
-                })
-            }, completion: { finished in
-                
-            })
+            hideTheseCollections = [self.paintControlsCollection, self.adjustControlsCollection, self.filterControlsCollection]
+            showThisCollection = cropControlsCollection
         case 1:
-            self.filterControlsCollection.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
-            UIView.animateKeyframes(withDuration: 0.65, delay: 0, options: .calculationModeCubic, animations: {
-                UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: 0.25, animations: {
-                    self.cropControlsCollection.isHidden = true
-                    self.paintControlsCollection.isHidden = true
-                    self.adjustControlsCollection.isHidden = true
-                    self.filterControlsCollection.transform = CGAffineTransform(scaleX: 1, y: 0.1)
-                })
-                UIView.addKeyframe(withRelativeStartTime: 0.25, relativeDuration: 0.4, animations: {
-                    self.filterControlsCollection.isHidden = false
-                    self.filterControlsCollection.transform = CGAffineTransform(scaleX: 1, y: 1)
-                })
-            }, completion: { finished in
-                
-            })
+            hideTheseCollections = [self.cropControlsCollection, self.paintControlsCollection, self.adjustControlsCollection]
+            showThisCollection = self.filterControlsCollection
         case 2:
-            self.adjustControlsCollection.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
-            UIView.animateKeyframes(withDuration: 0.65, delay: 0, options: .calculationModeCubic, animations: {
-                UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: 0.25, animations: {
-                    self.cropControlsCollection.isHidden = true
-                    self.paintControlsCollection.isHidden = true
-                    self.filterControlsCollection.isHidden = true
-                    self.adjustControlsCollection.transform = CGAffineTransform(scaleX: 1, y: 0.1)
-                })
-                UIView.addKeyframe(withRelativeStartTime: 0.25, relativeDuration: 0.4, animations: {
-                    self.adjustControlsCollection.isHidden = false
-                    self.adjustControlsCollection.transform = CGAffineTransform(scaleX: 1, y: 1)
-                })
-            }, completion: { finished in
-                
-            })
+            hideTheseCollections = [self.cropControlsCollection, self.paintControlsCollection, self.filterControlsCollection]
+            showThisCollection = self.adjustControlsCollection
         case 3:
-            self.paintControlsCollection.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
-            UIView.animateKeyframes(withDuration: 0.65, delay: 0, options: .calculationModeCubic, animations: {
-                UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: 0.25, animations: {
-                    self.cropControlsCollection.isHidden = true
-                    self.adjustControlsCollection.isHidden = true
-                    self.filterControlsCollection.isHidden = true
-                    self.paintControlsCollection.transform = CGAffineTransform(scaleX: 1, y: 0.1)
-                })
-                UIView.addKeyframe(withRelativeStartTime: 0.25, relativeDuration: 0.4, animations: {
-                    self.paintControlsCollection.isHidden = false
-                    self.paintControlsCollection.transform = CGAffineTransform(scaleX: 1, y: 1)
-                })
-            }, completion: { finished in
-                
-            })
-
+            hideTheseCollections = [self.cropControlsCollection, self.adjustControlsCollection, self.filterControlsCollection]
+            showThisCollection = self.paintControlsCollection
         default:
             break
         }
+        
+        showThisCollection.transform = CGAffineTransform(translationX: 0, y: -showThisCollection.frame.height)
+        
+        UIView.animateKeyframes(withDuration: 0.7, delay: 0, options: .calculationModeCubic, animations: {
+            UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: 0.7, animations: {
+                for c in hideTheseCollections {
+                    c.isHidden = true
+                    c.alpha = 0
+                }
+                showThisCollection.transform = CGAffineTransform(translationX: 0, y: 0)
+            })
+            UIView.addKeyframe(withRelativeStartTime: 0.2, relativeDuration: 0.3, animations: {
+                showThisCollection.isHidden = false
+                showThisCollection.alpha = 1
+            })
+        }, completion: { finished in
+            
+        })
+        
+        //blue color on selected main control
+        let cell = mainControlsCollection.cellForItem(at: IndexPath(row: cvTag, section: 0))
+        cell?.alpha = 1
+        UIView.animateKeyframes(withDuration: 0.5, delay: 0, options: UIViewKeyframeAnimationOptions.calculationModeCubic, animations: {
+            UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: 0.25, animations: {
+                cell?.alpha = 1
+                if self.lastCellIndexPath != nil {
+                    let previousCell = self.mainControlsCollection.cellForItem(at: self.lastCellIndexPath)
+                    previousCell?.backgroundColor = UIColor.clear
+                }
+                cell?.backgroundColor = UIColor.MNLighterBlue
+            })
+            UIView.addKeyframe(withRelativeStartTime: 0.25, relativeDuration: 0.5, animations: {
+                cell?.alpha = 1
+                
+            })
+        }, completion: nil)
+        lastCellIndexPath = IndexPath(row: cvTag, section: 0)
+        
+        
     }
-
-
 }
 
 
-extension EditController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, SetFilter {
+extension EditController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if collectionView == adjustControlsCollection {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "adjustcontrol", for: indexPath) as! AdjustControlCell
             
             cell.imageView.image = adjustControlsImages[indexPath.section][indexPath.item].withRenderingMode(.alwaysTemplate)
             cell.label.text = adjustControlsText[indexPath.section][indexPath.item]
-        
-            cell.seeEyeFilter = CIFilters[indexPath.section]
+            cell.filterLocation = indexPath.section
+
             cell.scalarFilterParam = descriptors[indexPath.section][indexPath.item]
-           
+        
             cell.layer.cornerRadius = 5
             cell.delegate = filteredImageView
+          
             cell.awakeFromNib()
             
-     
             return cell
             
         }
@@ -409,10 +494,10 @@ extension EditController: UICollectionViewDelegate, UICollectionViewDelegateFlow
             if collectionView == filterControlsCollection {
                 let numFiltersInPack:CGFloat = CGFloat(filterObjects[indexPath.item].count) + 1
                 print(numFiltersInPack)
-                return CGSize(width: 60 * numFiltersInPack + 15 * (numFiltersInPack - 1), height: 60)
+                return CGSize(width: (60 * numFiltersInPack + 15 * (numFiltersInPack - 1)), height: 60)
             }
             if collectionView == adjustControlsCollection {
-                return CGSize(width: 60*4, height: 60)
+                return CGSize(width: (60*4), height: 60)
             }
         }
         return CGSize(width: 60, height: 60)
@@ -425,7 +510,7 @@ extension EditController: UICollectionViewDelegate, UICollectionViewDelegateFlow
             }
             if section == 1 {
                         print("descriptionsatsection.count: \(descriptors[section].count)")
-                return descriptors[section].count // should be 2
+                return descriptors[section].count // should be 3
             }
             if section == 2 {
                         print("descriptionsatsection.count: \(descriptors[section].count)")
@@ -435,6 +520,12 @@ extension EditController: UICollectionViewDelegate, UICollectionViewDelegateFlow
                  print("descriptionsatsection.count: \(descriptors[section].count)")
                 return descriptors[section].count // should be 1
             }
+        }
+        if collectionView == filterControlsCollection {
+            return filterObjects.count
+        }
+        if collectionView == cropControlsCollection {
+            return 3
         }
         return 4
     }
@@ -469,26 +560,21 @@ extension EditController: UICollectionViewDelegate, UICollectionViewDelegateFlow
             default:
                 break
             }
-            
-            let cell = collectionView.cellForItem(at: indexPath)
-            cell?.alpha = 1
-            UIView.animateKeyframes(withDuration: 0.5, delay: 0, options: UIViewKeyframeAnimationOptions.calculationModeCubic, animations: {
-                UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: 0.25, animations: {
-                    cell?.alpha = 1
-                    if self.lastCellIndexPath != nil {
-                        let previousCell = collectionView.cellForItem(at: self.lastCellIndexPath)
-                        previousCell?.backgroundColor = UIColor.clear
-                    }
-                    cell?.backgroundColor = UIColor.MNLighterBlue
-                })
-                UIView.addKeyframe(withRelativeStartTime: 0.25, relativeDuration: 0.5, animations: {
-                    cell?.alpha = 1
-                    
-                })
-            }, completion: nil)
-            lastCellIndexPath = indexPath
-
         }
+        
+        if collectionView == cropControlsCollection {
+            switch indexPath.item {
+            case 0:
+                showHideOverlayAction()
+            case 1:
+                rotateAction()
+            case 2:
+                cropImageAction()
+            default:
+                break
+            }
+        }
+        
         if tappedIndexPath != nil && tappedIndexPath == indexPath {
             tappedIndexPath = nil
         } else {
@@ -500,15 +586,25 @@ extension EditController: UICollectionViewDelegate, UICollectionViewDelegateFlow
                 collectionView.collectionViewLayout.invalidateLayout()
                 collectionView.reloadData()
             }, completion: nil)
+            
+            if collectionView == adjustControlsCollection {
+                filteredImageView.filter = appDelegate.singleton.filters[indexPath.section]
+            }
+       
         }
-        
-        
+
     }
+
     
-    func ApplyFilter(filter: UIImage!) {
-        appDelegate.singleton.imagePicked = filter
-        imageView.image = filter
+    func apply(_ filter: CIFilter?, for image: CIImage) -> CIImage {
+        guard let filter = filter else { return image }
+        filter.setValue(image, forKey: kCIInputImageKey)
+        guard let filteredImage = filter.value(forKey: kCIOutputImageKey) else { return image }
+        return filteredImage as! CIImage
     }
+
+    
+    
 }
 
 
@@ -556,13 +652,33 @@ extension EditController {
         //....
   
         
-        filterObjects.append(createFilters(createfilters: filterPack0, createnames: filterNames0))
-        filterObjects.append(createFilters(createfilters: filterPack1, createnames: filterNames1))
-        filterObjects.append(createFilters(createfilters: filterPack2, createnames: filterNames2))
-        filterObjects.append(createFilters(createfilters: filterPack3, createnames: filterNames3))
-        filterObjects.append(createFilters(createfilters: filterPack4, createnames: filterNames4))
+        filterObjects = [ createFilters(createfilters: filterPack0, createnames: filterNames0),
+                          createFilters(createfilters: filterPack1, createnames: filterNames1),
+                          createFilters(createfilters: filterPack2, createnames: filterNames2),
+                          createFilters(createfilters: filterPack3, createnames: filterNames3),
+                          createFilters(createfilters: filterPack4, createnames: filterNames4)
+                        ]
         
+ 
+      if applyyet
+      {
+        filterControlsCollection.performBatchUpdates({
+            self.filterControlsCollection.collectionViewLayout.invalidateLayout()
+            
+            for i in 0 ..< filterObjects.count {
+                self.filterControlsCollection.deleteItems(at: [IndexPath(row: i, section: 0)])
+            }
+            for i in 0 ..< filterObjects.count {
+                self.filterControlsCollection.insertItems(at: [IndexPath(row: i, section: 0)])
+            }
+            
+        }, completion: nil)
+      }
+
+    
     }
+    
+
     
 }
 

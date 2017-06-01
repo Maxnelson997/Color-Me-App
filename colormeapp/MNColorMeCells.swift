@@ -116,19 +116,22 @@ class AdjustControlCell:UICollectionViewCell {
         l.backgroundColor = .clear
         return l
     }()
-    
-    var seeEyeFilter:CIFilter!
+
     var scalarFilterParam:ScalarFilterParameter!
+    var filterLocation:Int!
     
     var delegate:ParameterAdjustmentDelegate!
+   
     func sliderValueDidChange(_ sender: AnyObject?) {
         
         if delegate != nil {
             //            cellsFilter.setValue(slider.value, forKey: parameter.key)
-            delegate!.parameterValueDidChange(ScalarFilterParameter(key: scalarFilterParam.key, value: slider.value), newfilter: seeEyeFilter)
+            delegate!.parameterValueDidChange(ScalarFilterParameter(key: scalarFilterParam.key, value: slider.value), location: filterLocation)
             
         }
     }
+    
+
     
     var exists:Bool = false
     
@@ -147,13 +150,15 @@ class AdjustControlCell:UICollectionViewCell {
             
             label.frame = CGRect(x: 0, y: contentView.frame.maxY - (contentView.frame.height * 0.5), width: contentView.frame.width, height: contentView.frame.height * 0.5)
             
-            slider.minimumValue = scalarFilterParam.minimumValue!
-            slider.maximumValue = scalarFilterParam.maximumValue!
-            slider.value = scalarFilterParam.currentValue
+ 
             slider.addTarget(self, action: #selector(self.sliderValueDidChange(_:)), for: .valueChanged)
+ 
             exists = true
         }
-
+        
+        slider.minimumValue = scalarFilterParam.minimumValue!
+        slider.maximumValue = scalarFilterParam.maximumValue!
+        slider.value = scalarFilterParam.currentValue
         
     }
     
@@ -166,6 +171,7 @@ class AdjustControlCell:UICollectionViewCell {
 }
 protocol SetFilter {
     func ApplyFilter(filter:UIImage!)
+    func ApplyToCropView(image:UIImage!)
 }
 class FilterPackControlCell:UICollectionViewCell, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
     
@@ -194,23 +200,33 @@ class FilterPackControlCell:UICollectionViewCell, UICollectionViewDelegate, UICo
 
     var filterPack:[filterObj] = []
     
+    var awoken:Bool = false
+    
     override func awakeFromNib() {
-        self.clipsToBounds = true
-        filtersCollection.translatesAutoresizingMaskIntoConstraints = true
-        filtersCollection.frame = CGRect(x: contentView.frame.maxX, y: 0, width: contentView.frame.width * CGFloat(filterPack.count) + 15 * CGFloat(filterPack.count), height: contentView.frame.height)
-        filtersCollection.dataSource = self
-        filtersCollection.delegate = self
-        filtersCollection.register(FilterCell.self, forCellWithReuseIdentifier: "filtercell")
+        if !awoken
+        {
+            self.clipsToBounds = true
+            filtersCollection.translatesAutoresizingMaskIntoConstraints = true
+            filtersCollection.frame = CGRect(x: contentView.frame.maxX, y: 0, width: contentView.frame.width * CGFloat(filterPack.count) + 15 * CGFloat(filterPack.count), height: contentView.frame.height)
+            filtersCollection.dataSource = self
+            filtersCollection.delegate = self
+            filtersCollection.register(FilterCell.self, forCellWithReuseIdentifier: "filtercell")
+            
+            
+            contentView.addSubview(label)
+            
+            
+            imageView.frame = CGRect(x: 0, y: contentView.frame.height * 0.2, width: contentView.frame.width, height: contentView.frame.height * 0.4)
+            imageView.transform = CGAffineTransform(scaleX: 0.4, y: 1)
+            
+            label.frame = CGRect(x: 0, y: contentView.frame.maxY - (contentView.frame.height * 0.5), width: contentView.frame.width, height: contentView.frame.height * 0.5)
+            awoken = true
+        }
         
         contentView.addSubview(imageView)
-        contentView.addSubview(label)
         contentView.addSubview(filtersCollection)
 
-        imageView.frame = CGRect(x: 0, y: contentView.frame.height * 0.2, width: contentView.frame.width, height: contentView.frame.height * 0.4)
-        imageView.transform = CGAffineTransform(scaleX: 0.4, y: 1)
-        
-        label.frame = CGRect(x: 0, y: contentView.frame.maxY - (contentView.frame.height * 0.5), width: contentView.frame.width, height: contentView.frame.height * 0.5)
-        
+        filtersCollection.reloadData()
         
 //        NSLayoutConstraint.activate([
 //            imageView.leadingAnchor.constraint(greaterThanOrEqualTo: leadingAnchor),
@@ -259,6 +275,7 @@ class FilterPackControlCell:UICollectionViewCell, UICollectionViewDelegate, UICo
     
     override func prepareForReuse() {
         imageView.removeFromSuperview()
+        filtersCollection.removeFromSuperview()
     }
     
 }
@@ -312,6 +329,7 @@ class FilterCell:UICollectionViewCell {
     
     override func prepareForReuse() {
         imageView.removeFromSuperview()
+        
     }
     
 }

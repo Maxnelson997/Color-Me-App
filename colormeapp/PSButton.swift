@@ -63,9 +63,7 @@ class PSButton: UIButton {
     func InitWithImage() {
         self.addTarget(self, action: #selector(self.animatehelp), for: .touchUpInside)
 
-        
         addSubview(imView)
-
 
         //layout label
         NSLayoutConstraint.activate([

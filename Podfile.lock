@@ -1,12 +1,15 @@
 PODS:
+  - AKImageCropperView (2.0.0)
   - Font-Awesome-Swift (1.6.2)
 
 DEPENDENCIES:
+  - AKImageCropperView
   - Font-Awesome-Swift (~> 1.6.2)
 
 SPEC CHECKSUMS:
+  AKImageCropperView: 9c80fd45512daa69426161ad51c248655c1b5182
   Font-Awesome-Swift: 4dc96df73b5f32aaccdee50a454c3ec253ee4977
 
-PODFILE CHECKSUM: 0be573442923eda70388068fa034061be23ccefa
+PODFILE CHECKSUM: 420d56c33bcf12554733bba391009059cf995668
 
 COCOAPODS: 1.2.1

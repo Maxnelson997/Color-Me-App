@@ -24,10 +24,10 @@ struct ScalarFilterParameter
     
     init(name: String, key: String, minimumValue: Float, maximumValue: Float, currentValue: Float)
     {
-        self.name = name
-        self.key = key
         self.minimumValue = minimumValue
         self.maximumValue = maximumValue
+        self.name = name
+        self.key = key
         self.currentValue = currentValue
     }
 }

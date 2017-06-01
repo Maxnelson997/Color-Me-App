@@ -9,12 +9,14 @@
 import UIKit
 import CoreData
 import Font_Awesome_Swift
+import AKImageCropperView
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     
-    var singleton:ColorMeSingleton = ColorMeSingleton()
+    var singleton:ColorMeSingleton!
+
     
     var window: UIWindow?
     var navigationController:UINavigationController!
@@ -28,6 +30,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         static let forward = navType(rawValue: 2)
         static let bars = navType(rawValue: 4)
         static let logo = navType(rawValue: 8)
+        static let noSelector = navType(rawValue: 16)
     }
 
     func makeTitle(titleText:String) -> UIButton {
@@ -50,6 +53,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         case navType.back:
             btn.setFAIcon(icon: FAType.FAArrowLeft, iconSize: 30, forState: UIControlState.normal)
             btn.addTarget(navigationController, action: #selector(self.navigationController.popViewController(animated:)), for: .touchUpInside)
+        case navType.noSelector:
+            btn.setFAIcon(icon: FAType.FAArrowLeft, iconSize: 30, forState: UIControlState.normal)
+            btn.addTarget(editVC, action: #selector(editVC.backTappedToCloseCV), for: .touchUpInside)
         case navType.logo:
             let loView = UIImageView(image: #imageLiteral(resourceName: "photo-camera"))
             loView.image = loView.image?.withRenderingMode(.alwaysTemplate)
@@ -73,9 +79,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func goToEditController() {
+        editVC = EditController()
+        editVC.navigationItem.titleView = makeTitle(titleText: "EDIT ME")
+        editVC.navigationItem.leftBarButtonItem = makeNavItem(type: .noSelector, alignment: .left)
+        editVC.navigationItem.rightBarButtonItem = makeNavItem(tag: 0, type: .logo, alignment: .right)
         navigationController.pushViewController(editVC, animated: true)
     }
     func goToMenuController() {
+        
         navigationController.pushViewController(menuVC, animated: true)
     }
     
@@ -110,9 +121,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         editVC = EditController()
         editVC.navigationItem.titleView = makeTitle(titleText: "EDIT ME")
-        editVC.navigationItem.leftBarButtonItem = makeNavItem(type: .back, alignment: .left)
+        editVC.navigationItem.leftBarButtonItem = makeNavItem(type: .noSelector, alignment: .left)
         editVC.navigationItem.rightBarButtonItem = makeNavItem(tag: 0, type: .logo, alignment: .right)
-        
+
         viewsToNavigateTo = [menuVC, editVC]
         
         navigationController.edgesForExtendedLayout = .left
@@ -125,6 +136,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.window!.backgroundColor = .white
         self.window!.makeKeyAndVisible()
 
+        singleton = ColorMeSingleton()
 
         return true
     }

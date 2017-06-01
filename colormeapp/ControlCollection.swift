@@ -17,9 +17,9 @@ class ControlCollection: UICollectionView {
     fileprivate var layout:UICollectionViewFlowLayout = {
         let cl = UICollectionViewFlowLayout()
         cl.scrollDirection = .horizontal
-        cl.sectionInset = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
-        cl.minimumLineSpacing = 15
-        cl.minimumInteritemSpacing = 5
+        cl.sectionInset = UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 8)
+        cl.minimumLineSpacing = 16
+        cl.minimumInteritemSpacing = 16
         return cl
     }()
     
