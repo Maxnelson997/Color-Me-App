@@ -14,10 +14,6 @@ import AKImageCropperView
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
-    
-    var singleton:ColorMeSingleton!
-
-    
     var window: UIWindow?
     var navigationController:UINavigationController!
     var viewsToNavigateTo:[UIViewController]  = []
@@ -136,7 +132,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.window!.backgroundColor = .white
         self.window!.makeKeyAndVisible()
 
-        singleton = ColorMeSingleton()
 
         return true
     }

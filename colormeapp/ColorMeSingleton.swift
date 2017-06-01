@@ -10,8 +10,11 @@ import UIKit
 
 
 
-struct ColorMeSingleton {
-
+class ColorMeSingleton {
+    static let sharedInstance = ColorMeSingleton()
+    
+    private init() {}
+    
     var imageNotPicked:Bool = true
     
     var imagePicked:UIImage = #imageLiteral(resourceName: "pol") {
@@ -21,7 +24,6 @@ struct ColorMeSingleton {
     }
     
     func applyfilters() {
-
         for filter in filters {
             filter.setValue(CIImage(image: imagePicked), forKey: kCIInputImageKey)
         }

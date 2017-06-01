@@ -170,12 +170,10 @@ class AdjustControlCell:UICollectionViewCell {
     
 }
 protocol SetFilter {
-    func ApplyFilter(filter:UIImage!)
+    func ApplyFilter(filter:UIImage!, name:String!)
     func ApplyToCropView(image:UIImage!)
 }
 class FilterPackControlCell:UICollectionViewCell, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
-    
-    
     
     var imageView:UIImageView = {
         var imageView = UIImageView()
@@ -190,7 +188,6 @@ class FilterPackControlCell:UICollectionViewCell, UICollectionViewDelegate, UICo
         l.font = UIFont.MNExoFontFifteenReg
         l.textColor = .white
         l.textAlignment = .center
-        
         return l
     }()
     
@@ -199,7 +196,7 @@ class FilterPackControlCell:UICollectionViewCell, UICollectionViewDelegate, UICo
     var filtersCollection:ControlCollection = ControlCollection()
 
     var filterPack:[filterObj] = []
-    
+  
     var awoken:Bool = false
     
     override func awakeFromNib() {
@@ -212,9 +209,7 @@ class FilterPackControlCell:UICollectionViewCell, UICollectionViewDelegate, UICo
             filtersCollection.delegate = self
             filtersCollection.register(FilterCell.self, forCellWithReuseIdentifier: "filtercell")
             
-            
             contentView.addSubview(label)
-            
             
             imageView.frame = CGRect(x: 0, y: contentView.frame.height * 0.2, width: contentView.frame.width, height: contentView.frame.height * 0.4)
             imageView.transform = CGAffineTransform(scaleX: 0.4, y: 1)
@@ -270,7 +265,7 @@ class FilterPackControlCell:UICollectionViewCell, UICollectionViewDelegate, UICo
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        delegate?.ApplyFilter(filter: filterPack[indexPath.item].image)
+        delegate?.ApplyFilter(filter: filterPack[indexPath.item].image, name: filterPack[indexPath.item].filterName)
     }
     
     override func prepareForReuse() {

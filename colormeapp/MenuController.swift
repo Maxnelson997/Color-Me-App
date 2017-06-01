@@ -11,6 +11,7 @@ import Photos
 
 class MenuController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
+    var singleton = ColorMeSingleton.sharedInstance
     var appDelegate:AppDelegate!
     
     var open:Bool = false
@@ -54,7 +55,8 @@ class MenuController: UIViewController, UIImagePickerControllerDelegate, UINavig
     var recentButtonConstraints:[NSLayoutConstraint]!
     
     override func viewDidAppear(_ animated: Bool) {
-        appDelegate.singleton.imageNotPicked = true
+        singleton.filters = [CIFilter(name: "CIColorControls")!, CIFilter(name: "CIHighlightShadowAdjust")!, CIFilter(name: "CIExposureAdjust")!, CIFilter(name: "CIHueAdjust")!]
+        singleton.imageNotPicked = true
     }
     
     override func viewDidLoad() {
@@ -256,7 +258,7 @@ class MenuController: UIViewController, UIImagePickerControllerDelegate, UINavig
          imagePicked = img
          } else */if let img = info[UIImagePickerControllerOriginalImage] as? UIImage {
             print("original")
-            appDelegate.singleton.imagePicked = img
+            singleton.imagePicked = img
          } else {
             print("not an image")
             //appDelegate.singleton.imagePicked = nil
@@ -288,7 +290,7 @@ class MenuController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     func selectRecentImage(sender:UITapGestureRecognizer) {
         let imView = sender.view as! UIImageView
-        appDelegate.singleton.imagePicked = images[imView.tag]
+        singleton.imagePicked = images[imView.tag]
         appDelegate.goToEditController()
     }
     

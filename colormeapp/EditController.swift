@@ -15,11 +15,14 @@ extension EditController: AKImageCropperViewDelegate {
         print("New crop rectangle: \(rect)")
     }
     
+
     func cropImageAction() {
-        cropView.image = cropView.croppedImage
-        filteredImageView.inputImage = cropView.image
-        cropView.hideOverlayView(animationDuration: 0.3)
-        updateFilters()
+        if cropView.isOverlayViewActive {
+            singleton.imagePicked = cropView.croppedImageToUse!
+            cropView.hideOverlayView(animationDuration: 0)
+            updateFilters()
+            filteredImageView.setNeedsLayout()
+        }
     }
     
     func showHideOverlayAction() {
@@ -37,9 +40,19 @@ extension EditController: AKImageCropperViewDelegate {
                 self.angle = 0.0
             }
         })
-        
     }
     
+    
+    func resetAction() {
+        singleton.imagePicked = self.veryOriginalImage
+        cropView.reset(animationDuration: 0)
+        angle = 0.0
+        updateFilters()
+        filteredImageView.resetFilters()
+        filteredImageView.currentAppliedFilter = "reset"
+        filteredImageView.setNeedsLayout()
+    }
+
     
 }
 
@@ -47,15 +60,18 @@ class EditController: UIViewController, SetFilter {
     var angle: Double = 0.0
     var applyyet:Bool = false
     
+    var veryOriginalImage:UIImage!
+    var singleton = ColorMeSingleton.sharedInstance
+    
     func ApplyToCropView(image: UIImage!) {
         self.cropView.image = image
         print("edited image applied to cropview")
     }
     
-    func ApplyFilter(filter: UIImage!) {
-        appDelegate.singleton.imagePicked = filter
-        filteredImageView.inputImage = filter
-        
+    func ApplyFilter(filter: UIImage!, name: String!) {
+//        singleton.imagePicked = filter
+        filteredImageView.currentAppliedFilter = name
+        filteredImageView.setNeedsLayout()
     }
     
     func backTappedToCloseCV() {
@@ -165,8 +181,8 @@ class EditController: UIViewController, SetFilter {
 
     
     func getKeys() {
-        for i in 0 ..< appDelegate.singleton.filters.count {
-            curFilter = appDelegate.singleton.filters[i]
+        for i in 0 ..< singleton.filters.count {
+            curFilter = singleton.filters[i]
             print(curFilter)
             descriptors.append(getFilterParameterDescriptors())
             print(descriptors[i].count)
@@ -178,13 +194,10 @@ class EditController: UIViewController, SetFilter {
     }
     
     override func viewDidAppear(_ animated: Bool) {
-         applyyet = true
+        applyyet = true
         appDelegate = UIApplication.shared.delegate as! AppDelegate
         updateFilters()
-        filteredImageView.inputImage = appDelegate.singleton.imagePicked
-        
-     
-
+        filteredImageView.inputImage = singleton.imagePicked
     }
     
     override func viewDidLoad() {
@@ -193,26 +206,27 @@ class EditController: UIViewController, SetFilter {
         
         view.backgroundColor = UIColor.MNGray
         appDelegate = UIApplication.shared.delegate as! AppDelegate
-
+        
+        veryOriginalImage = singleton.imagePicked
+        
         getKeys()
         updateFilters()
         
-        
         filteredImageView = FilteredImageView(frame: view.bounds)
-        filteredImageView.inputImage = appDelegate.singleton.imagePicked
+        filteredImageView.inputImage = singleton.imagePicked
         filteredImageView.contentMode = .scaleAspectFit
         filteredImageView.clipsToBounds = true
         filteredImageView.translatesAutoresizingMaskIntoConstraints = false
         filteredImageView.backgroundColor = UIColor.MNBlack.withAlphaComponent(0.8)
         filteredImageView.delegate1 = self
-        filteredImageView.filter = appDelegate.singleton.filters[0]
+        filteredImageView.filter = singleton.filters[0]
         filteredImageView.alpha = 0
         view.addSubview(filteredImageView)
         
         cropView = AKImageCropperView(frame: view.bounds)
         cropView.delegate = self
-        cropView.image = appDelegate.singleton.imagePicked
-        cropView.backgroundColor = UIColor.clear
+        cropView.image = singleton.imagePicked
+        cropView.imageToCrop = self.veryOriginalImage
         cropView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(cropView)
         
@@ -220,8 +234,8 @@ class EditController: UIViewController, SetFilter {
         mainControlsImages = [#imageLiteral(resourceName: "move"),#imageLiteral(resourceName: "rgb-symbol"),#imageLiteral(resourceName: "settings-2"),#imageLiteral(resourceName: "bucket-with-paint")]
         mainControlsText = ["crop", "filters", "adjust", "paint"]
         
-        cropControlsImages = [#imageLiteral(resourceName: "fit"),#imageLiteral(resourceName: "reload-4"),#imageLiteral(resourceName: "check")]
-        cropControlsText = ["crop", "rotate", "finish"]
+        cropControlsImages = [#imageLiteral(resourceName: "reload-2") ,#imageLiteral(resourceName: "fit"),#imageLiteral(resourceName: "reload-4"),#imageLiteral(resourceName: "check")]
+        cropControlsText = ["reset", "crop", "rotate", "finish"]
         
         paintControlsImages = [#imageLiteral(resourceName: "one-finger-click"),#imageLiteral(resourceName: "bucket-with-paint"),#imageLiteral(resourceName: "speech-bubble"),#imageLiteral(resourceName: "rotate-arrow")]
         paintControlsText = ["draw", "paint", "text", "undo"]
@@ -258,7 +272,7 @@ class EditController: UIViewController, SetFilter {
         cropperImageViewConstraints = [
             cropView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             cropView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            cropView.topAnchor.constraint(equalTo: view.topAnchor, constant: appDelegate.navigationController.navigationBar.frame.height + 10),
+            cropView.topAnchor.constraint(equalTo: view.topAnchor, constant: appDelegate.navigationController.navigationBar.frame.height + 20),
             cropView.bottomAnchor.constraint(equalTo: controlsLayoutGuide.topAnchor),
             cropView.centerXAnchor.constraint(equalTo: view.centerXAnchor)
         ]
@@ -461,6 +475,7 @@ extension EditController: UICollectionViewDelegate, UICollectionViewDelegateFlow
             cell.imageView.image = filterControlsImages[indexPath.item].withRenderingMode(.alwaysTemplate)
             cell.label.text = filterControlsText[indexPath.item]
             cell.filterPack = filterObjects[indexPath.item]
+        
             cell.delegate = self
             cell.awakeFromNib()
             cell.layer.cornerRadius = 5
@@ -525,7 +540,7 @@ extension EditController: UICollectionViewDelegate, UICollectionViewDelegateFlow
             return filterObjects.count
         }
         if collectionView == cropControlsCollection {
-            return 3
+            return 4
         }
         return 4
     }
@@ -565,10 +580,12 @@ extension EditController: UICollectionViewDelegate, UICollectionViewDelegateFlow
         if collectionView == cropControlsCollection {
             switch indexPath.item {
             case 0:
-                showHideOverlayAction()
+                resetAction()
             case 1:
-                rotateAction()
+                showHideOverlayAction()
             case 2:
+                rotateAction()
+            case 3:
                 cropImageAction()
             default:
                 break
@@ -588,7 +605,7 @@ extension EditController: UICollectionViewDelegate, UICollectionViewDelegateFlow
             }, completion: nil)
             
             if collectionView == adjustControlsCollection {
-                filteredImageView.filter = appDelegate.singleton.filters[indexPath.section]
+                filteredImageView.filter = singleton.filters[indexPath.section]
             }
        
         }
@@ -616,7 +633,7 @@ extension EditController {
             
             // Create filters for each button
             let ciContext = CIContext(options: nil)
-            let coreImage = CIImage(image: appDelegate.singleton.imagePicked) //cropView.image!
+            let coreImage = CIImage(image: singleton.imagePicked) //cropView.image!
             let filter = CIFilter(name: "\(createfilters[i])" )
             filter!.setDefaults()
             filter!.setValue(coreImage, forKey: kCIInputImageKey)
@@ -624,7 +641,7 @@ extension EditController {
             let filteredImageRef = ciContext.createCGImage(filteredImageData, from: filteredImageData.extent)
             let imageForButton = UIImage(cgImage: filteredImageRef!)
             
-            newFilters.append(filterObj(name: createnames[i], image: imageForButton))
+            newFilters.append(filterObj(name: createnames[i], image: imageForButton, filterName: createfilters[i]))
         }
         
         return newFilters
@@ -693,4 +710,5 @@ struct filterContainerObj {
 struct filterObj {
     var name:String!
     var image:UIImage!
+    var filterName:String!
 }

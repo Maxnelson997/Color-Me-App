@@ -10,12 +10,12 @@ import UIKit
 
 class CameraController: UIViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
     
-    
+    var singleton = ColorMeSingleton.sharedInstance
     var appDelegate:AppDelegate!
     var background:UIImageView!
     
     override func viewDidAppear(_ animated: Bool) {
-        if appDelegate.singleton.imageNotPicked {
+        if singleton.imageNotPicked {
             if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.camera) {
                 let imagePicker = UIImagePickerController()
                 imagePicker.delegate = self
@@ -24,7 +24,7 @@ class CameraController: UIViewController, UINavigationControllerDelegate, UIImag
                 imagePicker.showsCameraControls = true
                 self.present(imagePicker, animated: true, completion: nil)
             }
-            appDelegate.singleton.imageNotPicked = false
+            singleton.imageNotPicked = false
         }
     }
 
@@ -49,7 +49,7 @@ class CameraController: UIViewController, UINavigationControllerDelegate, UIImag
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         if let img = info[UIImagePickerControllerOriginalImage] as? UIImage {
             print("original")
-            appDelegate.singleton.imagePicked = img
+            singleton.imagePicked = img
         } else {
             print("not an image")
         }

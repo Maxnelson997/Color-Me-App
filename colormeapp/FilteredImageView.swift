@@ -19,16 +19,16 @@ protocol ParameterAdjustmentDelegate {
 }
 
 
-
-
 class FilteredImageView: GLKView, ParameterAdjustmentDelegate {
 
-    var appDelegate:AppDelegate = UIApplication.shared.delegate as! AppDelegate
+    
+    var singleton = ColorMeSingleton.sharedInstance
+
     var ciContext: CIContext!
 
     func resetFilters() {
-        self.appDelegate.singleton.filters = [CIFilter(name: "CIColorControls")!, CIFilter(name: "CIHighlightShadowAdjust")!, CIFilter(name: "CIExposureAdjust")!, CIFilter(name: "CIHueAdjust")!]
-        self.filter = self.appDelegate.singleton.filters[0]
+        singleton.filters = [CIFilter(name: "CIColorControls")!, CIFilter(name: "CIHighlightShadowAdjust")!, CIFilter(name: "CIExposureAdjust")!, CIFilter(name: "CIHueAdjust")!]
+        self.filter = singleton.filters[0]
     }
     
     var filter: CIFilter! {
@@ -59,17 +59,37 @@ class FilteredImageView: GLKView, ParameterAdjustmentDelegate {
         ciContext = CIContext(eaglContext: context)
     }
     
+    var currentAppliedFilter:String!
+    
     override func draw(_ rect: CGRect) {
         if ciContext != nil && inputImage != nil && filter != nil {
+            var originalimage:CIImage = CIImage(image: singleton.imagePicked)!
             
-            var originalimage:CIImage = CIImage(image: appDelegate.singleton.imagePicked)!
             
-            for filters in appDelegate.singleton.filters {
+            for filters in singleton.filters {
                 filters.setValue(originalimage, forKey: kCIInputImageKey)
                 originalimage = filters.outputImage!
                 print("times: ")
             }
             
+            
+            if currentAppliedFilter != nil {
+                if currentAppliedFilter != "reset" {
+                    print("CURRENT APPLIED FILTER: \(currentAppliedFilter!)")
+                    let ciContext = CIContext(options: nil)
+                    let coreImage = originalimage//cropView.image!
+                    let filterz = CIFilter(name: currentAppliedFilter)
+                    filterz!.setDefaults()
+                    filterz!.setValue(coreImage, forKey: kCIInputImageKey)
+                    let filteredImageData = filterz!.value(forKey: kCIOutputImageKey) as! CIImage
+                    let filteredImageRef = ciContext.createCGImage(filteredImageData, from: filteredImageData.extent)
+                    originalimage = CIImage(image: UIImage(cgImage: filteredImageRef!))!
+                }
+
+            } else {
+                print("reset or does not exist")
+            }
+
             if filter.outputImage != nil {
                 clearBackground()
                 let inputBounds = originalimage.extent
