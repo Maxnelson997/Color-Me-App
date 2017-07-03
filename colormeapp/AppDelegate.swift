@@ -144,7 +144,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         navigationController.viewControllers = [cameraVC, menuVC]
 
         UIApplication.shared.statusBarStyle = .default
-        
+        navigationController.view.backgroundColor = .blue
         UINavigationBar.appearance().barTintColor = UIColor.black
 
         self.window!.rootViewController = navigationController

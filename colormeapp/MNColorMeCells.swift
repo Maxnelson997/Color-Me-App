@@ -241,11 +241,11 @@ class FilterPackControlCell:UICollectionViewCell, UICollectionViewDelegate, UICo
             self.clipsToBounds = true
 
             filtersCollection.translatesAutoresizingMaskIntoConstraints = true
-            filtersCollection.frame = CGRect(x: contentView.frame.maxX, y: 0, width: contentView.frame.width * CGFloat(filterPack.count) + 15 * CGFloat(filterPack.count), height: contentView.frame.height)
+           
             filtersCollection.dataSource = self
             filtersCollection.delegate = self
             filtersCollection.register(FilterCell.self, forCellWithReuseIdentifier: "filtercell")
-            
+//            filtersCollection.backgroundColor = 
             contentView.addSubview(label)
             
             imageView.frame = CGRect(x: 0, y: contentView.frame.height * 0.2, width: contentView.frame.width, height: contentView.frame.height * 0.4)
@@ -254,7 +254,7 @@ class FilterPackControlCell:UICollectionViewCell, UICollectionViewDelegate, UICo
             label.frame = CGRect(x: 0, y: contentView.frame.maxY - (contentView.frame.height * 0.5), width: contentView.frame.width, height: contentView.frame.height * 0.5)
             awoken = true
         }
-
+         filtersCollection.frame = CGRect(x: contentView.frame.maxX, y: 0, width: contentView.frame.width * CGFloat(filterPack.count) + 15 * CGFloat(filterPack.count), height: contentView.frame.height)
         contentView.addSubview(imageView)
         contentView.addSubview(filtersCollection)
         print(filtersCollection.frame.width)
@@ -295,6 +295,7 @@ class FilterPackControlCell:UICollectionViewCell, UICollectionViewDelegate, UICo
         cell.awakeFromNib()
         cell.imageView.image = filterPack[indexPath.item].image
         cell.label.text = filterPack[indexPath.item].name
+        
         return cell
     }
     
@@ -316,7 +317,7 @@ class FilterPackControlCell:UICollectionViewCell, UICollectionViewDelegate, UICo
     
     override func prepareForReuse() {
         imageView.removeFromSuperview()
-
+        filtersCollection.removeFromSuperview()
     }
     
 }

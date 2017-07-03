@@ -8,7 +8,6 @@
 
 import UIKit
 import AKImageCropperView
-import GPUImage
 
 extension EditController: UIImagePickerControllerDelegate {
     
@@ -64,7 +63,7 @@ extension UIImage {
     
     /**
      Copies Original Image which fixes the crash for extracting Data from UIImage
-     @return UIImage
+     @return UIImage8
      */
     
     private func copyOriginalImage() -> UIImage {
@@ -89,6 +88,7 @@ extension EditController: AKImageCropperViewDelegate {
             cropView.setInteraction = false
             updateFilters()
             filteredImageView.setNeedsLayout()
+            cropView.updateConstraints()
         }
     }
     
@@ -148,7 +148,7 @@ class EditController: UIViewController, SetFilter {
     func backTappedToCloseCV() {
         tappedIndexPath = nil
         filterControlsCollection.performBatchUpdates({
-            self.filterControlsCollection.collectionViewLayout.invalidateLayout()
+         //   self.filterControlsCollection.collectionViewLayout.invalidateLayout()
             self.filterControlsCollection.reloadData()
         }, completion: { finished in
             self.appDelegate.navigationController.popViewController(animated: true)
@@ -302,28 +302,38 @@ class EditController: UIViewController, SetFilter {
 
     var topY:CGFloat!
     func drawLines(fromPoint:CGPoint,toPoint:CGPoint) {
-        UIGraphicsBeginImageContext(cropView.frame.size)
-        cropView.image?.draw(in: CGRect(x: 0, y: 0, width: cropView.frame.width, height: cropView.frame.height)) // + ((cropView.frame.height - imCondensedSize.height)/2)
+        UIGraphicsBeginImageContext((cropView.image?.size)!)
+        
+//        UIGraphicsBeginImageContext(cropView.frame.size)
+//        cropView.image?.draw(in: CGRect(x: 0, y: 0, width: cropView.frame.width, height: cropView.frame.height)) // + ((cropView.frame.height - imCondensedSize.height)/2)
+//        cropView.image?.draw(in: CGRect(x: 0, y: 0, width: (cropView.image?.size.width)!, height: (cropView.image?.size.height)!))
         let context = UIGraphicsGetCurrentContext()
-        context?.move(to: CGPoint(x: fromPoint.x, y: fromPoint.y))
-        context?.addLine(to: CGPoint(x: toPoint.x, y: toPoint.y))
+        var ratio:CGFloat = 0
+        if (cropView.image?.size.width)! > (cropView.image?.size.height)! {
+           ratio = (cropView.image?.size.width)! / (cropView.image?.size.height)!
+        } else {
+            ratio = (cropView.image?.size.height)! / (cropView.image?.size.width)!
+        }
+        
+        context?.move(to: CGPoint(x: fromPoint.x * ratio, y: fromPoint.y * ratio))
+        context?.addLine(to: CGPoint(x: toPoint.x * ratio, y: toPoint.y * ratio))
         context?.setBlendMode(CGBlendMode.normal)
         context?.setLineCap(CGLineCap.round)
         context?.setLineWidth(brushSize)
         context?.setStrokeColor(UIColor(red: red, green: green, blue: blue, alpha: opacityValue).cgColor)
         
         context?.strokePath()
-        
-        cropView.image = UIGraphicsGetImageFromCurrentImageContext()
-        
-        imageToSave = cropView.image
+        let img = UIGraphicsGetImageFromCurrentImageContext()
+
+        ApplyToCropView(image: img)
+//                filteredImageView.inputImage = img
        
         UIGraphicsEndImageContext()
 
         print("topy: \(topY)")
 
 
-       
+
         
         print(self.cent)
     }
@@ -406,8 +416,8 @@ class EditController: UIViewController, SetFilter {
         //        paintControlsText = ["draw", "paint", "text", "undo"]
 
         
-                paintControlsImages = [#imageLiteral(resourceName: "one-finger-click"),#imageLiteral(resourceName: "one-finger-click"),#imageLiteral(resourceName: "one-finger-click"), #imageLiteral(resourceName: "one-finger-click")]
-                paintControlsText = ["red", "white", "blue", "black"]
+        paintControlsImages = [#imageLiteral(resourceName: "one-finger-click"),#imageLiteral(resourceName: "one-finger-click"),#imageLiteral(resourceName: "one-finger-click"), #imageLiteral(resourceName: "one-finger-click"),#imageLiteral(resourceName: "one-finger-click"),#imageLiteral(resourceName: "one-finger-click")]
+        paintControlsText = ["sky", "pink", "red", "white", "blue", "black"]
 
         adjustControlsImages = [[#imageLiteral(resourceName: "haze-1"),#imageLiteral(resourceName: "brightness-symbol"),#imageLiteral(resourceName: "contrast-symbol")],[#imageLiteral(resourceName: "pie-chart"), #imageLiteral(resourceName: "circular-frames"),#imageLiteral(resourceName: "star-1")], [#imageLiteral(resourceName: "cloudy-1")],[#imageLiteral(resourceName: "spray-bottle-with-dots") ],[#imageLiteral(resourceName: "snowflake")],[#imageLiteral(resourceName: "devil")]]
         adjustControlsText = [["saturation","brightness", "contrast"] ,["radius","shadows","highlights"], ["exposure"], ["colors"],["temperature"], ["intensity"]]
@@ -415,8 +425,6 @@ class EditController: UIViewController, SetFilter {
         filterControlsImages = [#imageLiteral(resourceName: "three-layers"),#imageLiteral(resourceName: "three-layers"),#imageLiteral(resourceName: "three-layers"),#imageLiteral(resourceName: "three-layers"),#imageLiteral(resourceName: "three-layers"),#imageLiteral(resourceName: "three-layers")]
         filterControlsText = ["super","summer", "sunlit" ,"shady", "glow", "cartoon"]
 
-        
-        
         mainControlsCollection.dataSource = self
         mainControlsCollection.delegate = self
         cropControlsCollection.dataSource = self
@@ -513,12 +521,16 @@ class EditController: UIViewController, SetFilter {
             cropControlsCollection.widthAnchor.constraint(equalToConstant: 60*4 + 55)
         ]
         //PAINT
+        let pw = paintControlsCollection.widthAnchor.constraint(equalToConstant: 60*9 + 145)
+        pw.priority = 749
         paintControlsConstraints = [
             paintControlsCollection.centerXAnchor.constraint(equalTo: controlsStack.centerXAnchor),
             paintControlsCollection.bottomAnchor.constraint(equalTo: controlsStack.bottomAnchor),
             paintControlsCollection.topAnchor.constraint(equalTo: controlsStack.topAnchor),
             paintControlsCollection.heightAnchor.constraint(equalToConstant: 70),
-            paintControlsCollection.widthAnchor.constraint(equalToConstant: 60*4 + 55)
+            paintControlsCollection.leadingAnchor.constraint(greaterThanOrEqualTo: controlsLayoutGuide.leadingAnchor),
+            paintControlsCollection.trailingAnchor.constraint(lessThanOrEqualTo: controlsLayoutGuide.trailingAnchor),
+            pw
         ]
         //ADJUST
         let aw = adjustControlsCollection.widthAnchor.constraint(equalToConstant: 60*9 + 145)
@@ -728,6 +740,9 @@ extension EditController: UICollectionViewDelegate, UICollectionViewDelegateFlow
             if collectionView == filterControlsCollection {
                 let numFiltersInPack:CGFloat = CGFloat(filterObjects[indexPath.item].count) + 1
                 print(numFiltersInPack)
+                print(CGSize(width: (60 * numFiltersInPack + 15 * (numFiltersInPack - 1)), height: 60))
+                let cell = filterControlsCollection.cellForItem(at: indexPath)
+                cell?.awakeFromNib()
                 return CGSize(width: (60 * numFiltersInPack + 15 * (numFiltersInPack - 1)), height: 60)
             }
             if collectionView == adjustControlsCollection {
@@ -760,6 +775,9 @@ extension EditController: UICollectionViewDelegate, UICollectionViewDelegateFlow
         }
         if collectionView == cropControlsCollection {
             return 4
+        }
+        if collectionView == paintControlsCollection {
+            return paintControlsText.count
         }
         return 4
     }
@@ -814,7 +832,7 @@ extension EditController: UICollectionViewDelegate, UICollectionViewDelegateFlow
         if collectionView == paintControlsCollection {
             let cell = paintControlsCollection.cellForItem(at: IndexPath(row: indexPath.item, section: 0))
             UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 2, initialSpringVelocity: 3, options: .curveEaseIn, animations: {
-                for i in 0 ..< 3 {
+                for i in 0 ..< self.paintControlsText.count {
                     if i != indexPath.item {
                         let cell = self.paintControlsCollection.cellForItem(at: IndexPath(row: i, section: 0))
                         cell?.transform = CGAffineTransform(scaleX: 1, y: 1)
@@ -825,22 +843,38 @@ extension EditController: UICollectionViewDelegate, UICollectionViewDelegateFlow
            
             switch indexPath.item {
             case 0:
+
+                //sky
+                red = 0.4
+                green = 0.6
+                blue = 1
+            case 1:
+
+                //pink
+                red = 1
+                green = 0.4
+                blue = 0.6
+            case 2:
+                //red
                 red = 1
                 green = 0
                 blue = 0
-            case 1:
+
+            case 3:
+                //white
                 red = 1
                 green = 1
                 blue = 1
-            case 2:
+            case 4:
+                //blue
                 red = 0
                 green = 0
                 blue = 1
-            case 3:
+            case 5:
+                //black
                 red = 0
                 green = 0
                 blue = 0
-                
             default:
                 break
             }
@@ -856,7 +890,7 @@ extension EditController: UICollectionViewDelegate, UICollectionViewDelegateFlow
         
         if collectionView == filterControlsCollection || collectionView == adjustControlsCollection {
             collectionView.performBatchUpdates({
-                collectionView.collectionViewLayout.invalidateLayout()
+             //   collectionView.collectionViewLayout.invalidateLayout()
                 collectionView.reloadData()
             }, completion: nil)
             

@@ -84,7 +84,7 @@ class MenuController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     func animate() {
         let (backscale, scale, blur, cvscale, cvalpha, text) = {
-            open ? (backscale: CGAffineTransform(scaleX: 1.1, y: 1.1), scale: CGAffineTransform(translationX: 0, y: 0), blur: 0, cvscale: CGAffineTransform(scaleX: 0.2, y: 0.1), cvalpha: 0, text: "COLOR ME") : (backscale: CGAffineTransform(scaleX: 1.25, y: 1.25),scale: CGAffineTransform(translationX: 0, y: 20), blur: 0.8, cvscale: CGAffineTransform(scaleX: 1, y: 1), cvalpha: 1, text: "RECENT PICS")
+            open ? (backscale: CGAffineTransform(scaleX: 5, y: 5), scale: CGAffineTransform(translationX: 0, y: 0), blur: 0, cvscale: CGAffineTransform(scaleX: 0.2, y: 0.1), cvalpha: 0, text: "COLOR ME") : (backscale: CGAffineTransform(scaleX: 6, y: 6),scale: CGAffineTransform(translationX: 0, y: 20), blur: 0.8, cvscale: CGAffineTransform(scaleX: 1, y: 1), cvalpha: 1, text: "RECENT PICS")
         }()
         
         self.view.layoutIfNeeded()
@@ -113,9 +113,9 @@ class MenuController: UIViewController, UIImagePickerControllerDelegate, UINavig
     
     func setupUIandConstraints() {
         background = UIImageView(frame: view.frame)
-        background.image = #imageLiteral(resourceName: "jer-1") //#imageLiteral(resourceName: "Colorful-Cube-Block-Art-Pattern-iphone-6-wallpaper-ilikewallpaper_com")
+        background.image = #imageLiteral(resourceName: "IMG_0534") //#imageLiteral(resourceName: "Colorful-Cube-Block-Art-Pattern-iphone-6-wallpaper-ilikewallpaper_com")
         background.contentMode = .scaleAspectFill
-        background.transform = CGAffineTransform(scaleX: 1.1, y: 1.1)
+        background.transform = CGAffineTransform(scaleX: 5, y: 5)
         view.addSubview(background)
         
         let vev = UIVisualEffectView(effect: UIBlurEffect(style: .light))

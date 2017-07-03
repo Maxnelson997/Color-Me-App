@@ -31,10 +31,10 @@ class CameraController: UIViewController, UINavigationControllerDelegate, UIImag
     override func viewDidLoad() {
         super.viewDidLoad()
         background = UIImageView(frame: view.frame)
-        background.image = #imageLiteral(resourceName: "jer")
+        background.image = #imageLiteral(resourceName: "IMG_0534")
         background.backgroundColor = UIColor.MNGray
         background.contentMode = .scaleAspectFill
-        background.transform = CGAffineTransform(scaleX: 1.1, y: 1.1)
+        background.transform = CGAffineTransform(scaleX: 5, y: 5)
         view.addSubview(background)
         let vev = UIVisualEffectView(effect: UIBlurEffect(style: .light))
         vev.layer.cornerRadius = 0
