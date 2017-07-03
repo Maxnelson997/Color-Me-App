@@ -24,7 +24,6 @@
 		79E847461ED28924001B6C3C /* MenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79E847451ED28924001B6C3C /* MenuController.swift */; };
 		79E8474C1ED28924001B6C3C /* colormeapp.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 79E8474A1ED28924001B6C3C /* colormeapp.xcdatamodeld */; };
 		79E8474E1ED28924001B6C3C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 79E8474D1ED28924001B6C3C /* Assets.xcassets */; };
-		79E847511ED28924001B6C3C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 79E8474F1ED28924001B6C3C /* LaunchScreen.storyboard */; };
 		79E8475C1ED28924001B6C3C /* colormeappTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79E8475B1ED28924001B6C3C /* colormeappTests.swift */; };
 		79E847671ED28924001B6C3C /* colormeappUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79E847661ED28924001B6C3C /* colormeappUITests.swift */; };
 		79E847751ED292DF001B6C3C /* EditController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79E847741ED292DF001B6C3C /* EditController.swift */; };
@@ -32,6 +31,8 @@
 		79E8477B1ED2939B001B6C3C /* PSButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79E8477A1ED2939B001B6C3C /* PSButton.swift */; };
 		79E8477D1ED293DA001B6C3C /* PSLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79E8477C1ED293DA001B6C3C /* PSLabel.swift */; };
 		79E8477F1ED29EC3001B6C3C /* Fonts in Resources */ = {isa = PBXBuildFile; fileRef = 79E8477E1ED29EC3001B6C3C /* Fonts */; };
+		79EC18041F0A19380027FE02 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 79EC18031F0A19380027FE02 /* Launch Screen.storyboard */; };
+		79EC18061F0A19770027FE02 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 79EC18051F0A19770027FE02 /* Images.xcassets */; };
 		AACE055604D52B21DDF9CA51 /* Pods_colormeappUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9E3149E9C5167B4C7A025907 /* Pods_colormeappUITests.framework */; };
 /* End PBXBuildFile section */
 
@@ -96,7 +97,6 @@
 		79E847451ED28924001B6C3C /* MenuController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuController.swift; sourceTree = "<group>"; };
 		79E8474B1ED28924001B6C3C /* colormeapp.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = colormeapp.xcdatamodel; sourceTree = "<group>"; };
 		79E8474D1ED28924001B6C3C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		79E847501ED28924001B6C3C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		79E847521ED28924001B6C3C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		79E847571ED28924001B6C3C /* colormeappTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = colormeappTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		79E8475B1ED28924001B6C3C /* colormeappTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = colormeappTests.swift; sourceTree = "<group>"; };
@@ -109,6 +109,8 @@
 		79E8477A1ED2939B001B6C3C /* PSButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PSButton.swift; sourceTree = "<group>"; };
 		79E8477C1ED293DA001B6C3C /* PSLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PSLabel.swift; sourceTree = "<group>"; };
 		79E8477E1ED29EC3001B6C3C /* Fonts */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Fonts; path = colormeapp/Fonts; sourceTree = "<group>"; };
+		79EC18031F0A19380027FE02 /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
+		79EC18051F0A19770027FE02 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		90BB437BD7F929AF80D7DD14 /* Pods-colormeappUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-colormeappUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-colormeappUITests/Pods-colormeappUITests.release.xcconfig"; sourceTree = "<group>"; };
 		9E3149E9C5167B4C7A025907 /* Pods_colormeappUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_colormeappUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D11F19A9AD8759EC66D42C82 /* Pods_colormeapp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_colormeapp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -231,9 +233,10 @@
 				792C1D391ED3A8A400D242AF /* Model */,
 				792C1D371ED3A88900D242AF /* Controllers */,
 				79E8474D1ED28924001B6C3C /* Assets.xcassets */,
-				79E8474F1ED28924001B6C3C /* LaunchScreen.storyboard */,
+				79EC18031F0A19380027FE02 /* Launch Screen.storyboard */,
 				79E847521ED28924001B6C3C /* Info.plist */,
 				79E8474A1ED28924001B6C3C /* colormeapp.xcdatamodeld */,
+				79EC18051F0A19770027FE02 /* Images.xcassets */,
 			);
 			path = colormeapp;
 			sourceTree = "<group>";
@@ -413,7 +416,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				79E8477F1ED29EC3001B6C3C /* Fonts in Resources */,
-				79E847511ED28924001B6C3C /* LaunchScreen.storyboard in Resources */,
+				79EC18061F0A19770027FE02 /* Images.xcassets in Resources */,
+				79EC18041F0A19380027FE02 /* Launch Screen.storyboard in Resources */,
 				79E8474E1ED28924001B6C3C /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -634,17 +638,6 @@
 		};
 /* End PBXTargetDependency section */
 
-/* Begin PBXVariantGroup section */
-		79E8474F1ED28924001B6C3C /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				79E847501ED28924001B6C3C /* Base */,
-			);
-			name = LaunchScreen.storyboard;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
-
 /* Begin XCBuildConfiguration section */
 		79E847691ED28924001B6C3C /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -746,8 +739,10 @@
 			baseConfigurationReference = 3BE5868D3657099C1866BF0C /* Pods-colormeapp.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "LaunchImage-4";
 				DEVELOPMENT_TEAM = G49JC8TMW5;
 				INFOPLIST_FILE = colormeapp/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.maxnelson.colormeapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -760,8 +755,10 @@
 			baseConfigurationReference = 5E0EC3C00C093CA60D8222C2 /* Pods-colormeapp.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "LaunchImage-4";
 				DEVELOPMENT_TEAM = G49JC8TMW5;
 				INFOPLIST_FILE = colormeapp/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.maxnelson.colormeapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";

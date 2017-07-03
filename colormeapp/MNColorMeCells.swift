@@ -239,6 +239,7 @@ class FilterPackControlCell:UICollectionViewCell, UICollectionViewDelegate, UICo
                 visualEffectView.bottomAnchor.constraint(equalTo: bottomAnchor),
                 ])
             self.clipsToBounds = true
+
             filtersCollection.translatesAutoresizingMaskIntoConstraints = true
             filtersCollection.frame = CGRect(x: contentView.frame.maxX, y: 0, width: contentView.frame.width * CGFloat(filterPack.count) + 15 * CGFloat(filterPack.count), height: contentView.frame.height)
             filtersCollection.dataSource = self
@@ -256,7 +257,7 @@ class FilterPackControlCell:UICollectionViewCell, UICollectionViewDelegate, UICo
 
         contentView.addSubview(imageView)
         contentView.addSubview(filtersCollection)
-        
+        print(filtersCollection.frame.width)
         filtersCollection.reloadData()
         
 //        NSLayoutConstraint.activate([
@@ -298,7 +299,7 @@ class FilterPackControlCell:UICollectionViewCell, UICollectionViewDelegate, UICo
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: collectionView.frame.height, height: collectionView.frame.height)
+        return CGSize(width: collectionView.frame.height + 1, height: collectionView.frame.height)
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -315,7 +316,7 @@ class FilterPackControlCell:UICollectionViewCell, UICollectionViewDelegate, UICo
     
     override func prepareForReuse() {
         imageView.removeFromSuperview()
-        filtersCollection.removeFromSuperview()
+
     }
     
 }

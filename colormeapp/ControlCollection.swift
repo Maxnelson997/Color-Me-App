@@ -14,7 +14,7 @@ class ControlCollection: UICollectionView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    fileprivate var layout:UICollectionViewFlowLayout = {
+    var layout:UICollectionViewFlowLayout = {
         let cl = UICollectionViewFlowLayout()
         cl.scrollDirection = .horizontal
         cl.sectionInset = UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 8)
@@ -44,7 +44,6 @@ class ControlCollection: UICollectionView {
         self.register(FilterPackControlCell.self, forCellWithReuseIdentifier: "filterpackcontrol")
         self.translatesAutoresizingMaskIntoConstraints = false
         self.backgroundColor = UIColor.white.withAlphaComponent(0)
-
 
     }
 

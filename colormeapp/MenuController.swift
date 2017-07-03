@@ -61,6 +61,7 @@ class MenuController: UIViewController, UIImagePickerControllerDelegate, UINavig
     
     override func viewDidLoad() {
         super.viewDidLoad()
+  
         grabPhotos()
         appDelegate = UIApplication.shared.delegate as! AppDelegate
         
@@ -112,7 +113,7 @@ class MenuController: UIViewController, UIImagePickerControllerDelegate, UINavig
     
     func setupUIandConstraints() {
         background = UIImageView(frame: view.frame)
-        background.image = #imageLiteral(resourceName: "jer") //#imageLiteral(resourceName: "Colorful-Cube-Block-Art-Pattern-iphone-6-wallpaper-ilikewallpaper_com")
+        background.image = #imageLiteral(resourceName: "jer-1") //#imageLiteral(resourceName: "Colorful-Cube-Block-Art-Pattern-iphone-6-wallpaper-ilikewallpaper_com")
         background.contentMode = .scaleAspectFill
         background.transform = CGAffineTransform(scaleX: 1.1, y: 1.1)
         view.addSubview(background)
@@ -213,8 +214,10 @@ class MenuController: UIViewController, UIImagePickerControllerDelegate, UINavig
         NSLayoutConstraint.activate(recentButtonConstraints)
         
         print(recentCV.frame)
+        
         animate()
         animate()
+  
     }
     
     var images:[UIImage] = [] // <-- Array to hold the fetched images
