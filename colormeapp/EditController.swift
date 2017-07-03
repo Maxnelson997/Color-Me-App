@@ -8,18 +8,85 @@
 
 import UIKit
 import AKImageCropperView
+import GPUImage
 
+extension EditController: UIImagePickerControllerDelegate {
+    
+    //alternate way of saving images
+//    func image(_ image: UIImage, didFinishSavingWithError error: NSError?, contextInfo: UnsafeRawPointer) {
+//        if let error = error {
+//            // we got back an error!
+//            let ac = UIAlertController(title: "Save error", message: error.localizedDescription, preferredStyle: .alert)
+//            ac.addAction(UIAlertAction(title: "OK", style: .default))
+//            present(ac, animated: true)
+//        } else {
+//            let ac = UIAlertController(title: "Saved!", message: "Your altered image has been saved to your photos.", preferredStyle: .alert)
+//            ac.addAction(UIAlertAction(title: "OK", style: .default))
+//            present(ac, animated: true)
+//        }
+//    }
+//    
+//    
+//    func saveImage() {
+//        let imageData = imageToSave.generateJPEGRepresentation()
+//        let compressedJPGImage = UIImage(data: imageData)
+////        UIImageWriteToSavedPhotosAlbum(compressedJPGImage!, self, Selector("image:didFinishSavingWithError:contextInfo:"), nil)
+//        UIImageWriteToSavedPhotosAlbum(compressedJPGImage!, self, #selector(image(_:didFinishSavingWithError:contextInfo:)), nil)
+//    }
+    
+    //optimal way of saving images
+    func share(sender:UIButton) -> Void {
+        
+        let btn = UIBarButtonItem(customView: sender)
+        let activityViewController:UIActivityViewController = UIActivityViewController(activityItems: [UIImage(data: imageToSave.generateJPEGRepresentation())!], applicationActivities: nil)
+        activityViewController.popoverPresentationController?.barButtonItem = (btn)
+        activityViewController.modalPresentationStyle = .popover
+
+        self.present(activityViewController, animated: true, completion: nil)
+        
+    }
+    
+}
+extension UIImage {
+    
+    /**
+     Creates the UIImageJPEGRepresentation out of an UIImage
+     @return Data
+     */
+    
+    func generateJPEGRepresentation() -> Data {
+        
+        let newImage = self.copyOriginalImage()
+        let newData = UIImageJPEGRepresentation(newImage, 0.75)
+        
+        return newData!
+    }
+    
+    /**
+     Copies Original Image which fixes the crash for extracting Data from UIImage
+     @return UIImage
+     */
+    
+    private func copyOriginalImage() -> UIImage {
+        UIGraphicsBeginImageContext(self.size);
+        self.draw(in: CGRect(x: 0, y: 0, width: self.size.width, height: self.size.height))
+        let newImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext();
+        
+        return newImage!
+    }
+}
 extension EditController: AKImageCropperViewDelegate {
     
     func imageCropperViewDidChangeCropRect(view: AKImageCropperView, cropRect rect: CGRect) {
         print("New crop rectangle: \(rect)")
     }
     
-
     func cropImageAction() {
         if cropView.isOverlayViewActive {
             singleton.imagePicked = cropView.croppedImageToUse!
             cropView.hideOverlayView(animationDuration: 0)
+            cropView.setInteraction = false
             updateFilters()
             filteredImageView.setNeedsLayout()
         }
@@ -28,11 +95,13 @@ extension EditController: AKImageCropperViewDelegate {
     func showHideOverlayAction() {
         if cropView.isOverlayViewActive {
             cropView.hideOverlayView(animationDuration: 0.3)
+            cropView.setInteraction = false
         } else {
             cropView.showOverlayView(animationDuration: 0.3)
+            cropView.setInteraction = true
         }
     }
-     
+    
     func rotateAction() {
         angle += .pi/2
         cropView.rotate(angle, withDuration: 0.3, completion: { _ in
@@ -52,7 +121,7 @@ extension EditController: AKImageCropperViewDelegate {
         filteredImageView.currentAppliedFilter = "reset"
         filteredImageView.setNeedsLayout()
     }
-
+    
     
 }
 
@@ -62,14 +131,16 @@ class EditController: UIViewController, SetFilter {
     
     var veryOriginalImage:UIImage!
     var singleton = ColorMeSingleton.sharedInstance
+    var imageToSave:UIImage!
     
     func ApplyToCropView(image: UIImage!) {
         self.cropView.image = image
+        self.imageToSave = image
         print("edited image applied to cropview")
     }
     
     func ApplyFilter(filter: UIImage!, name: String!) {
-//        singleton.imagePicked = filter
+        //        singleton.imagePicked = filter
         filteredImageView.currentAppliedFilter = name
         filteredImageView.setNeedsLayout()
     }
@@ -92,7 +163,7 @@ class EditController: UIViewController, SetFilter {
         i.clipsToBounds = true
         i.backgroundColor = UIColor.MNGray
         i.translatesAutoresizingMaskIntoConstraints = false
-       return i
+        return i
     }()
     
     var imageViewConstraints:[NSLayoutConstraint]!
@@ -146,16 +217,16 @@ class EditController: UIViewController, SetFilter {
     var heightToMoveControls:CGFloat!
     var ylocation:CGFloat!
     var upylocation:CGFloat!
-
+    
     var curFilter:CIFilter!
     //color controls: brightness contrast saturation
     //highlightshadow: highlights and shadows
     //exposureadjust: exposure
     //hueadjust: colors
     //remaining needed is intensity and temperature
-   
+    
     //var CIFilters:[CIFilter] = [CIFilter(name: "CIColorControls")!,  CIFilter(name: "CIExposureAdjust")!, CIFilter(name: "CISepiaTone")!, CIFilter(name: "CIHueAdjust")!, CIFilter(name: "CIVignette")!, CIFilter(name: "CIVibrance")!, CIFilter(name: "CIGloom")!]
-
+    
     var descriptors:[[ScalarFilterParameter]] = []
     
     func getFilterParameterDescriptors() -> [ScalarFilterParameter] {
@@ -178,17 +249,15 @@ class EditController: UIViewController, SetFilter {
         }
         
     }
-
+    
     
     func getKeys() {
         for i in 0 ..< singleton.filters.count {
             curFilter = singleton.filters[i]
             print(curFilter)
             descriptors.append(getFilterParameterDescriptors())
-            print(descriptors[i].count)
-            for descriptor in descriptors {
-                print("      \(descriptor)")
-            }
+            //  print(descriptors[i].count)
+            
             print("\n")
         }
     }
@@ -198,11 +267,102 @@ class EditController: UIViewController, SetFilter {
         appDelegate = UIApplication.shared.delegate as! AppDelegate
         updateFilters()
         filteredImageView.inputImage = singleton.imagePicked
+        
+        
+        
+    }
+    var lastPoint = CGPoint.zero
+    var swiped = false
+    
+    var red:CGFloat = 0.4
+    var green:CGFloat = 0.6
+    var blue:CGFloat = 1.0
+    var brushSize:CGFloat = 4.0
+    var opacityValue:CGFloat = 1.0
+
+    var tool:UIImageView!
+    var isDrawing = true
+    var selectedImage:UIImage!
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        if touches.first?.view == self.view {
+            
+        } else {
+            if let touch = touches.first {
+                
+                swiped = false
+                lastPoint = touch.location(in: self.cropView)
+                
+            }
+        }
+    }
+
+    var size:CGSize!
+    var imHeight:CGFloat!
+    var imWidth:CGFloat!
+
+    var topY:CGFloat!
+    func drawLines(fromPoint:CGPoint,toPoint:CGPoint) {
+        UIGraphicsBeginImageContext(cropView.frame.size)
+        cropView.image?.draw(in: CGRect(x: 0, y: 0, width: cropView.frame.width, height: cropView.frame.height)) // + ((cropView.frame.height - imCondensedSize.height)/2)
+        let context = UIGraphicsGetCurrentContext()
+        context?.move(to: CGPoint(x: fromPoint.x, y: fromPoint.y))
+        context?.addLine(to: CGPoint(x: toPoint.x, y: toPoint.y))
+        context?.setBlendMode(CGBlendMode.normal)
+        context?.setLineCap(CGLineCap.round)
+        context?.setLineWidth(brushSize)
+        context?.setStrokeColor(UIColor(red: red, green: green, blue: blue, alpha: opacityValue).cgColor)
+        
+        context?.strokePath()
+        
+        cropView.image = UIGraphicsGetImageFromCurrentImageContext()
+        
+        imageToSave = cropView.image
+       
+        UIGraphicsEndImageContext()
+
+        print("topy: \(topY)")
+
+
+       
+        
+        print(self.cent)
     }
     
+    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+        
+        if touches.first?.view == self.view {
+            
+        } else {
+            swiped = true
+            
+            if let touch = touches.first {
+                let currentPoint = touch.location(in: self.cropView)
+                drawLines(fromPoint: lastPoint, toPoint: currentPoint)
+                
+                lastPoint = currentPoint
+            }
+        }
+
+    }
+    
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        if touches.first?.view == self.view {
+
+        } else {
+            if !swiped {
+                drawLines(fromPoint: lastPoint, toPoint: lastPoint)
+            }
+        }
+
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
-       
+        
+
+        
+
+        
+        CustomFilterManager.registerFilters()
         
         view.backgroundColor = UIColor.MNGray
         appDelegate = UIApplication.shared.delegate as! AppDelegate
@@ -229,7 +389,7 @@ class EditController: UIViewController, SetFilter {
         cropView.imageToCrop = self.veryOriginalImage
         cropView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(cropView)
-        
+//        cropView.isUserInteractionEnabled = false
         
         mainControlsImages = [#imageLiteral(resourceName: "move"),#imageLiteral(resourceName: "rgb-symbol"),#imageLiteral(resourceName: "settings-2"),#imageLiteral(resourceName: "bucket-with-paint")]
         mainControlsText = ["crop", "filters", "adjust", "paint"]
@@ -243,10 +403,10 @@ class EditController: UIViewController, SetFilter {
         adjustControlsImages = [[#imageLiteral(resourceName: "haze-1"),#imageLiteral(resourceName: "brightness-symbol"),#imageLiteral(resourceName: "contrast-symbol")],[#imageLiteral(resourceName: "pie-chart"), #imageLiteral(resourceName: "circular-frames"),#imageLiteral(resourceName: "star-1")], [#imageLiteral(resourceName: "cloudy-1")],[#imageLiteral(resourceName: "spray-bottle-with-dots") ],[#imageLiteral(resourceName: "snowflake")],[#imageLiteral(resourceName: "devil")]]
         adjustControlsText = [["saturation","brightness", "contrast"] ,["radius","shadows","highlights"], ["exposure"], ["colors"],["temperature"], ["intensity"]]
         
-        filterControlsImages = [#imageLiteral(resourceName: "three-layers"),#imageLiteral(resourceName: "three-layers"),#imageLiteral(resourceName: "three-layers"),#imageLiteral(resourceName: "three-layers"),#imageLiteral(resourceName: "three-layers")]
-        filterControlsText = ["pack 0", "pack 1", "pack 2", "pack 3", "pack 4"]
+        filterControlsImages = [#imageLiteral(resourceName: "three-layers"),#imageLiteral(resourceName: "three-layers"),#imageLiteral(resourceName: "three-layers"),#imageLiteral(resourceName: "three-layers"),#imageLiteral(resourceName: "three-layers"),#imageLiteral(resourceName: "three-layers")]
+        filterControlsText = ["pack 0", "pack 1", "pack 2", "pack 3", "pack 4", "METAL"]
         
-
+        
         mainControlsCollection.dataSource = self
         mainControlsCollection.delegate = self
         cropControlsCollection.dataSource = self
@@ -259,8 +419,9 @@ class EditController: UIViewController, SetFilter {
         filterControlsCollection.delegate = self
         
         
-
-    
+        let centG:UILayoutGuide = UILayoutGuide()
+        view.addLayoutGuide(centG)
+        
         imageViewConstraints = [
             filteredImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             filteredImageView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
@@ -268,15 +429,52 @@ class EditController: UIViewController, SetFilter {
             filteredImageView.bottomAnchor.constraint(equalTo: controlsLayoutGuide.topAnchor),
             filteredImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor)
         ]
-        
-        cropperImageViewConstraints = [
-            cropView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            cropView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            cropView.topAnchor.constraint(equalTo: view.topAnchor, constant: appDelegate.navigationController.navigationBar.frame.height + 20),
-            cropView.bottomAnchor.constraint(equalTo: controlsLayoutGuide.topAnchor),
-            cropView.centerXAnchor.constraint(equalTo: view.centerXAnchor)
-        ]
+           size = (self.cropView.image?.size)!
+    
+        if size.height > size.width {
+            //slim
+            imWidth = self.view.frame.width * 0.9 * (size.width/size.height)
+            imHeight = imWidth * (size.height/size.width)
+            
+            cropperImageViewConstraints = [
+                
+                centG.topAnchor.constraint(equalTo: view.topAnchor, constant: appDelegate.navigationController.navigationBar.frame.height),
+                centG.bottomAnchor.constraint(equalTo: controlsLayoutGuide.topAnchor),
+                centG.leftAnchor.constraint(equalTo: view.leftAnchor),
+                centG.rightAnchor.constraint(equalTo: view.rightAnchor),
+                cropView.centerXAnchor.constraint(equalTo: centG.centerXAnchor),
+                cropView.centerYAnchor.constraint(equalTo: centG.centerYAnchor),
+                cropView.heightAnchor.constraint(equalTo: centG.heightAnchor, multiplier: 1),
+                cropView.widthAnchor.constraint(equalTo: centG.heightAnchor, multiplier: (imWidth/imHeight)),
+                
+                
+            ]
+      
+        } else {
+            //wide
+            imHeight = self.view.frame.width * 0.9 * (size.height/size.width)
+            imWidth = imHeight * (size.width/size.height)
+            
+            cropperImageViewConstraints = [
+                
+                centG.topAnchor.constraint(equalTo: view.topAnchor, constant: appDelegate.navigationController.navigationBar.frame.height),
+                centG.bottomAnchor.constraint(equalTo: controlsLayoutGuide.topAnchor),
+                centG.leftAnchor.constraint(equalTo: view.leftAnchor),
+                centG.rightAnchor.constraint(equalTo: view.rightAnchor),
+                cropView.centerXAnchor.constraint(equalTo: centG.centerXAnchor),
+                cropView.centerYAnchor.constraint(equalTo: centG.centerYAnchor),
+                cropView.widthAnchor.constraint(equalTo: centG.widthAnchor, multiplier: 1),
+                cropView.heightAnchor.constraint(equalTo: centG.widthAnchor, multiplier: (imHeight/imWidth)),
+                
+                
+            ]
+          
+        }
 
+        
+
+
+        
         //TOP CONTROLS LAYOUT GUIDE
         controlsLayoutGuideConstraints = [
             controlsLayoutGuide.leadingAnchor.constraint(equalTo: view.leadingAnchor),
@@ -336,7 +534,7 @@ class EditController: UIViewController, SetFilter {
             filterControlsCollection.trailingAnchor.constraint(lessThanOrEqualTo: controlsLayoutGuide.trailingAnchor),
             fw
         ]
-       
+        
         //
         //BOTTOM CONTROLS LAYOUT GUIDE
         mainControlsLayoutGuideConstraints = [
@@ -378,14 +576,22 @@ class EditController: UIViewController, SetFilter {
         
         NSLayoutConstraint.activate(mainControlsLayoutGuideConstraints)
         NSLayoutConstraint.activate(mainControlsConstraints)
-
+        
         showControls(cvTag: 0)
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 2, execute: {
+            
+        })
+ 
+        self.cent = self.cropView.center
+        cropView.backgroundColor = UIColor.orange.withAlphaComponent(0.5)
     }
-
+    
+    var cent:CGPoint!
+    
     override func viewDidDisappear(_ animated: Bool) {
         showControls(cvTag: 0)
     }
-
+    
     
     func showControls(cvTag:Int) {
         
@@ -430,24 +636,24 @@ class EditController: UIViewController, SetFilter {
         //blue color on selected main control
         let cell = mainControlsCollection.cellForItem(at: IndexPath(row: cvTag, section: 0))
         cell?.alpha = 1
-        UIView.animateKeyframes(withDuration: 0.5, delay: 0, options: UIViewKeyframeAnimationOptions.calculationModeCubic, animations: {
-            UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: 0.25, animations: {
+        UIView.animateKeyframes(withDuration: 0.8, delay: 0, options: UIViewKeyframeAnimationOptions.calculationModeCubic, animations: {
+            UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: 0.4, animations: {
                 cell?.alpha = 1
                 if self.lastCellIndexPath != nil {
                     let previousCell = self.mainControlsCollection.cellForItem(at: self.lastCellIndexPath)
                     previousCell?.backgroundColor = UIColor.clear
                 }
-                cell?.backgroundColor = UIColor.MNLighterBlue
+                cell?.backgroundColor = UIColor.white
             })
-            UIView.addKeyframe(withRelativeStartTime: 0.25, relativeDuration: 0.5, animations: {
+            UIView.addKeyframe(withRelativeStartTime: 0.4, relativeDuration: 0.4, animations: {
                 cell?.alpha = 1
                 
             })
         }, completion: nil)
         lastCellIndexPath = IndexPath(row: cvTag, section: 0)
-        
-        
     }
+    
+    
 }
 
 
@@ -459,12 +665,12 @@ extension EditController: UICollectionViewDelegate, UICollectionViewDelegateFlow
             cell.imageView.image = adjustControlsImages[indexPath.section][indexPath.item].withRenderingMode(.alwaysTemplate)
             cell.label.text = adjustControlsText[indexPath.section][indexPath.item]
             cell.filterLocation = indexPath.section
-
+            
             cell.scalarFilterParam = descriptors[indexPath.section][indexPath.item]
-        
+            
             cell.layer.cornerRadius = 5
             cell.delegate = filteredImageView
-          
+            
             cell.awakeFromNib()
             
             return cell
@@ -475,7 +681,7 @@ extension EditController: UICollectionViewDelegate, UICollectionViewDelegateFlow
             cell.imageView.image = filterControlsImages[indexPath.item].withRenderingMode(.alwaysTemplate)
             cell.label.text = filterControlsText[indexPath.item]
             cell.filterPack = filterObjects[indexPath.item]
-        
+            
             cell.delegate = self
             cell.awakeFromNib()
             cell.layer.cornerRadius = 5
@@ -498,13 +704,13 @@ extension EditController: UICollectionViewDelegate, UICollectionViewDelegateFlow
             cell.layer.cornerRadius = 5
             return cell
         }
-
-
+        
+        
         let cell:UICollectionViewCell!
         return cell
     }
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-
+        
         if tappedIndexPath != nil && tappedIndexPath == indexPath {
             if collectionView == filterControlsCollection {
                 let numFiltersInPack:CGFloat = CGFloat(filterObjects[indexPath.item].count) + 1
@@ -520,19 +726,19 @@ extension EditController: UICollectionViewDelegate, UICollectionViewDelegateFlow
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if collectionView == adjustControlsCollection {
             if section == 0 {
-                        print("descriptionsatsection.count: \(descriptors[section].count)")
+                print("descriptionsatsection.count: \(descriptors[section].count)")
                 return descriptors[section].count // should be 3
             }
             if section == 1 {
-                        print("descriptionsatsection.count: \(descriptors[section].count)")
+                print("descriptionsatsection.count: \(descriptors[section].count)")
                 return descriptors[section].count // should be 3
             }
             if section == 2 {
-                        print("descriptionsatsection.count: \(descriptors[section].count)")
+                print("descriptionsatsection.count: \(descriptors[section].count)")
                 return descriptors[section].count // should be 1
             }
             if section == 3 {
-                 print("descriptionsatsection.count: \(descriptors[section].count)")
+                print("descriptionsatsection.count: \(descriptors[section].count)")
                 return descriptors[section].count // should be 1
             }
         }
@@ -607,11 +813,11 @@ extension EditController: UICollectionViewDelegate, UICollectionViewDelegateFlow
             if collectionView == adjustControlsCollection {
                 filteredImageView.filter = singleton.filters[indexPath.section]
             }
-       
+            
         }
-
+        
     }
-
+    
     
     func apply(_ filter: CIFilter?, for image: CIImage) -> CIImage {
         guard let filter = filter else { return image }
@@ -619,7 +825,7 @@ extension EditController: UICollectionViewDelegate, UICollectionViewDelegateFlow
         guard let filteredImage = filter.value(forKey: kCIOutputImageKey) else { return image }
         return filteredImage as! CIImage
     }
-
+    
     
     
 }
@@ -653,6 +859,7 @@ extension EditController {
         let filterPack2:[String] = ["CIPhotoEffectTonal"]
         let filterPack3:[String] = ["CIPhotoEffectTransfer","CIPhotoEffectNoir"]
         let filterPack4:[String] = ["CISepiaTone","CIPhotoEffectInstant"]
+        let customPack1:[String] = ["MNEdgeGlow", "MNKuwahara"]
         
         
         let filterNames0:[String] = ["chrome","fade"]
@@ -660,6 +867,7 @@ extension EditController {
         let filterNames2:[String] = ["tonal"]
         let filterNames3:[String] = ["transfer", "noir"]
         let filterNames4:[String] = ["sepia", "instant"]
+        let customNames1:[String] = ["bronze", "Kuwahara"]
         
         
         //rose filter pack
@@ -667,35 +875,36 @@ extension EditController {
         
         //sunny filter pack
         //....
-  
+        
         
         filterObjects = [ createFilters(createfilters: filterPack0, createnames: filterNames0),
                           createFilters(createfilters: filterPack1, createnames: filterNames1),
                           createFilters(createfilters: filterPack2, createnames: filterNames2),
                           createFilters(createfilters: filterPack3, createnames: filterNames3),
-                          createFilters(createfilters: filterPack4, createnames: filterNames4)
-                        ]
+                          createFilters(createfilters: filterPack4, createnames: filterNames4),
+                          createFilters(createfilters: customPack1, createnames: customNames1)
+        ]
         
- 
-      if applyyet
-      {
-        filterControlsCollection.performBatchUpdates({
-            self.filterControlsCollection.collectionViewLayout.invalidateLayout()
-            
-            for i in 0 ..< filterObjects.count {
-                self.filterControlsCollection.deleteItems(at: [IndexPath(row: i, section: 0)])
-            }
-            for i in 0 ..< filterObjects.count {
-                self.filterControlsCollection.insertItems(at: [IndexPath(row: i, section: 0)])
-            }
-            
-        }, completion: nil)
-      }
-
-    
+        
+        if applyyet
+        {
+            filterControlsCollection.performBatchUpdates({
+                self.filterControlsCollection.collectionViewLayout.invalidateLayout()
+                
+                for i in 0 ..< filterObjects.count {
+                    self.filterControlsCollection.deleteItems(at: [IndexPath(row: i, section: 0)])
+                }
+                for i in 0 ..< filterObjects.count {
+                    self.filterControlsCollection.insertItems(at: [IndexPath(row: i, section: 0)])
+                }
+                
+            }, completion: nil)
+        }
+        
+        
     }
     
-
+    
     
 }
 

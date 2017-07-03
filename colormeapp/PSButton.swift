@@ -36,12 +36,24 @@ class PSButton: UIButton {
     init(animationtype: [PSButtonAnimationType], image:UIImage) {
         super.init(frame: .zero)
         self.animationtype = animationtype
- 
+        
         self.translatesAutoresizingMaskIntoConstraints = false
         self.imView.image = image.withRenderingMode(.alwaysTemplate)
         self.imView.tintColor = UIColor.white
         initPhaseTwo()
         InitWithImage()
+    }
+    
+    init(animationtype: [PSButtonAnimationType], image:UIImage, text:String) {
+        super.init(frame: .zero)
+        self.animationtype = animationtype
+        
+        self.translatesAutoresizingMaskIntoConstraints = false
+        self.imView.image = image.withRenderingMode(.alwaysTemplate)
+        self.imView.tintColor = UIColor.white
+        self.label.text = text
+        initPhaseTwo()
+        InitWithImageAndText()
     }
     
 
@@ -53,18 +65,17 @@ class PSButton: UIButton {
     
     func initPhaseTwo() {
         //button styling
-        backgroundColor = UIColor.white.withAlphaComponent(0.4)
+        backgroundColor = .clear
         layer.borderColor = UIColor.MNGray.cgColor
         clipsToBounds = true
-        layer.cornerRadius = 6
-        layer.borderWidth = 2
+
     }
     
     func InitWithImage() {
         self.addTarget(self, action: #selector(self.animatehelp), for: .touchUpInside)
-
+        addSubview(visualEffectView)
         addSubview(imView)
-
+        
         //layout label
         NSLayoutConstraint.activate([
             imView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 15),
@@ -72,6 +83,51 @@ class PSButton: UIButton {
             imView.topAnchor.constraint(equalTo: topAnchor, constant: 15),
             imView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -15),
             ])
+        NSLayoutConstraint.activate([
+            visualEffectView.leftAnchor.constraint(equalTo: leftAnchor),
+            visualEffectView.rightAnchor.constraint(equalTo: rightAnchor),
+            visualEffectView.topAnchor.constraint(equalTo: topAnchor),
+            visualEffectView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            ])
+        
+        
+        //determine type to set transform direction
+        setTransform()
+        
+    }
+    
+    func InitWithImageAndText() {
+        self.addTarget(self, action: #selector(self.animatehelp), for: .touchUpInside)
+        addSubview(visualEffectView)
+        addSubview(imView)
+        addSubview(label)
+        
+        label.backgroundColor = .gray
+        
+        //layout label
+        NSLayoutConstraint.activate([
+            label.leftAnchor.constraint(equalTo: leftAnchor),
+            label.rightAnchor.constraint(equalTo: rightAnchor),
+            label.topAnchor.constraint(equalTo: imView.bottomAnchor),
+            label.bottomAnchor.constraint(equalTo: bottomAnchor),
+            label.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 0.2)
+            ])
+        
+        //layout image
+        NSLayoutConstraint.activate([
+            imView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 15),
+            imView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -15),
+            imView.topAnchor.constraint(equalTo: topAnchor, constant: 15),
+            imView.bottomAnchor.constraint(equalTo: label.topAnchor, constant: -15),
+            
+            ])
+        NSLayoutConstraint.activate([
+            visualEffectView.leftAnchor.constraint(equalTo: leftAnchor),
+            visualEffectView.rightAnchor.constraint(equalTo: rightAnchor),
+            visualEffectView.topAnchor.constraint(equalTo: topAnchor),
+            visualEffectView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            ])
+        
         
         //determine type to set transform direction
         setTransform()
@@ -81,7 +137,7 @@ class PSButton: UIButton {
     func initWithLabel() {
         
         self.addTarget(self, action: #selector(self.animatehelp), for: .touchUpInside)
-
+        
         addSubview(label)
         
         //layout label
@@ -90,7 +146,7 @@ class PSButton: UIButton {
             label.rightAnchor.constraint(equalTo: rightAnchor),
             label.topAnchor.constraint(equalTo: topAnchor),
             label.bottomAnchor.constraint(equalTo: bottomAnchor),
-        ])
+            ])
 
         //determine type to set transform direction
         setTransform()
@@ -148,6 +204,17 @@ class PSButton: UIButton {
         i.contentMode = .scaleAspectFit
         i.translatesAutoresizingMaskIntoConstraints = false
         return i
+    }()
+    
+    
+    fileprivate var visualEffectView: UIVisualEffectView = {
+        let vev = UIVisualEffectView(effect: UIBlurEffect(style: .dark))
+        vev.layer.cornerRadius = 15
+        vev.layer.masksToBounds = true
+        vev.isUserInteractionEnabled = false
+        vev.translatesAutoresizingMaskIntoConstraints = false
+        vev.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        return vev
     }()
     
     fileprivate var animationtype:[PSButtonAnimationType] = {

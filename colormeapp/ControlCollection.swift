@@ -43,6 +43,9 @@ class ControlCollection: UICollectionView {
         self.register(AdjustControlCell.self, forCellWithReuseIdentifier: "adjustcontrol")
         self.register(FilterPackControlCell.self, forCellWithReuseIdentifier: "filterpackcontrol")
         self.translatesAutoresizingMaskIntoConstraints = false
-        self.backgroundColor = UIColor.white.withAlphaComponent(0.4)
+        self.backgroundColor = UIColor.white.withAlphaComponent(0)
+
+
     }
+
 }

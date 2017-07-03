@@ -31,12 +31,17 @@ class CameraController: UIViewController, UINavigationControllerDelegate, UIImag
     override func viewDidLoad() {
         super.viewDidLoad()
         background = UIImageView(frame: view.frame)
-        background.image = #imageLiteral(resourceName: "tropical")
+        background.image = #imageLiteral(resourceName: "jer")
         background.backgroundColor = UIColor.MNGray
         background.contentMode = .scaleAspectFill
         background.transform = CGAffineTransform(scaleX: 1.1, y: 1.1)
         view.addSubview(background)
-        
+        let vev = UIVisualEffectView(effect: UIBlurEffect(style: .light))
+        vev.layer.cornerRadius = 0
+        vev.layer.masksToBounds = true
+        vev.frame = view.frame
+        vev.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        background.addSubview(vev)
         appDelegate = UIApplication.shared.delegate as! AppDelegate
         view.backgroundColor = UIColor.MNGray
     }

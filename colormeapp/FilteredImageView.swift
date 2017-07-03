@@ -69,7 +69,7 @@ class FilteredImageView: GLKView, ParameterAdjustmentDelegate {
             for filters in singleton.filters {
                 filters.setValue(originalimage, forKey: kCIInputImageKey)
                 originalimage = filters.outputImage!
-                print("times: ")
+
             }
             
             

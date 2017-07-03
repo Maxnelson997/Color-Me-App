@@ -9,11 +9,16 @@
 /* Begin PBXBuildFile section */
 		07D4346A6F1FA2156B00600A /* Pods_colormeapp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D11F19A9AD8759EC66D42C82 /* Pods_colormeapp.framework */; };
 		4DEA54FDBA194F6D330CE70D /* Pods_colormeappTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57B6C45CD75CCD6FD887C21A /* Pods_colormeappTests.framework */; };
+		7903BC6B1EF594BF00C686A4 /* EdgeGlowFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7903BC6A1EF594BF00C686A4 /* EdgeGlowFilter.swift */; };
 		7914BA1E1ED5CD9600EE9F7D /* ScalarFilterParamater.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7914BA1D1ED5CD9600EE9F7D /* ScalarFilterParamater.swift */; };
 		7914BA201ED5CDB800EE9F7D /* FilteredImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7914BA1F1ED5CDB800EE9F7D /* FilteredImageView.swift */; };
 		792C1D341ED38CFA00D242AF /* ColorMeSingleton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 792C1D331ED38CFA00D242AF /* ColorMeSingleton.swift */; };
 		792C1D361ED3954900D242AF /* MNColorMeCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = 792C1D351ED3954900D242AF /* MNColorMeCells.swift */; };
 		792C1D3B1ED3C26B00D242AF /* ControlCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 792C1D3A1ED3C26B00D242AF /* ControlCollection.swift */; };
+		79344DDB1EF59BF40013C952 /* CustomFilterManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79344DDA1EF59BF40013C952 /* CustomFilterManager.swift */; };
+		79344DDD1EF5A44C0013C952 /* KuwaharaFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79344DDC1EF5A44C0013C952 /* KuwaharaFilter.swift */; };
+		79344DE11EF5A6C70013C952 /* LensFlare.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79344DE01EF5A6C70013C952 /* LensFlare.swift */; };
+		79344DE31EF5A9090013C952 /* CausticRefraction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79344DE21EF5A9090013C952 /* CausticRefraction.swift */; };
 		79C704C41ED387F30086400E /* CameraController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79C704C31ED387F30086400E /* CameraController.swift */; };
 		79E847441ED28924001B6C3C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79E847431ED28924001B6C3C /* AppDelegate.swift */; };
 		79E847461ED28924001B6C3C /* MenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79E847451ED28924001B6C3C /* MenuController.swift */; };
@@ -31,6 +36,27 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		797FD4CF1EF38AB300AFC740 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 797FD4C91EF38AB300AFC740 /* GPUImage.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = BCF1A33414DDB1EC00852800;
+			remoteInfo = GPUImage;
+		};
+		797FD4D11EF38AB300AFC740 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 797FD4C91EF38AB300AFC740 /* GPUImage.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = BCE209E51943F20C002FEED8;
+			remoteInfo = GPUImageFramework;
+		};
+		797FD4D31EF38ACC00AFC740 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 797FD4C91EF38AB300AFC740 /* GPUImage.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = BCE209E41943F20C002FEED8;
+			remoteInfo = GPUImageFramework;
+		};
 		79E847581ED28924001B6C3C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 79E847381ED28924001B6C3C /* Project object */;
@@ -53,11 +79,17 @@
 		3BE5868D3657099C1866BF0C /* Pods-colormeapp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-colormeapp.debug.xcconfig"; path = "Pods/Target Support Files/Pods-colormeapp/Pods-colormeapp.debug.xcconfig"; sourceTree = "<group>"; };
 		57B6C45CD75CCD6FD887C21A /* Pods_colormeappTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_colormeappTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5E0EC3C00C093CA60D8222C2 /* Pods-colormeapp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-colormeapp.release.xcconfig"; path = "Pods/Target Support Files/Pods-colormeapp/Pods-colormeapp.release.xcconfig"; sourceTree = "<group>"; };
+		7903BC6A1EF594BF00C686A4 /* EdgeGlowFilter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = EdgeGlowFilter.swift; path = CustomFilters/EdgeGlowFilter.swift; sourceTree = "<group>"; };
 		7914BA1D1ED5CD9600EE9F7D /* ScalarFilterParamater.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScalarFilterParamater.swift; sourceTree = "<group>"; };
 		7914BA1F1ED5CDB800EE9F7D /* FilteredImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilteredImageView.swift; sourceTree = "<group>"; };
 		792C1D331ED38CFA00D242AF /* ColorMeSingleton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorMeSingleton.swift; sourceTree = "<group>"; };
 		792C1D351ED3954900D242AF /* MNColorMeCells.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MNColorMeCells.swift; sourceTree = "<group>"; };
 		792C1D3A1ED3C26B00D242AF /* ControlCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ControlCollection.swift; sourceTree = "<group>"; };
+		79344DDA1EF59BF40013C952 /* CustomFilterManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomFilterManager.swift; sourceTree = "<group>"; };
+		79344DDC1EF5A44C0013C952 /* KuwaharaFilter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KuwaharaFilter.swift; sourceTree = "<group>"; };
+		79344DE01EF5A6C70013C952 /* LensFlare.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LensFlare.swift; sourceTree = "<group>"; };
+		79344DE21EF5A9090013C952 /* CausticRefraction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CausticRefraction.swift; sourceTree = "<group>"; };
+		797FD4C91EF38AB300AFC740 /* GPUImage.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = GPUImage.xcodeproj; path = "../../../Downloads/GPUImage-master-2/framework/GPUImage.xcodeproj"; sourceTree = "<group>"; };
 		79C704C31ED387F30086400E /* CameraController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraController.swift; sourceTree = "<group>"; };
 		79E847401ED28924001B6C3C /* colormeapp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = colormeapp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		79E847431ED28924001B6C3C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -146,9 +178,31 @@
 			name = Model;
 			sourceTree = "<group>";
 		};
+		79344DD71EF59BC70013C952 /* CustomFilters */ = {
+			isa = PBXGroup;
+			children = (
+				79344DDA1EF59BF40013C952 /* CustomFilterManager.swift */,
+				7903BC6A1EF594BF00C686A4 /* EdgeGlowFilter.swift */,
+				79344DDC1EF5A44C0013C952 /* KuwaharaFilter.swift */,
+				79344DE21EF5A9090013C952 /* CausticRefraction.swift */,
+				79344DE01EF5A6C70013C952 /* LensFlare.swift */,
+			);
+			name = CustomFilters;
+			sourceTree = "<group>";
+		};
+		797FD4CA1EF38AB300AFC740 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				797FD4D01EF38AB300AFC740 /* libGPUImage.a */,
+				797FD4D21EF38AB300AFC740 /* GPUImage.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		79E847371ED28924001B6C3C = {
 			isa = PBXGroup;
 			children = (
+				797FD4C91EF38AB300AFC740 /* GPUImage.xcodeproj */,
 				79E8477E1ED29EC3001B6C3C /* Fonts */,
 				79E847421ED28924001B6C3C /* colormeapp */,
 				79E8475A1ED28924001B6C3C /* colormeappTests */,
@@ -172,6 +226,7 @@
 		79E847421ED28924001B6C3C /* colormeapp */ = {
 			isa = PBXGroup;
 			children = (
+				79344DD71EF59BC70013C952 /* CustomFilters */,
 				79E847431ED28924001B6C3C /* AppDelegate.swift */,
 				792C1D391ED3A8A400D242AF /* Model */,
 				792C1D371ED3A88900D242AF /* Controllers */,
@@ -231,6 +286,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				797FD4D41EF38ACC00AFC740 /* PBXTargetDependency */,
 			);
 			name = colormeapp;
 			productName = colormeapp;
@@ -319,6 +375,12 @@
 			mainGroup = 79E847371ED28924001B6C3C;
 			productRefGroup = 79E847411ED28924001B6C3C /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 797FD4CA1EF38AB300AFC740 /* Products */;
+					ProjectRef = 797FD4C91EF38AB300AFC740 /* GPUImage.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				79E8473F1ED28924001B6C3C /* colormeapp */,
@@ -327,6 +389,23 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		797FD4D01EF38AB300AFC740 /* libGPUImage.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libGPUImage.a;
+			remoteRef = 797FD4CF1EF38AB300AFC740 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		797FD4D21EF38AB300AFC740 /* GPUImage.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = GPUImage.framework;
+			remoteRef = 797FD4D11EF38AB300AFC740 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		79E8473E1ED28924001B6C3C /* Resources */ = {
@@ -499,18 +578,23 @@
 			buildActionMask = 2147483647;
 			files = (
 				792C1D341ED38CFA00D242AF /* ColorMeSingleton.swift in Sources */,
+				7903BC6B1EF594BF00C686A4 /* EdgeGlowFilter.swift in Sources */,
 				79E8477B1ED2939B001B6C3C /* PSButton.swift in Sources */,
 				79E847771ED29304001B6C3C /* Extensions.swift in Sources */,
 				7914BA1E1ED5CD9600EE9F7D /* ScalarFilterParamater.swift in Sources */,
+				79344DE31EF5A9090013C952 /* CausticRefraction.swift in Sources */,
 				79E847461ED28924001B6C3C /* MenuController.swift in Sources */,
 				7914BA201ED5CDB800EE9F7D /* FilteredImageView.swift in Sources */,
 				792C1D3B1ED3C26B00D242AF /* ControlCollection.swift in Sources */,
 				79E847751ED292DF001B6C3C /* EditController.swift in Sources */,
+				79344DDD1EF5A44C0013C952 /* KuwaharaFilter.swift in Sources */,
+				79344DE11EF5A6C70013C952 /* LensFlare.swift in Sources */,
 				79E847441ED28924001B6C3C /* AppDelegate.swift in Sources */,
 				79E8477D1ED293DA001B6C3C /* PSLabel.swift in Sources */,
 				79C704C41ED387F30086400E /* CameraController.swift in Sources */,
 				792C1D361ED3954900D242AF /* MNColorMeCells.swift in Sources */,
 				79E8474C1ED28924001B6C3C /* colormeapp.xcdatamodeld in Sources */,
+				79344DDB1EF59BF40013C952 /* CustomFilterManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -533,6 +617,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		797FD4D41EF38ACC00AFC740 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = GPUImageFramework;
+			targetProxy = 797FD4D31EF38ACC00AFC740 /* PBXContainerItemProxy */;
+		};
 		79E847591ED28924001B6C3C /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 79E8473F1ED28924001B6C3C /* colormeapp */;

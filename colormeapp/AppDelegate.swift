@@ -27,6 +27,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         static let bars = navType(rawValue: 4)
         static let logo = navType(rawValue: 8)
         static let noSelector = navType(rawValue: 16)
+        static let export = navType(rawValue: 32)
     }
 
     func makeTitle(titleText:String) -> UIButton {
@@ -52,8 +53,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         case navType.noSelector:
             btn.setFAIcon(icon: FAType.FAArrowLeft, iconSize: 30, forState: UIControlState.normal)
             btn.addTarget(editVC, action: #selector(editVC.backTappedToCloseCV), for: .touchUpInside)
+        case navType.export:
+            btn.setFAIcon(icon: FAType.FADownload, iconSize: 30, forState: UIControlState.normal)
+            btn.addTarget(editVC, action: #selector(editVC.share), for: .touchUpInside)
         case navType.logo:
-            let loView = UIImageView(image: #imageLiteral(resourceName: "photo-camera"))
+            let loView = UIImageView(image: #imageLiteral(resourceName: "picture-with-frame"))
             loView.image = loView.image?.withRenderingMode(.alwaysTemplate)
             loView.frame = CGRect(x: 0, y: 0, width: 34, height: 34)
             loView.contentMode = .scaleAspectFit
@@ -78,7 +82,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         editVC = EditController()
         editVC.navigationItem.titleView = makeTitle(titleText: "EDIT ME")
         editVC.navigationItem.leftBarButtonItem = makeNavItem(type: .noSelector, alignment: .left)
-        editVC.navigationItem.rightBarButtonItem = makeNavItem(tag: 0, type: .logo, alignment: .right)
+        editVC.navigationItem.rightBarButtonItem = makeNavItem(tag: 0, type: .export, alignment: .right)
         navigationController.pushViewController(editVC, animated: true)
     }
     func goToMenuController() {
@@ -89,6 +93,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var cameraVC:CameraController!
     var menuVC:MenuController!
     var editVC:EditController!
+    
+    fileprivate var visualEffectView: UIVisualEffectView = {
+        let vev = UIVisualEffectView(effect: UIBlurEffect(style: .dark))
+        vev.layer.cornerRadius = 15
+        vev.layer.masksToBounds = true
+        vev.isUserInteractionEnabled = false
+
+        vev.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        return vev
+    }()
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         for family: String in UIFont.familyNames
@@ -111,8 +125,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         cameraVC.navigationItem.rightBarButtonItem = makeNavItem(tag: 0, type: .forward, alignment: .right)
         
         menuVC = MenuController()
-        menuVC.navigationItem.titleView = makeTitle(titleText: "COLOR ME")
-        menuVC.navigationItem.leftBarButtonItem = makeNavItem(type: .logo, alignment: .left)
+
+        
+//        menuVC.navigationItem.titleView = makeTitle(titleText: "COLOR ME")
+//        menuVC.navigationItem.leftBarButtonItem = makeNavItem(type: .logo, alignment: .left)
         //menuVC.navigationItem.rightBarButtonItem = makeNavItem(tag: 1, type: .forward, alignment: .right)
         
         editVC = EditController()
@@ -124,14 +140,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         navigationController.edgesForExtendedLayout = .left
         navigationController.viewControllers = [cameraVC, menuVC]
-        
-        UINavigationBar.appearance().barTintColor = UIColor.MNLightBlue
-        UINavigationBar.appearance().tintColor = UIColor.white
-        
-        self.window!.rootViewController = navigationController
-        self.window!.backgroundColor = .white
-        self.window!.makeKeyAndVisible()
 
+        UIApplication.shared.statusBarStyle = .default
+        
+        UINavigationBar.appearance().barTintColor = UIColor.black
+
+        self.window!.rootViewController = navigationController
+        self.window!.makeKeyAndVisible()
 
         return true
     }

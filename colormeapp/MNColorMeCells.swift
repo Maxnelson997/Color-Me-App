@@ -12,7 +12,7 @@ class recentCell:UICollectionViewCell {
     var imageView:UIImageView = {
         var imageView = UIImageView()
         imageView.isUserInteractionEnabled = true
-        imageView.layer.cornerRadius = 5
+        imageView.layer.cornerRadius = 10
         imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 1
         imageView.layer.borderColor = UIColor.MNBlack.cgColor
@@ -55,12 +55,28 @@ class ControlCell:UICollectionViewCell {
         l.textAlignment = .center
         return l
     }()
-    
+    fileprivate var visualEffectView: UIVisualEffectView = {
+        let vev = UIVisualEffectView(effect: UIBlurEffect(style: .dark))
+        vev.layer.cornerRadius = 10
+        vev.layer.masksToBounds = true
+        vev.isUserInteractionEnabled = false
+        vev.translatesAutoresizingMaskIntoConstraints = false
+        vev.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        return vev
+    }()
     override func awakeFromNib() {
         
+        contentView.addSubview(visualEffectView)
         contentView.addSubview(imageView)
         contentView.addSubview(label)
         
+        
+        NSLayoutConstraint.activate([
+            visualEffectView.leftAnchor.constraint(equalTo: leftAnchor),
+            visualEffectView.rightAnchor.constraint(equalTo: rightAnchor),
+            visualEffectView.topAnchor.constraint(equalTo: topAnchor),
+            visualEffectView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            ])
         NSLayoutConstraint.activate([
             imageView.leadingAnchor.constraint(greaterThanOrEqualTo: leadingAnchor),
             imageView.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor),
@@ -113,7 +129,7 @@ class AdjustControlCell:UICollectionViewCell {
         let l = UISlider()
         l.thumbTintColor = UIColor.MNLighterBlue
         l.tintColor = UIColor.MNGray
-        l.backgroundColor = .clear
+        l.backgroundColor = .clear//UIColor.MNGray.withAlphaComponent(0.4)
         return l
     }()
 
@@ -137,13 +153,15 @@ class AdjustControlCell:UICollectionViewCell {
     
     
     override func awakeFromNib() {
-        
-        self.clipsToBounds = true
-        contentView.addSubview(imageView)
-        contentView.addSubview(label)
-        contentView.addSubview(slider)
-        
         if !exists {
+            contentView.addSubview(visualEffectView)
+            NSLayoutConstraint.activate([
+                visualEffectView.leftAnchor.constraint(equalTo: leftAnchor),
+                visualEffectView.rightAnchor.constraint(equalTo: rightAnchor),
+                visualEffectView.topAnchor.constraint(equalTo: topAnchor),
+                visualEffectView.bottomAnchor.constraint(equalTo: bottomAnchor),
+                ])
+              self.clipsToBounds = true
             slider.frame = CGRect(x: contentView.frame.maxX, y: 0, width: contentView.frame.width*3, height: contentView.frame.height)
             imageView.frame = CGRect(x: 0, y: contentView.frame.height * 0.2, width: contentView.frame.width, height: contentView.frame.height * 0.4)
             imageView.transform = CGAffineTransform(scaleX: 0.4, y: 1)
@@ -155,13 +173,23 @@ class AdjustControlCell:UICollectionViewCell {
  
             exists = true
         }
-        
+        contentView.addSubview(imageView)
+        contentView.addSubview(label)
+        contentView.addSubview(slider)
         slider.minimumValue = scalarFilterParam.minimumValue!
         slider.maximumValue = scalarFilterParam.maximumValue!
         slider.value = scalarFilterParam.currentValue
         
     }
-    
+    fileprivate var visualEffectView: UIVisualEffectView = {
+        let vev = UIVisualEffectView(effect: UIBlurEffect(style: .dark))
+        vev.layer.cornerRadius = 10
+        vev.layer.masksToBounds = true
+        vev.isUserInteractionEnabled = false
+        vev.translatesAutoresizingMaskIntoConstraints = false
+        vev.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        return vev
+    }()
     override func prepareForReuse() {
         imageView.removeFromSuperview()
         slider.removeFromSuperview()
@@ -200,8 +228,16 @@ class FilterPackControlCell:UICollectionViewCell, UICollectionViewDelegate, UICo
     var awoken:Bool = false
     
     override func awakeFromNib() {
+
         if !awoken
         {
+            contentView.addSubview(visualEffectView)
+            NSLayoutConstraint.activate([
+                visualEffectView.leftAnchor.constraint(equalTo: leftAnchor),
+                visualEffectView.rightAnchor.constraint(equalTo: rightAnchor),
+                visualEffectView.topAnchor.constraint(equalTo: topAnchor),
+                visualEffectView.bottomAnchor.constraint(equalTo: bottomAnchor),
+                ])
             self.clipsToBounds = true
             filtersCollection.translatesAutoresizingMaskIntoConstraints = true
             filtersCollection.frame = CGRect(x: contentView.frame.maxX, y: 0, width: contentView.frame.width * CGFloat(filterPack.count) + 15 * CGFloat(filterPack.count), height: contentView.frame.height)
@@ -217,10 +253,10 @@ class FilterPackControlCell:UICollectionViewCell, UICollectionViewDelegate, UICo
             label.frame = CGRect(x: 0, y: contentView.frame.maxY - (contentView.frame.height * 0.5), width: contentView.frame.width, height: contentView.frame.height * 0.5)
             awoken = true
         }
-        
+
         contentView.addSubview(imageView)
         contentView.addSubview(filtersCollection)
-
+        
         filtersCollection.reloadData()
         
 //        NSLayoutConstraint.activate([
@@ -243,6 +279,15 @@ class FilterPackControlCell:UICollectionViewCell, UICollectionViewDelegate, UICo
 //        
     }
     
+    fileprivate var visualEffectView: UIVisualEffectView = {
+        let vev = UIVisualEffectView(effect: UIBlurEffect(style: .dark))
+        vev.layer.cornerRadius = 10
+        vev.layer.masksToBounds = true
+        vev.isUserInteractionEnabled = false
+        vev.translatesAutoresizingMaskIntoConstraints = false
+        vev.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        return vev
+    }()
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "filtercell", for: indexPath) as! FilterCell
@@ -309,7 +354,6 @@ class FilterCell:UICollectionViewCell {
             imageView.bottomAnchor.constraint(equalTo: label.topAnchor),
             imageView.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 0.4),
             imageView.widthAnchor.constraint(equalTo: imageView.heightAnchor)
-            
             ])
         
         NSLayoutConstraint.activate([
