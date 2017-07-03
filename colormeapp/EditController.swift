@@ -281,17 +281,17 @@ class EditController: UIViewController, SetFilter {
     var opacityValue:CGFloat = 1.0
 
     var tool:UIImageView!
-    var isDrawing = true
+    var paintTabActive = false
     var selectedImage:UIImage!
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        if touches.first?.view == self.view {
-            
-        } else {
-            if let touch = touches.first {
+        if paintTabActive {
+            if touches.first?.view == self.view {
                 
-                swiped = false
-                lastPoint = touch.location(in: self.cropView)
-                
+            } else {
+                if let touch = touches.first {
+                    swiped = false
+                    lastPoint = touch.location(in: self.cropView)
+                }
             }
         }
     }
@@ -329,30 +329,35 @@ class EditController: UIViewController, SetFilter {
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        
-        if touches.first?.view == self.view {
-            
-        } else {
-            swiped = true
-            
-            if let touch = touches.first {
-                let currentPoint = touch.location(in: self.cropView)
-                drawLines(fromPoint: lastPoint, toPoint: currentPoint)
+        if paintTabActive {
+            if touches.first?.view == self.view {
                 
-                lastPoint = currentPoint
+            } else {
+                swiped = true
+                
+                if let touch = touches.first {
+                    let currentPoint = touch.location(in: self.cropView)
+                    drawLines(fromPoint: lastPoint, toPoint: currentPoint)
+                    
+                    lastPoint = currentPoint
+                }
             }
         }
+
 
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        if touches.first?.view == self.view {
-
-        } else {
-            if !swiped {
-                drawLines(fromPoint: lastPoint, toPoint: lastPoint)
+        if paintTabActive {
+            if touches.first?.view == self.view {
+                
+            } else {
+                if !swiped {
+                    drawLines(fromPoint: lastPoint, toPoint: lastPoint)
+                }
             }
         }
+
 
     }
     override func viewDidLoad() {
@@ -392,19 +397,24 @@ class EditController: UIViewController, SetFilter {
 //        cropView.isUserInteractionEnabled = false
         
         mainControlsImages = [#imageLiteral(resourceName: "move"),#imageLiteral(resourceName: "rgb-symbol"),#imageLiteral(resourceName: "settings-2"),#imageLiteral(resourceName: "bucket-with-paint")]
-        mainControlsText = ["crop", "filters", "adjust", "paint"]
+        mainControlsText = ["crop", "filters", "adjust", "color"]
         
         cropControlsImages = [#imageLiteral(resourceName: "reload-2") ,#imageLiteral(resourceName: "fit"),#imageLiteral(resourceName: "reload-4"),#imageLiteral(resourceName: "check")]
         cropControlsText = ["reset", "crop", "rotate", "finish"]
+        //
+        //        paintControlsImages = [#imageLiteral(resourceName: "one-finger-click"),#imageLiteral(resourceName: "bucket-with-paint"),#imageLiteral(resourceName: "speech-bubble"),#imageLiteral(resourceName: "rotate-arrow")]
+        //        paintControlsText = ["draw", "paint", "text", "undo"]
+
         
-        paintControlsImages = [#imageLiteral(resourceName: "one-finger-click"),#imageLiteral(resourceName: "bucket-with-paint"),#imageLiteral(resourceName: "speech-bubble"),#imageLiteral(resourceName: "rotate-arrow")]
-        paintControlsText = ["draw", "paint", "text", "undo"]
-        
+                paintControlsImages = [#imageLiteral(resourceName: "one-finger-click"),#imageLiteral(resourceName: "one-finger-click"),#imageLiteral(resourceName: "one-finger-click"), #imageLiteral(resourceName: "one-finger-click")]
+                paintControlsText = ["red", "white", "blue", "black"]
+
         adjustControlsImages = [[#imageLiteral(resourceName: "haze-1"),#imageLiteral(resourceName: "brightness-symbol"),#imageLiteral(resourceName: "contrast-symbol")],[#imageLiteral(resourceName: "pie-chart"), #imageLiteral(resourceName: "circular-frames"),#imageLiteral(resourceName: "star-1")], [#imageLiteral(resourceName: "cloudy-1")],[#imageLiteral(resourceName: "spray-bottle-with-dots") ],[#imageLiteral(resourceName: "snowflake")],[#imageLiteral(resourceName: "devil")]]
         adjustControlsText = [["saturation","brightness", "contrast"] ,["radius","shadows","highlights"], ["exposure"], ["colors"],["temperature"], ["intensity"]]
         
         filterControlsImages = [#imageLiteral(resourceName: "three-layers"),#imageLiteral(resourceName: "three-layers"),#imageLiteral(resourceName: "three-layers"),#imageLiteral(resourceName: "three-layers"),#imageLiteral(resourceName: "three-layers"),#imageLiteral(resourceName: "three-layers")]
-        filterControlsText = ["pack 0", "pack 1", "pack 2", "pack 3", "pack 4", "METAL"]
+        filterControlsText = ["super","summer", "sunlit" ,"shady", "glow", "cartoon"]
+
         
         
         mainControlsCollection.dataSource = self
@@ -583,7 +593,7 @@ class EditController: UIViewController, SetFilter {
         })
  
         self.cent = self.cropView.center
-        cropView.backgroundColor = UIColor.orange.withAlphaComponent(0.5)
+//        cropView.backgroundColor = UIColor.orange.withAlphaComponent(0.5)
     }
     
     var cent:CGPoint!
@@ -594,7 +604,6 @@ class EditController: UIViewController, SetFilter {
     
     
     func showControls(cvTag:Int) {
-        
         var hideTheseCollections:[ControlCollection] = []
         var showThisCollection:ControlCollection!
         
@@ -602,13 +611,17 @@ class EditController: UIViewController, SetFilter {
         case 0:
             hideTheseCollections = [self.paintControlsCollection, self.adjustControlsCollection, self.filterControlsCollection]
             showThisCollection = cropControlsCollection
+            paintTabActive = false
         case 1:
             hideTheseCollections = [self.cropControlsCollection, self.paintControlsCollection, self.adjustControlsCollection]
             showThisCollection = self.filterControlsCollection
+            paintTabActive = false
         case 2:
             hideTheseCollections = [self.cropControlsCollection, self.paintControlsCollection, self.filterControlsCollection]
             showThisCollection = self.adjustControlsCollection
+            paintTabActive = false
         case 3:
+            paintTabActive = true
             hideTheseCollections = [self.cropControlsCollection, self.adjustControlsCollection, self.filterControlsCollection]
             showThisCollection = self.paintControlsCollection
         default:
@@ -798,6 +811,43 @@ extension EditController: UICollectionViewDelegate, UICollectionViewDelegateFlow
             }
         }
         
+        if collectionView == paintControlsCollection {
+            let cell = paintControlsCollection.cellForItem(at: IndexPath(row: indexPath.item, section: 0))
+            UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 2, initialSpringVelocity: 3, options: .curveEaseIn, animations: {
+                for i in 0 ..< 3 {
+                    if i != indexPath.item {
+                        let cell = self.paintControlsCollection.cellForItem(at: IndexPath(row: i, section: 0))
+                        cell?.transform = CGAffineTransform(scaleX: 1, y: 1)
+                    }
+                }
+                cell?.transform = CGAffineTransform(scaleX: 1.1, y: 1.1)
+            }, completion: nil)
+           
+            switch indexPath.item {
+            case 0:
+                red = 1
+                green = 0
+                blue = 0
+            case 1:
+                red = 1
+                green = 1
+                blue = 1
+            case 2:
+                red = 0
+                green = 0
+                blue = 1
+            case 3:
+                red = 0
+                green = 0
+                blue = 0
+                
+            default:
+                break
+            }
+        }
+        
+        
+        
         if tappedIndexPath != nil && tappedIndexPath == indexPath {
             tappedIndexPath = nil
         } else {
@@ -854,21 +904,34 @@ extension EditController {
     }
     
     func updateFilters() {
-        let filterPack0:[String] = ["CIPhotoEffectChrome","CIPhotoEffectFade"]
-        let filterPack1:[String] = ["CIPhotoEffectProcess"]
-        let filterPack2:[String] = ["CIPhotoEffectTonal"]
-        let filterPack3:[String] = ["CIPhotoEffectTransfer","CIPhotoEffectNoir"]
-        let filterPack4:[String] = ["CISepiaTone","CIPhotoEffectInstant"]
-        let customPack1:[String] = ["MNEdgeGlow", "MNKuwahara"]
+//        let filterPack0:[String] = ["CIPhotoEffectChrome","CIPhotoEffectFade"]
+//        let filterPack1:[String] = ["CIPhotoEffectProcess"]
+//        let filterPack2:[String] = ["CIPhotoEffectTonal"]
+//        let filterPack3:[String] = ["CIPhotoEffectTransfer","CIPhotoEffectNoir"]
+//        let filterPack4:[String] = ["CISepiaTone","CIPhotoEffectInstant"]
+//        let customPack1:[String] = ["MNEdgeGlow", "MNKuwahara"]
+//        
+//        
+//        let filterNames0:[String] = ["chrome","fade"]
+//        let filterNames1:[String] = ["process"]
+//        let filterNames2:[String] = ["tonal"]
+//        let filterNames3:[String] = ["transfer", "noir"]
+//        let filterNames4:[String] = ["sepia", "instant"]
+//        let customNames1:[String] = ["bronze", "Kuwahara"]
+        let super_pack:[String] = ["CIPhotoEffectProcess"]
+        let summer_pack:[String] = ["CISepiaTone", "CIPhotoEffectTransfer", "CIPhotoEffectInstant", "CIPhotoEffectFade"]
+        let sunlit_pack:[String] = ["CIPhotoEffectChrome"]
+        let shady_pack:[String] = ["CIPhotoEffectNoir", "CIPhotoEffectTonal"]
+        let glow_pack:[String] = ["MNEdgeGlow"]
+        let cartoon_pack:[String] = ["MNKuwahara"]
         
         
-        let filterNames0:[String] = ["chrome","fade"]
-        let filterNames1:[String] = ["process"]
-        let filterNames2:[String] = ["tonal"]
-        let filterNames3:[String] = ["transfer", "noir"]
-        let filterNames4:[String] = ["sepia", "instant"]
-        let customNames1:[String] = ["bronze", "Kuwahara"]
-        
+        let super_names:[String] = ["double"]
+        let summer_names:[String] = ["plastic", "nitefest", "berry", "sinking"]
+        let sunlit_names:[String] = ["blaze"]
+        let shady_names:[String] = ["elayno","nitetone"]
+        let glow_names:[String] = ["trimmed"]
+        let cartoon_names:[String] = ["cartoon"]
         
         //rose filter pack
         //....
@@ -877,12 +940,12 @@ extension EditController {
         //....
         
         
-        filterObjects = [ createFilters(createfilters: filterPack0, createnames: filterNames0),
-                          createFilters(createfilters: filterPack1, createnames: filterNames1),
-                          createFilters(createfilters: filterPack2, createnames: filterNames2),
-                          createFilters(createfilters: filterPack3, createnames: filterNames3),
-                          createFilters(createfilters: filterPack4, createnames: filterNames4),
-                          createFilters(createfilters: customPack1, createnames: customNames1)
+        filterObjects = [ createFilters(createfilters: super_pack, createnames: super_names),
+                          createFilters(createfilters: summer_pack, createnames: summer_names),
+                          createFilters(createfilters: sunlit_pack, createnames: sunlit_names),
+                          createFilters(createfilters: shady_pack, createnames: shady_names),
+                          createFilters(createfilters: glow_pack, createnames: glow_names),
+                          createFilters(createfilters: cartoon_pack, createnames: cartoon_names)
         ]
         
         
