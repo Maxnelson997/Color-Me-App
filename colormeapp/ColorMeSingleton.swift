@@ -22,6 +22,7 @@ class ColorMeSingleton {
             applyfilters()
         }
     }
+    var drawnImage:UIImage = UIImage()
     
     func applyfilters() {
         for filter in filters {

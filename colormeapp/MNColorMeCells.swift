@@ -139,19 +139,14 @@ class AdjustControlCell:UICollectionViewCell {
     var delegate:ParameterAdjustmentDelegate!
    
     func sliderValueDidChange(_ sender: AnyObject?) {
-        
         if delegate != nil {
-            //            cellsFilter.setValue(slider.value, forKey: parameter.key)
+            //cellsFilter.setValue(slider.value, forKey: parameter.key)
             delegate!.parameterValueDidChange(ScalarFilterParameter(key: scalarFilterParam.key, value: slider.value), location: filterLocation)
-            
         }
     }
-    
 
-    
     var exists:Bool = false
-    
-    
+
     override func awakeFromNib() {
         if !exists {
             contentView.addSubview(visualEffectView)
@@ -161,16 +156,12 @@ class AdjustControlCell:UICollectionViewCell {
                 visualEffectView.topAnchor.constraint(equalTo: topAnchor),
                 visualEffectView.bottomAnchor.constraint(equalTo: bottomAnchor),
                 ])
-              self.clipsToBounds = true
+            self.clipsToBounds = true
             slider.frame = CGRect(x: contentView.frame.maxX, y: 0, width: contentView.frame.width*3, height: contentView.frame.height)
             imageView.frame = CGRect(x: 0, y: contentView.frame.height * 0.2, width: contentView.frame.width, height: contentView.frame.height * 0.4)
             imageView.transform = CGAffineTransform(scaleX: 0.4, y: 1)
-            
             label.frame = CGRect(x: 0, y: contentView.frame.maxY - (contentView.frame.height * 0.5), width: contentView.frame.width, height: contentView.frame.height * 0.5)
-            
- 
             slider.addTarget(self, action: #selector(self.sliderValueDidChange(_:)), for: .valueChanged)
- 
             exists = true
         }
         contentView.addSubview(imageView)
@@ -179,8 +170,8 @@ class AdjustControlCell:UICollectionViewCell {
         slider.minimumValue = scalarFilterParam.minimumValue!
         slider.maximumValue = scalarFilterParam.maximumValue!
         slider.value = scalarFilterParam.currentValue
-        
     }
+    
     fileprivate var visualEffectView: UIVisualEffectView = {
         let vev = UIVisualEffectView(effect: UIBlurEffect(style: .dark))
         vev.layer.cornerRadius = 10
@@ -190,10 +181,10 @@ class AdjustControlCell:UICollectionViewCell {
         vev.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         return vev
     }()
+    
     override func prepareForReuse() {
         imageView.removeFromSuperview()
         slider.removeFromSuperview()
-  
     }
     
 }

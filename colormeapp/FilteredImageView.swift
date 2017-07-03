@@ -45,6 +45,7 @@ class FilteredImageView: GLKView, ParameterAdjustmentDelegate {
     }
     
     var delegate1:SetFilter!
+    var drawImg:UIImage!
     
     override init(frame: CGRect) {
         super.init(frame: frame, context: EAGLContext(api: .openGLES2))
@@ -65,12 +66,23 @@ class FilteredImageView: GLKView, ParameterAdjustmentDelegate {
         if ciContext != nil && inputImage != nil && filter != nil {
             var originalimage:CIImage = CIImage(image: singleton.imagePicked)!
             
-            
+            var count:Int = 0
             for filters in singleton.filters {
                 filters.setValue(originalimage, forKey: kCIInputImageKey)
                 originalimage = filters.outputImage!
-
+                if count == singleton.filters.count - 1 {
+                    
+//                    //last
+//                    filters.setValue(CIImage(image: singleton.drawnImage), forKey: kCIInputImageKey)
+//                    if filters.outputImage != nil {
+//                         originalimage = filters.outputImage!
+//                    }
+                   
+                }
+                count += 1
             }
+            
+            
             
             
             if currentAppliedFilter != nil {
@@ -89,6 +101,9 @@ class FilteredImageView: GLKView, ParameterAdjustmentDelegate {
             } else {
                 print("reset or does not exist")
             }
+            
+            //draw drawings onto image now that filters have been applied
+            
 
             if filter.outputImage != nil {
                 clearBackground()

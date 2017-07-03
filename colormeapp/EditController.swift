@@ -37,6 +37,20 @@ extension EditController: UIImagePickerControllerDelegate {
     func share(sender:UIButton) -> Void {
         
         let btn = UIBarButtonItem(customView: sender)
+        //apply the drawings to the image right quick
+
+   
+        let sz = imageToSave.size
+        UIGraphicsBeginImageContextWithOptions(sz, false, 0.0)
+        imageToSave.draw(in: CGRect.init(x: 0, y: 0, width: sz.width, height: sz.height))
+        drawImg.image?.draw(in: CGRect.init(x: 0, y: 0, width: sz.width, height: sz.height))
+        let img = UIGraphicsGetImageFromCurrentImageContext()
+        imageToSave = img!
+        UIGraphicsEndImageContext()
+ 
+        
+        //unk now we can save yu guys
+  
         let activityViewController:UIActivityViewController = UIActivityViewController(activityItems: [UIImage(data: imageToSave.generateJPEGRepresentation())!], applicationActivities: nil)
         activityViewController.popoverPresentationController?.barButtonItem = (btn)
         activityViewController.modalPresentationStyle = .popover
@@ -278,19 +292,19 @@ class EditController: UIViewController, SetFilter {
     var green:CGFloat = 0.6
     var blue:CGFloat = 1.0
     var brushSize:CGFloat = 4.0
+    let lineWidth:CGFloat = 4.0
     var opacityValue:CGFloat = 1.0
-
+    var finalPoint: CGPoint!
     var tool:UIImageView!
     var paintTabActive = false
     var selectedImage:UIImage!
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         if paintTabActive {
-            if touches.first?.view == self.view {
-                
-            } else {
-                if let touch = touches.first {
-                    swiped = false
-                    lastPoint = touch.location(in: self.cropView)
+            
+
+            if let e = event?.touches(for: self.cropView){
+                if let touch = e.first {
+                    finalPoint = touch.preciseLocation(in: self.cropView)
                 }
             }
         }
@@ -337,53 +351,65 @@ class EditController: UIViewController, SetFilter {
         
         print(self.cent)
     }
-    
+    var drawImg:UIImageView = UIImageView()
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        if paintTabActive {
-            if touches.first?.view == self.view {
-                
-            } else {
-                swiped = true
-                
-                if let touch = touches.first {
-                    let currentPoint = touch.location(in: self.cropView)
-                    drawLines(fromPoint: lastPoint, toPoint: currentPoint)
+//        self.isDrawing = true
+        if let e = event?.touches(for: self.cropView){
+            if let touch = e.first{
+                if let d = self.cropView {
                     
-                    lastPoint = currentPoint
+                    let currentCoordinate = touch.preciseLocation(in: d)
+                    //UIGraphicsBeginImageContext(d.bounds.size)
+                    UIGraphicsBeginImageContextWithOptions(d.bounds.size, false, 0.0)
+                    drawImg.image?.draw(in: CGRect.init(x: 0, y: 0, width: d.bounds.width, height: d.bounds.height))
+                    UIGraphicsGetCurrentContext()?.move(to: finalPoint)
+                    UIGraphicsGetCurrentContext()?.addLine(to: currentCoordinate)
+                    UIGraphicsGetCurrentContext()?.setLineCap(CGLineCap.round)
+                    UIGraphicsGetCurrentContext()?.setLineWidth(lineWidth)
+                    UIGraphicsGetCurrentContext()?.setStrokeColor(red: red, green: green, blue: blue, alpha: 1.0)
+                    UIGraphicsGetCurrentContext()?.strokePath()
+                    let img = UIGraphicsGetImageFromCurrentImageContext()
+//                    singleton.imagePicked = img!
+//                    singleton.drawnImage = img!
+                    drawImg.image = img!
+//                    ApplyToCropView(image: img)
+                        //no,will combine image at save.
+//                    filteredImageView.setNeedsLayout()
+                    
+                    UIGraphicsEndImageContext()
+                    finalPoint = currentCoordinate
                 }
             }
         }
-
-
+        
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        if paintTabActive {
-            if touches.first?.view == self.view {
-                
-            } else {
-                if !swiped {
-                    drawLines(fromPoint: lastPoint, toPoint: lastPoint)
-                }
-            }
-        }
+        
+//        finalPoint = CGPoint(x: 1, y: 1)
+//        if paintTabActive {
+//            if touches.first?.view == self.view {
+//                
+//            } else {
+//                if !swiped {
+//                    drawLines(fromPoint: lastPoint, toPoint: lastPoint)
+//                }
+//            }
+//        }
 
 
     }
     override func viewDidLoad() {
         super.viewDidLoad()
-        
 
-        
-
-        
         CustomFilterManager.registerFilters()
         
         view.backgroundColor = UIColor.MNGray
         appDelegate = UIApplication.shared.delegate as! AppDelegate
         
         veryOriginalImage = singleton.imagePicked
-        
+//        drawImg.image = self.veryOriginalImage
+        drawImg.translatesAutoresizingMaskIntoConstraints = false
         getKeys()
         updateFilters()
         
@@ -404,6 +430,7 @@ class EditController: UIViewController, SetFilter {
         cropView.imageToCrop = self.veryOriginalImage
         cropView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(cropView)
+        view.addSubview(drawImg)
 //        cropView.isUserInteractionEnabled = false
         
         mainControlsImages = [#imageLiteral(resourceName: "move"),#imageLiteral(resourceName: "rgb-symbol"),#imageLiteral(resourceName: "settings-2"),#imageLiteral(resourceName: "bucket-with-paint")]
@@ -465,6 +492,11 @@ class EditController: UIViewController, SetFilter {
                 cropView.heightAnchor.constraint(equalTo: centG.heightAnchor, multiplier: 1),
                 cropView.widthAnchor.constraint(equalTo: centG.heightAnchor, multiplier: (imWidth/imHeight)),
                 
+                drawImg.centerXAnchor.constraint(equalTo: centG.centerXAnchor),
+                drawImg.centerYAnchor.constraint(equalTo: centG.centerYAnchor),
+                drawImg.heightAnchor.constraint(equalTo: centG.heightAnchor, multiplier: 1),
+                drawImg.widthAnchor.constraint(equalTo: centG.heightAnchor, multiplier: (imWidth/imHeight)),
+                
                 
             ]
       
@@ -483,6 +515,11 @@ class EditController: UIViewController, SetFilter {
                 cropView.centerYAnchor.constraint(equalTo: centG.centerYAnchor),
                 cropView.widthAnchor.constraint(equalTo: centG.widthAnchor, multiplier: 1),
                 cropView.heightAnchor.constraint(equalTo: centG.widthAnchor, multiplier: (imHeight/imWidth)),
+                
+                drawImg.centerXAnchor.constraint(equalTo: centG.centerXAnchor),
+                drawImg.centerYAnchor.constraint(equalTo: centG.centerYAnchor),
+                drawImg.widthAnchor.constraint(equalTo: centG.widthAnchor, multiplier: 1),
+                drawImg.heightAnchor.constraint(equalTo: centG.widthAnchor, multiplier: (imHeight/imWidth)),
                 
                 
             ]

@@ -52,11 +52,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "colormeapp/MNColorMeCells.swift"
-            timestampString = "520304607.309254"
+            timestampString = "520806489.854676"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "145"
-            endingLineNumber = "145"
+            startingLineNumber = "144"
+            endingLineNumber = "144"
             landmarkName = "sliderValueDidChange(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -116,11 +116,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "colormeapp/MNColorMeCells.swift"
-            timestampString = "520795600.488732"
+            timestampString = "520806489.854676"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "239"
-            endingLineNumber = "239"
+            startingLineNumber = "230"
+            endingLineNumber = "230"
             landmarkName = "awakeFromNib()"
             landmarkType = "7">
          </BreakpointContent>
