@@ -68,11 +68,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Pods/AKImageCropperView/AKImageCropperView/AKImageCropperView.swift"
-            timestampString = "520561466.035863"
+            timestampString = "520896227.945256"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "642"
-            endingLineNumber = "642"
+            startingLineNumber = "646"
+            endingLineNumber = "646"
             landmarkName = "reset(animationDuration:options:completion:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -84,11 +84,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Pods/AKImageCropperView/AKImageCropperView/AKImageCropperView.swift"
-            timestampString = "520561466.035863"
+            timestampString = "520896227.945256"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "643"
-            endingLineNumber = "643"
+            startingLineNumber = "647"
+            endingLineNumber = "647"
             landmarkName = "reset(animationDuration:options:completion:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -100,11 +100,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Pods/AKImageCropperView/AKImageCropperView/AKImageCropperView.swift"
-            timestampString = "520561466.035863"
+            timestampString = "520896227.945256"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "644"
-            endingLineNumber = "644"
+            startingLineNumber = "648"
+            endingLineNumber = "648"
             landmarkName = "reset(animationDuration:options:completion:)"
             landmarkType = "7">
          </BreakpointContent>

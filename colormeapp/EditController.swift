@@ -102,7 +102,14 @@ extension EditController: AKImageCropperViewDelegate {
             cropView.setInteraction = false
             updateFilters()
             filteredImageView.setNeedsLayout()
-            cropView.updateConstraints()
+            NSLayoutConstraint.deactivate(cropperImageViewConstraints)
+
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1, execute: {
+                self.size = self.cropView.croppedSize.size
+                self.cropConstraints()
+            })
+
+            
         }
     }
     
@@ -300,8 +307,6 @@ class EditController: UIViewController, SetFilter {
     var selectedImage:UIImage!
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         if paintTabActive {
-            
-
             if let e = event?.touches(for: self.cropView){
                 if let touch = e.first {
                     finalPoint = touch.preciseLocation(in: self.cropView)
@@ -354,33 +359,36 @@ class EditController: UIViewController, SetFilter {
     var drawImg:UIImageView = UIImageView()
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
 //        self.isDrawing = true
-        if let e = event?.touches(for: self.cropView){
-            if let touch = e.first{
-                if let d = self.cropView {
-                    
-                    let currentCoordinate = touch.preciseLocation(in: d)
-                    //UIGraphicsBeginImageContext(d.bounds.size)
-                    UIGraphicsBeginImageContextWithOptions(d.bounds.size, false, 0.0)
-                    drawImg.image?.draw(in: CGRect.init(x: 0, y: 0, width: d.bounds.width, height: d.bounds.height))
-                    UIGraphicsGetCurrentContext()?.move(to: finalPoint)
-                    UIGraphicsGetCurrentContext()?.addLine(to: currentCoordinate)
-                    UIGraphicsGetCurrentContext()?.setLineCap(CGLineCap.round)
-                    UIGraphicsGetCurrentContext()?.setLineWidth(lineWidth)
-                    UIGraphicsGetCurrentContext()?.setStrokeColor(red: red, green: green, blue: blue, alpha: 1.0)
-                    UIGraphicsGetCurrentContext()?.strokePath()
-                    let img = UIGraphicsGetImageFromCurrentImageContext()
-//                    singleton.imagePicked = img!
-//                    singleton.drawnImage = img!
-                    drawImg.image = img!
-//                    ApplyToCropView(image: img)
+        if paintTabActive {
+            if let e = event?.touches(for: self.cropView){
+                if let touch = e.first{
+                    if let d = self.cropView {
+                        
+                        let currentCoordinate = touch.preciseLocation(in: d)
+                        //UIGraphicsBeginImageContext(d.bounds.size)
+                        UIGraphicsBeginImageContextWithOptions(d.bounds.size, false, 0.0)
+                        drawImg.image?.draw(in: CGRect.init(x: 0, y: 0, width: d.bounds.width, height: d.bounds.height))
+                        UIGraphicsGetCurrentContext()?.move(to: finalPoint)
+                        UIGraphicsGetCurrentContext()?.addLine(to: currentCoordinate)
+                        UIGraphicsGetCurrentContext()?.setLineCap(CGLineCap.round)
+                        UIGraphicsGetCurrentContext()?.setLineWidth(lineWidth)
+                        UIGraphicsGetCurrentContext()?.setStrokeColor(red: red, green: green, blue: blue, alpha: 1.0)
+                        UIGraphicsGetCurrentContext()?.strokePath()
+                        let img = UIGraphicsGetImageFromCurrentImageContext()
+                        //                    singleton.imagePicked = img!
+                        //                    singleton.drawnImage = img!
+                        drawImg.image = img!
+                        //                    ApplyToCropView(image: img)
                         //no,will combine image at save.
-//                    filteredImageView.setNeedsLayout()
-                    
-                    UIGraphicsEndImageContext()
-                    finalPoint = currentCoordinate
+                        //                    filteredImageView.setNeedsLayout()
+                        
+                        UIGraphicsEndImageContext()
+                        finalPoint = currentCoordinate
+                    }
                 }
             }
         }
+
         
     }
     
@@ -399,6 +407,64 @@ class EditController: UIViewController, SetFilter {
 
 
     }
+    func cropConstraints() {
+        cropView.backgroundColor = UIColor.cyan
+        
+        
+        print(size)
+        
+        if size.height > size.width {
+            //slim
+            imWidth = self.view.frame.width * 0.9 * (size.width/size.height)
+            imHeight = imWidth * (size.height/size.width)
+            
+            cropperImageViewConstraints = [
+                
+                centG.topAnchor.constraint(equalTo: view.topAnchor, constant: appDelegate.navigationController.navigationBar.frame.height),
+                centG.bottomAnchor.constraint(equalTo: controlsLayoutGuide.topAnchor),
+                centG.leftAnchor.constraint(equalTo: view.leftAnchor),
+                centG.rightAnchor.constraint(equalTo: view.rightAnchor),
+                
+                cropView.centerXAnchor.constraint(equalTo: centG.centerXAnchor),
+                cropView.centerYAnchor.constraint(equalTo: centG.centerYAnchor),
+                cropView.heightAnchor.constraint(equalTo: centG.heightAnchor, multiplier: 1),
+                cropView.widthAnchor.constraint(equalTo: centG.heightAnchor, multiplier: (imWidth/imHeight)),
+                
+                drawImg.centerXAnchor.constraint(equalTo: centG.centerXAnchor),
+                drawImg.centerYAnchor.constraint(equalTo: centG.centerYAnchor),
+                drawImg.heightAnchor.constraint(equalTo: centG.heightAnchor, multiplier: 1),
+                drawImg.widthAnchor.constraint(equalTo: centG.heightAnchor, multiplier: (imWidth/imHeight)),
+            ]
+            
+        } else {
+            //wide
+            imHeight = self.view.frame.width * 0.9 * (size.height/size.width)
+            imWidth = imHeight * (size.width/size.height)
+            
+            cropperImageViewConstraints = [
+                
+                centG.topAnchor.constraint(equalTo: view.topAnchor, constant: appDelegate.navigationController.navigationBar.frame.height),
+                centG.bottomAnchor.constraint(equalTo: controlsLayoutGuide.topAnchor),
+                centG.leftAnchor.constraint(equalTo: view.leftAnchor),
+                centG.rightAnchor.constraint(equalTo: view.rightAnchor),
+                cropView.centerXAnchor.constraint(equalTo: centG.centerXAnchor),
+                cropView.centerYAnchor.constraint(equalTo: centG.centerYAnchor),
+                cropView.widthAnchor.constraint(equalTo: centG.widthAnchor, multiplier: 1),
+                cropView.heightAnchor.constraint(equalTo: centG.widthAnchor, multiplier: (imHeight/imWidth)),
+                
+                drawImg.centerXAnchor.constraint(equalTo: centG.centerXAnchor),
+                drawImg.centerYAnchor.constraint(equalTo: centG.centerYAnchor),
+                drawImg.widthAnchor.constraint(equalTo: centG.widthAnchor, multiplier: 1),
+                drawImg.heightAnchor.constraint(equalTo: centG.widthAnchor, multiplier: (imHeight/imWidth)),
+                
+                
+            ]
+            
+        }
+        
+        NSLayoutConstraint.activate(cropperImageViewConstraints)
+    }
+    var centG:UILayoutGuide!
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -443,8 +509,8 @@ class EditController: UIViewController, SetFilter {
         //        paintControlsText = ["draw", "paint", "text", "undo"]
 
         
-        paintControlsImages = [#imageLiteral(resourceName: "one-finger-click"),#imageLiteral(resourceName: "one-finger-click"),#imageLiteral(resourceName: "one-finger-click"), #imageLiteral(resourceName: "one-finger-click"),#imageLiteral(resourceName: "one-finger-click"),#imageLiteral(resourceName: "one-finger-click")]
-        paintControlsText = ["sky", "pink", "red", "white", "blue", "black"]
+        paintControlsImages = [#imageLiteral(resourceName: "reload-2"),#imageLiteral(resourceName: "one-finger-click"),#imageLiteral(resourceName: "one-finger-click"),#imageLiteral(resourceName: "one-finger-click"), #imageLiteral(resourceName: "one-finger-click"),#imageLiteral(resourceName: "one-finger-click"),#imageLiteral(resourceName: "one-finger-click")]
+        paintControlsText = ["reset", "sky", "pink", "red", "white", "blue", "black"]
 
         adjustControlsImages = [[#imageLiteral(resourceName: "haze-1"),#imageLiteral(resourceName: "brightness-symbol"),#imageLiteral(resourceName: "contrast-symbol")],[#imageLiteral(resourceName: "pie-chart"), #imageLiteral(resourceName: "circular-frames"),#imageLiteral(resourceName: "star-1")], [#imageLiteral(resourceName: "cloudy-1")],[#imageLiteral(resourceName: "spray-bottle-with-dots") ],[#imageLiteral(resourceName: "snowflake")],[#imageLiteral(resourceName: "devil")]]
         adjustControlsText = [["saturation","brightness", "contrast"] ,["radius","shadows","highlights"], ["exposure"], ["colors"],["temperature"], ["intensity"]]
@@ -464,7 +530,7 @@ class EditController: UIViewController, SetFilter {
         filterControlsCollection.delegate = self
         
         
-        let centG:UILayoutGuide = UILayoutGuide()
+        centG = UILayoutGuide()
         view.addLayoutGuide(centG)
         
         imageViewConstraints = [
@@ -474,57 +540,8 @@ class EditController: UIViewController, SetFilter {
             filteredImageView.bottomAnchor.constraint(equalTo: controlsLayoutGuide.topAnchor),
             filteredImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor)
         ]
-           size = (self.cropView.image?.size)!
-    
-        if size.height > size.width {
-            //slim
-            imWidth = self.view.frame.width * 0.9 * (size.width/size.height)
-            imHeight = imWidth * (size.height/size.width)
-            
-            cropperImageViewConstraints = [
-                
-                centG.topAnchor.constraint(equalTo: view.topAnchor, constant: appDelegate.navigationController.navigationBar.frame.height),
-                centG.bottomAnchor.constraint(equalTo: controlsLayoutGuide.topAnchor),
-                centG.leftAnchor.constraint(equalTo: view.leftAnchor),
-                centG.rightAnchor.constraint(equalTo: view.rightAnchor),
-                cropView.centerXAnchor.constraint(equalTo: centG.centerXAnchor),
-                cropView.centerYAnchor.constraint(equalTo: centG.centerYAnchor),
-                cropView.heightAnchor.constraint(equalTo: centG.heightAnchor, multiplier: 1),
-                cropView.widthAnchor.constraint(equalTo: centG.heightAnchor, multiplier: (imWidth/imHeight)),
-                
-                drawImg.centerXAnchor.constraint(equalTo: centG.centerXAnchor),
-                drawImg.centerYAnchor.constraint(equalTo: centG.centerYAnchor),
-                drawImg.heightAnchor.constraint(equalTo: centG.heightAnchor, multiplier: 1),
-                drawImg.widthAnchor.constraint(equalTo: centG.heightAnchor, multiplier: (imWidth/imHeight)),
-                
-                
-            ]
-      
-        } else {
-            //wide
-            imHeight = self.view.frame.width * 0.9 * (size.height/size.width)
-            imWidth = imHeight * (size.width/size.height)
-            
-            cropperImageViewConstraints = [
-                
-                centG.topAnchor.constraint(equalTo: view.topAnchor, constant: appDelegate.navigationController.navigationBar.frame.height),
-                centG.bottomAnchor.constraint(equalTo: controlsLayoutGuide.topAnchor),
-                centG.leftAnchor.constraint(equalTo: view.leftAnchor),
-                centG.rightAnchor.constraint(equalTo: view.rightAnchor),
-                cropView.centerXAnchor.constraint(equalTo: centG.centerXAnchor),
-                cropView.centerYAnchor.constraint(equalTo: centG.centerYAnchor),
-                cropView.widthAnchor.constraint(equalTo: centG.widthAnchor, multiplier: 1),
-                cropView.heightAnchor.constraint(equalTo: centG.widthAnchor, multiplier: (imHeight/imWidth)),
-                
-                drawImg.centerXAnchor.constraint(equalTo: centG.centerXAnchor),
-                drawImg.centerYAnchor.constraint(equalTo: centG.centerYAnchor),
-                drawImg.widthAnchor.constraint(equalTo: centG.widthAnchor, multiplier: 1),
-                drawImg.heightAnchor.constraint(equalTo: centG.widthAnchor, multiplier: (imHeight/imWidth)),
-                
-                
-            ]
-          
-        }
+
+
 
         
 
@@ -622,9 +639,11 @@ class EditController: UIViewController, SetFilter {
         controlsStack.addSubview(paintControlsCollection)
         controlsStack.addSubview(adjustControlsCollection)
         controlsStack.addSubview(filterControlsCollection)
+        size = (self.cropView.image?.size)!
+        cropConstraints()
         
         NSLayoutConstraint.activate(imageViewConstraints)
-        NSLayoutConstraint.activate(cropperImageViewConstraints)
+//        NSLayoutConstraint.activate(cropperImageViewConstraints)
         NSLayoutConstraint.activate(controlsLayoutGuideConstraints)
         NSLayoutConstraint.activate(controlsStackConstraints)
         
@@ -867,47 +886,51 @@ extension EditController: UICollectionViewDelegate, UICollectionViewDelegateFlow
         }
         
         if collectionView == paintControlsCollection {
-            let cell = paintControlsCollection.cellForItem(at: IndexPath(row: indexPath.item, section: 0))
-            UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 2, initialSpringVelocity: 3, options: .curveEaseIn, animations: {
-                for i in 0 ..< self.paintControlsText.count {
-                    if i != indexPath.item {
-                        let cell = self.paintControlsCollection.cellForItem(at: IndexPath(row: i, section: 0))
-                        cell?.transform = CGAffineTransform(scaleX: 1, y: 1)
+            if indexPath.item != 0 { //does not equal 0. we dont want to animate the reset button
+                let cell = paintControlsCollection.cellForItem(at: IndexPath(row: indexPath.item, section: 0))
+                UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 2, initialSpringVelocity: 3, options: .curveEaseIn, animations: {
+                    for i in 0 ..< self.paintControlsText.count {
+                        if i != indexPath.item {
+                            let cell = self.paintControlsCollection.cellForItem(at: IndexPath(row: i, section: 0))
+                            cell?.transform = CGAffineTransform(scaleX: 1, y: 1)
+                        }
                     }
-                }
-                cell?.transform = CGAffineTransform(scaleX: 1.1, y: 1.1)
-            }, completion: nil)
-           
+                    cell?.transform = CGAffineTransform(scaleX: 1.1, y: 1.1)
+                }, completion: nil)
+            }
+
             switch indexPath.item {
             case 0:
-
+                //reset control
+                drawImg.image = UIImage()
+            case 1:
                 //sky
                 red = 0.4
                 green = 0.6
                 blue = 1
-            case 1:
+            case 2:
 
                 //pink
                 red = 1
                 green = 0.4
                 blue = 0.6
-            case 2:
+            case 3:
                 //red
                 red = 1
                 green = 0
                 blue = 0
 
-            case 3:
+            case 4:
                 //white
                 red = 1
                 green = 1
                 blue = 1
-            case 4:
+            case 5:
                 //blue
                 red = 0
                 green = 0
                 blue = 1
-            case 5:
+            case 6:
                 //black
                 red = 0
                 green = 0
