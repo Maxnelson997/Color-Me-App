@@ -23,9 +23,9 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>
-	<string></string>
+	<string>Take a picture to edit directly from the app</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string></string>
+	<string>Access your photos so you can edit them</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Fonts/EXO_2_OTF/Exo2-SemiBoldItalic.otf</string>

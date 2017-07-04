@@ -105,6 +105,7 @@ extension EditController: AKImageCropperViewDelegate {
             NSLayoutConstraint.deactivate(cropperImageViewConstraints)
 
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1, execute: {
+
                 self.size = self.cropView.croppedSize.size
                 self.cropConstraints()
             })
@@ -114,12 +115,15 @@ extension EditController: AKImageCropperViewDelegate {
     }
     
     func showHideOverlayAction() {
+        
         if cropView.isOverlayViewActive {
             cropView.hideOverlayView(animationDuration: 0.3)
             cropView.setInteraction = false
         } else {
+//               resetAction()
             cropView.showOverlayView(animationDuration: 0.3)
             cropView.setInteraction = true
+        
         }
     }
     
@@ -132,15 +136,25 @@ extension EditController: AKImageCropperViewDelegate {
         })
     }
     
+    func removeEffects() {
+        singleton.imagePicked = self.veryOriginalImage
+        updateFilters()
+        filteredImageView.resetFilters()
+        filteredImageView.currentAppliedFilter = "reset"
+    }
     
     func resetAction() {
         singleton.imagePicked = self.veryOriginalImage
         cropView.reset(animationDuration: 0)
         angle = 0.0
-        updateFilters()
-        filteredImageView.resetFilters()
-        filteredImageView.currentAppliedFilter = "reset"
+
         filteredImageView.setNeedsLayout()
+        NSLayoutConstraint.deactivate(cropperImageViewConstraints)
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1, execute: {
+            self.size = self.resetOriginalSize
+            print(self.size)
+            self.cropConstraints()
+        })
     }
     
     
@@ -149,7 +163,7 @@ extension EditController: AKImageCropperViewDelegate {
 class EditController: UIViewController, SetFilter {
     var angle: Double = 0.0
     var applyyet:Bool = false
-    
+    var resetOriginalSize:CGSize!
     var veryOriginalImage:UIImage!
     var singleton = ColorMeSingleton.sharedInstance
     var imageToSave:UIImage!
@@ -409,8 +423,9 @@ class EditController: UIViewController, SetFilter {
     }
     func cropConstraints() {
         cropView.backgroundColor = UIColor.cyan
-        
-        
+        //reset draw img..
+        self.drawImg.image = UIImage()
+
         print(size)
         
         if size.height > size.width {
@@ -432,8 +447,8 @@ class EditController: UIViewController, SetFilter {
                 
                 drawImg.centerXAnchor.constraint(equalTo: centG.centerXAnchor),
                 drawImg.centerYAnchor.constraint(equalTo: centG.centerYAnchor),
-                drawImg.heightAnchor.constraint(equalTo: centG.heightAnchor, multiplier: 1),
-                drawImg.widthAnchor.constraint(equalTo: centG.heightAnchor, multiplier: (imWidth/imHeight)),
+                drawImg.heightAnchor.constraint(equalTo: cropView.heightAnchor),
+                drawImg.widthAnchor.constraint(equalTo: cropView.widthAnchor),
             ]
             
         } else {
@@ -451,11 +466,11 @@ class EditController: UIViewController, SetFilter {
                 cropView.centerYAnchor.constraint(equalTo: centG.centerYAnchor),
                 cropView.widthAnchor.constraint(equalTo: centG.widthAnchor, multiplier: 1),
                 cropView.heightAnchor.constraint(equalTo: centG.widthAnchor, multiplier: (imHeight/imWidth)),
-                
                 drawImg.centerXAnchor.constraint(equalTo: centG.centerXAnchor),
                 drawImg.centerYAnchor.constraint(equalTo: centG.centerYAnchor),
-                drawImg.widthAnchor.constraint(equalTo: centG.widthAnchor, multiplier: 1),
-                drawImg.heightAnchor.constraint(equalTo: centG.widthAnchor, multiplier: (imHeight/imWidth)),
+                drawImg.heightAnchor.constraint(equalTo: cropView.heightAnchor),
+                drawImg.widthAnchor.constraint(equalTo: cropView.widthAnchor),
+                
                 
                 
             ]
@@ -499,8 +514,8 @@ class EditController: UIViewController, SetFilter {
         view.addSubview(drawImg)
 //        cropView.isUserInteractionEnabled = false
         
-        mainControlsImages = [#imageLiteral(resourceName: "move"),#imageLiteral(resourceName: "rgb-symbol"),#imageLiteral(resourceName: "settings-2"),#imageLiteral(resourceName: "bucket-with-paint")]
-        mainControlsText = ["crop", "filters", "adjust", "color"]
+        mainControlsImages = [#imageLiteral(resourceName: "reload-2"),#imageLiteral(resourceName: "move"),#imageLiteral(resourceName: "rgb-symbol"),#imageLiteral(resourceName: "settings-2"),#imageLiteral(resourceName: "bucket-with-paint")]
+        mainControlsText = ["reset all","crop", "filters", "adjust", "color"]
         
         cropControlsImages = [#imageLiteral(resourceName: "reload-2") ,#imageLiteral(resourceName: "fit"),#imageLiteral(resourceName: "reload-4"),#imageLiteral(resourceName: "check")]
         cropControlsText = ["reset", "crop", "rotate", "finish"]
@@ -626,7 +641,7 @@ class EditController: UIViewController, SetFilter {
             mainControlsCollection.bottomAnchor.constraint(equalTo: mainControlsLayoutGuide.bottomAnchor),
             mainControlsCollection.topAnchor.constraint(equalTo: mainControlsLayoutGuide.topAnchor),
             mainControlsCollection.heightAnchor.constraint(equalToConstant: 70),
-            mainControlsCollection.widthAnchor.constraint(equalToConstant: 60*4 + 55)
+            mainControlsCollection.widthAnchor.constraint(equalToConstant: 60*5 + 80)
         ]
         
         
@@ -640,6 +655,7 @@ class EditController: UIViewController, SetFilter {
         controlsStack.addSubview(adjustControlsCollection)
         controlsStack.addSubview(filterControlsCollection)
         size = (self.cropView.image?.size)!
+
         cropConstraints()
         
         NSLayoutConstraint.activate(imageViewConstraints)
@@ -655,9 +671,9 @@ class EditController: UIViewController, SetFilter {
         NSLayoutConstraint.activate(mainControlsLayoutGuideConstraints)
         NSLayoutConstraint.activate(mainControlsConstraints)
         
-        showControls(cvTag: 0)
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 2, execute: {
-            
+        showControls(cvTag: 1)
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1, execute: {
+            self.resetOriginalSize = self.cropView.frame.size
         })
  
         self.cent = self.cropView.center
@@ -667,7 +683,7 @@ class EditController: UIViewController, SetFilter {
     var cent:CGPoint!
     
     override func viewDidDisappear(_ animated: Bool) {
-        showControls(cvTag: 0)
+        showControls(cvTag: 1)
     }
     
     
@@ -676,19 +692,19 @@ class EditController: UIViewController, SetFilter {
         var showThisCollection:ControlCollection!
         
         switch cvTag {
-        case 0:
+        case 1:
             hideTheseCollections = [self.paintControlsCollection, self.adjustControlsCollection, self.filterControlsCollection]
             showThisCollection = cropControlsCollection
             paintTabActive = false
-        case 1:
+        case 2:
             hideTheseCollections = [self.cropControlsCollection, self.paintControlsCollection, self.adjustControlsCollection]
             showThisCollection = self.filterControlsCollection
             paintTabActive = false
-        case 2:
+        case 3:
             hideTheseCollections = [self.cropControlsCollection, self.paintControlsCollection, self.filterControlsCollection]
             showThisCollection = self.adjustControlsCollection
             paintTabActive = false
-        case 3:
+        case 4:
             paintTabActive = true
             hideTheseCollections = [self.cropControlsCollection, self.adjustControlsCollection, self.filterControlsCollection]
             showThisCollection = self.paintControlsCollection
@@ -835,6 +851,9 @@ extension EditController: UICollectionViewDelegate, UICollectionViewDelegateFlow
         if collectionView == paintControlsCollection {
             return paintControlsText.count
         }
+        if collectionView == mainControlsCollection {
+            return mainControlsText.count
+        }
         return 4
     }
     func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -858,13 +877,17 @@ extension EditController: UICollectionViewDelegate, UICollectionViewDelegateFlow
         if collectionView == mainControlsCollection {
             switch indexPath.item {
             case 0:
-                showControls(cvTag: 0)
+                //reset all filters adjust values and crops
+                resetAction()
+                removeEffects()
             case 1:
                 showControls(cvTag: 1)
             case 2:
                 showControls(cvTag: 2)
             case 3:
                 showControls(cvTag: 3)
+            case 4:
+                showControls(cvTag: 4)
             default:
                 break
             }

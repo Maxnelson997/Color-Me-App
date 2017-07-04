@@ -54,12 +54,13 @@ class CameraController: UIViewController, UINavigationControllerDelegate, UIImag
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         if let img = info[UIImagePickerControllerOriginalImage] as? UIImage {
             print("original")
+            print(img.size)
             singleton.imagePicked = img
         } else {
             print("not an image")
         }
         self.dismiss(animated: true, completion: {
-            self.appDelegate.goToMenuController()
+  
             self.appDelegate.goToEditController()
         })
     }
