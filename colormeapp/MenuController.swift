@@ -85,11 +85,11 @@ class MenuController: UIViewController, UIImagePickerControllerDelegate, UINavig
     
     func animateBg(img:UIImage) {
         UIView.animate(withDuration: 1, animations: {
-            self.background.alpha = 0.1
+            self.background.alpha = 0
             
         }, completion: { finished in
             self.background.image = img
-            UIView.animate(withDuration: 1, delay: 0, options: UIViewAnimationOptions.curveEaseOut, animations: {
+            UIView.animate(withDuration: 1, delay: 0, options: UIViewAnimationOptions.curveEaseIn, animations: {
                 self.background.alpha = 1
             }, completion: { finished in
                 DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 3, execute: {
