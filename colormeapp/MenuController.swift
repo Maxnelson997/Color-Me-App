@@ -78,17 +78,55 @@ class MenuController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     
     override func viewDidDisappear(_ animated: Bool) {
-
+        inMenu = false
     }
     
+    var inMenu:Bool = true
+    
+    func animateBg(img:UIImage) {
+        UIView.animate(withDuration: 1, animations: {
+            self.background.alpha = 0.1
+            
+        }, completion: { finished in
+            self.background.image = img
+            UIView.animate(withDuration: 1, delay: 0, options: UIViewAnimationOptions.curveEaseOut, animations: {
+                self.background.alpha = 1
+            }, completion: { finished in
+                DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 4, execute: {
+                    self.animateBg(img: self.bgArray[self.bgIndex])
+                })
+            })
+
+            self.prevBGIndex = self.bgIndex
+            self.bgIndex += 1
+            if self.bgIndex == 3 {
+                self.bgIndex = 0
+            }
+            
+        })
+ 
+    }
+    
+    var bgArray:[UIImage] = [#imageLiteral(resourceName: "8A403A02-9055-4F63-A7AA-23CDBC4883A0"), #imageLiteral(resourceName: "jer-1"), #imageLiteral(resourceName: "pol")]
+    var prevBGIndex:Int = -1
+    
+    var bgIndex:Int = 0
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = UIColor.MNGray
+        
+
+        
+        
+//        view.backgroundColor = UIColor.MNGray
+        view.backgroundColor = UIColor.white
         background = UIImageView(frame: view.frame)
-        background.image = #imageLiteral(resourceName: "IMG_0534") //#imageLiteral(resourceName: "Colorful-Cube-Block-Art-Pattern-iphone-6-wallpaper-ilikewallpaper_com")
+        background.image = #imageLiteral(resourceName: "pol")//#imageLiteral(resourceName: "8A403A02-9055-4F63-A7AA-23CDBC4883A0")//#imageLiteral(resourceName: "jer-1")//#imageLiteral(resourceName: "pol")
         background.contentMode = .scaleAspectFill
-        background.transform = CGAffineTransform(scaleX: 5, y: 5)
+        background.transform = CGAffineTransform(scaleX: 1, y: 1)
         view.addSubview(background)
+        self.animateBg(img: self.bgArray[self.bgIndex])
+
+
         
         let vev = UIVisualEffectView(effect: UIBlurEffect(style: .light))
         vev.layer.cornerRadius = 0
@@ -118,7 +156,8 @@ class MenuController: UIViewController, UIImagePickerControllerDelegate, UINavig
                 self.recentCV.alpha = 0
                 DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1, execute: {
                 self.recentCV.transform = CGAffineTransform(scaleX: 0.2, y: 0.1)
-                
+
+        
                 })
             })
             
@@ -127,6 +166,7 @@ class MenuController: UIViewController, UIImagePickerControllerDelegate, UINavig
         })
 
         
+
         
 
     }
