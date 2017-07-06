@@ -12,7 +12,7 @@ import UIKit
 class MNSmoothThreshold: CIFilter
 {
     var inputImage : CIImage?
-    var inputEdgeO: CGFloat = 0.25
+    var inputEdgeO: CGFloat = 0.1
     var inputEdge1: CGFloat = 0.5
     
     var colorKernel = CIColorKernel(string:
@@ -22,12 +22,20 @@ class MNSmoothThreshold: CIFilter
             "    float threshold = smoothstep(inputEdgeO, inputEdge1, luma);" +
             "    return vec4(threshold, threshold, threshold, 1.0);" +
         "}"
+        
+//        "kernel vec4 chromaKey( __sample s, __color c, float threshold ) { \n" +
+//            "  vec4 diff = s.rgba - c;\n" +
+//            "  float distance = length( diff );\n" +
+//            "  float alpha = compare( distance - threshold, 0.0, 1.0 );\n" +
+//            "  return vec4( s.rgb, alpha ); \n" +
+//        "}"
     )
     
         override func setDefaults()
         {
+            inputEdgeO = 0.1
             inputEdge1 = 0.5
-            inputEdgeO = 0.25
+    
         }
     
     override var outputImage: CIImage!

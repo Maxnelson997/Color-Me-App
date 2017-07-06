@@ -1086,16 +1086,16 @@ extension EditController {
         let super_pack:[String] = ["CIPhotoEffectProcess"]
         let summer_pack:[String] = ["CISepiaTone", "CIPhotoEffectTransfer", "CIPhotoEffectInstant", "CIPhotoEffectFade"]
         let sunlit_pack:[String] = ["CIPhotoEffectChrome"]
-        let shady_pack:[String] = ["CIPhotoEffectNoir", "CIPhotoEffectTonal"]
-        let glow_pack:[String] = ["MNEdgeGlow", "MNMono", "MNSmoothThreshold"]
+        let shady_pack:[String] = ["MNSmoothThreshold","CIPhotoEffectNoir", "CIPhotoEffectTonal"]
+        let glow_pack:[String] = ["MNEdgeGlow", "MNMono"]
         let cartoon_pack:[String] = ["MNKuwahara"]
         
         
         let super_names:[String] = ["double"]
         let summer_names:[String] = ["plastic", "nitefest", "berry", "sinking"]
         let sunlit_names:[String] = ["blaze"]
-        let shady_names:[String] = ["elayno","nitetone"]
-        let glow_names:[String] = ["trimmed", "space", "smooth"]
+        let shady_names:[String] = ["thresh","elayno","nitetone"]
+        let glow_names:[String] = ["trimmed", "space"]
         let cartoon_names:[String] = ["cartoon"]
         
         //rose filter pack
