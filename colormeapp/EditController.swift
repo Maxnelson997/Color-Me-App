@@ -8,6 +8,7 @@
 
 import UIKit
 import AKImageCropperView
+import PopupDialog
 
 extension EditController: UIImagePickerControllerDelegate {
     
@@ -50,12 +51,33 @@ extension EditController: UIImagePickerControllerDelegate {
  
         
         //unk now we can save yu guys
-  
         let activityViewController:UIActivityViewController = UIActivityViewController(activityItems: [UIImage(data: imageToSave.generateJPEGRepresentation())!], applicationActivities: nil)
         activityViewController.popoverPresentationController?.barButtonItem = (btn)
         activityViewController.modalPresentationStyle = .popover
-
-        self.present(activityViewController, animated: true, completion: nil)
+        self.present(activityViewController, animated: true, completion: { })
+        activityViewController.completionWithItemsHandler = { (activityType: UIActivityType?, completed: Bool, returnedItems: [Any]?, error: Error?) -> Void in
+            if completed == true {
+                
+                self.pop = PopupDialog(title: "Success", message: "image successfuly shared/saved")
+                self.present(self.pop, animated: true, completion: {
+                    
+                })
+                DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 2, execute: {
+                    self.pop.dismiss()
+                })
+                
+            } else {
+                
+                self.pop = PopupDialog(title: "Cancelled/Error", message: "User cancelled or an error occured")
+                self.present(self.pop, animated: true, completion: {
+                    
+                })
+                DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 2, execute: {
+                    self.pop.dismiss()
+                })
+                
+            }
+        }
         
     }
     
@@ -141,6 +163,16 @@ extension EditController: AKImageCropperViewDelegate {
         updateFilters()
         filteredImageView.resetFilters()
         filteredImageView.currentAppliedFilter = "reset"
+        
+        
+        self.pop = PopupDialog(title: "Changes Reverted", message: "All filters, edits, and drawings removed.")
+        self.present(self.pop, animated: true, completion: {
+            
+        })
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 2, execute: {
+            self.pop.dismiss()
+        })
+        
     }
     
     func resetAction() {
@@ -150,6 +182,7 @@ extension EditController: AKImageCropperViewDelegate {
 
         filteredImageView.setNeedsLayout()
         NSLayoutConstraint.deactivate(cropperImageViewConstraints)
+
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1, execute: {
             self.size = self.resetOriginalSize
             print(self.size)
@@ -167,7 +200,7 @@ class EditController: UIViewController, SetFilter {
     var veryOriginalImage:UIImage!
     var singleton = ColorMeSingleton.sharedInstance
     var imageToSave:UIImage!
-    
+    var pop:PopupDialog = PopupDialog(title: "hi", message: "pls wait.")
     func ApplyToCropView(image: UIImage!) {
         self.cropView.image = image
         self.imageToSave = image
@@ -422,7 +455,7 @@ class EditController: UIViewController, SetFilter {
 
     }
     func cropConstraints() {
-        cropView.backgroundColor = UIColor.cyan
+//        cropView.backgroundColor = UIColor.cyan
         //reset draw img..
         self.drawImg.image = UIImage()
 
@@ -896,6 +929,13 @@ extension EditController: UICollectionViewDelegate, UICollectionViewDelegateFlow
         if collectionView == cropControlsCollection {
             switch indexPath.item {
             case 0:
+                self.pop = PopupDialog(title: "Crop Removed", message: "Crops removed.")
+                self.present(self.pop, animated: true, completion: {
+                    
+                })
+                DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1.2, execute: {
+                    self.pop.dismiss()
+                })
                 resetAction()
             case 1:
                 showHideOverlayAction()
@@ -926,6 +966,13 @@ extension EditController: UICollectionViewDelegate, UICollectionViewDelegateFlow
             case 0:
                 //reset control
                 drawImg.image = UIImage()
+                self.pop = PopupDialog(title: "Drawings Removed", message: "RIP to your drawings.")
+                self.present(self.pop, animated: true, completion: {
+                    
+                })
+                DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1.2, execute: {
+                    self.pop.dismiss()
+                })
             case 1:
                 //sky
                 red = 0.4

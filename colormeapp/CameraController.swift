@@ -13,8 +13,26 @@ class CameraController: UIViewController, UINavigationControllerDelegate, UIImag
     var singleton = ColorMeSingleton.sharedInstance
     var appDelegate:AppDelegate!
     var background:UIImageView!
+//
+//    var pop:PopupDialog = PopupDialog(title: "hi", message: "pls wait.")
     
+    override func viewDidDisappear(_ animated: Bool) {
+//        if singleton.didTakePic {
+//            self.pop = PopupDialog(title: "Picture Taken", message: "Wait a second while we prepare your image.")
+//            self.present(self.pop, animated: true, completion: {
+//                
+//            })
+//
+//            singleton.didTakePic = false
+//    
+//            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1, execute: {
+//                self.pop.dismiss()
+//            })
+//        }
+    }
     override func viewDidAppear(_ animated: Bool) {
+        
+    
         if singleton.imageNotPicked {
             if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.camera) {
                 let imagePicker = UIImagePickerController()
@@ -34,14 +52,14 @@ class CameraController: UIViewController, UINavigationControllerDelegate, UIImag
         background.image = #imageLiteral(resourceName: "IMG_0534")
         background.backgroundColor = UIColor.MNGray
         background.contentMode = .scaleAspectFill
-        background.transform = CGAffineTransform(scaleX: 5, y: 5)
+        background.transform = CGAffineTransform(scaleX: 1, y: 1)
         view.addSubview(background)
         let vev = UIVisualEffectView(effect: UIBlurEffect(style: .light))
         vev.layer.cornerRadius = 0
         vev.layer.masksToBounds = true
         vev.frame = view.frame
         vev.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        background.addSubview(vev)
+      //  background.addSubview(vev)
         appDelegate = UIApplication.shared.delegate as! AppDelegate
         view.backgroundColor = UIColor.MNGray
     }
@@ -52,16 +70,20 @@ class CameraController: UIViewController, UINavigationControllerDelegate, UIImag
     }
     //save the selected or taken image
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-        if let img = info[UIImagePickerControllerOriginalImage] as? UIImage {
+        
+        if let img = info[UIImagePickerControllerEditedImage] as? UIImage {
             print("original")
             print(img.size)
+            background.image = img
             singleton.imagePicked = img
+            
         } else {
             print("not an image")
         }
         self.dismiss(animated: true, completion: {
-  
-            self.appDelegate.goToEditController()
+            self.singleton.didTakePic = true
+            self.appDelegate.goToMenuController()
+           
         })
     }
     

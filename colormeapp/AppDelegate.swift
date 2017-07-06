@@ -12,7 +12,7 @@ import Font_Awesome_Swift
 import AKImageCropperView
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, UIImagePickerControllerDelegate {
 
     var window: UIWindow?
     var navigationController:UINavigationController!

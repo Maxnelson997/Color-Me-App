@@ -16,6 +16,7 @@ class ColorMeSingleton {
     private init() {}
     
     var imageNotPicked:Bool = true
+    var didTakePic:Bool = false
     
     var imagePicked:UIImage = #imageLiteral(resourceName: "pol") {
         didSet {

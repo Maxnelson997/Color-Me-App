@@ -8,6 +8,7 @@
 
 import UIKit
 import Photos
+import PopupDialog
 
 class MenuController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
@@ -54,27 +55,80 @@ class MenuController: UIViewController, UIImagePickerControllerDelegate, UINavig
     var recentButton:PSButton!
     var recentButtonConstraints:[NSLayoutConstraint]!
     
+    var setDelegate:Bool = false
+    
+    var pop:PopupDialog = PopupDialog(title: "Picture Taken", message: "Wait a second while we get your picture ready.")
+    var pop1:PopupDialog = PopupDialog(title: "Getting Photos.", message: "It takes a second the first time.")
+    
     override func viewDidAppear(_ animated: Bool) {
         singleton.filters = [CIFilter(name: "CIColorControls")!, CIFilter(name: "CIHighlightShadowAdjust")!, CIFilter(name: "CIExposureAdjust")!, CIFilter(name: "CIHueAdjust")!]
         singleton.imageNotPicked = true
+        if singleton.didTakePic {
+            self.singleton.didTakePic = false
+            self.present(self.pop, animated: true, completion: {
+                
+            })
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1.5, execute: {
+                self.pop.dismiss()
+                self.appDelegate.goToEditController()
+                
+            })
+        }
+
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-  
-        grabPhotos()
-        appDelegate = UIApplication.shared.delegate as! AppDelegate
-        
         view.backgroundColor = UIColor.MNGray
-        setupUIandConstraints()
+        background = UIImageView(frame: view.frame)
+        background.image = #imageLiteral(resourceName: "IMG_0534") //#imageLiteral(resourceName: "Colorful-Cube-Block-Art-Pattern-iphone-6-wallpaper-ilikewallpaper_com")
+        background.contentMode = .scaleAspectFill
+        background.transform = CGAffineTransform(scaleX: 5, y: 5)
+        view.addSubview(background)
         
-        background.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.animate)))
-        background.isUserInteractionEnabled = true
-       
+        let vev = UIVisualEffectView(effect: UIBlurEffect(style: .light))
+        vev.layer.cornerRadius = 0
+        vev.layer.masksToBounds = true
+        vev.frame = view.frame
+        vev.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        background.addSubview(vev)
         
-        recentButton.addTarget(self, action: #selector(self.animate), for: .touchUpInside)
-        photosButton.addTarget(self, action: #selector(self.photoPressed), for: .touchUpInside)
-        cameraButton.addTarget(appDelegate.navigationController, action: #selector(appDelegate.navigationController.popViewController(animated:)), for: .touchUpInside)
+        blurView  = UIVisualEffectView(effect: UIBlurEffect(style: .dark))
+        blurView.alpha = 0
+        blurView.frame = view.frame
+        background.addSubview(blurView)
+        snatchImages(completion: {
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1, execute: {
+                self.setupUIandConstraints()
+                
+                self.appDelegate = UIApplication.shared.delegate as! AppDelegate
+                
+                self.background.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.animate)))
+                self.background.isUserInteractionEnabled = true
+                
+                
+                self.recentButton.addTarget(self, action: #selector(self.animate), for: .touchUpInside)
+                self.photosButton.addTarget(self, action: #selector(self.photoPressed), for: .touchUpInside)
+                self.cameraButton.addTarget(self.appDelegate.navigationController, action: #selector(self.appDelegate.navigationController.popViewController(animated:)), for: .touchUpInside)
+          
+                self.recentCV.alpha = 0
+                DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1, execute: {
+                self.recentCV.transform = CGAffineTransform(scaleX: 0.2, y: 0.1)
+                
+                })
+            })
+            
+            
+
+        })
+
+        
+        
+
     }
     override func viewWillAppear(_ animated: Bool) {
         self.navigationController?.navigationBar.isHidden = true
@@ -83,6 +137,7 @@ class MenuController: UIViewController, UIImagePickerControllerDelegate, UINavig
         self.navigationController?.navigationBar.isHidden = false
     }
     func animate() {
+
         let (backscale, scale, blur, cvscale, cvalpha, text) = {
             open ? (backscale: CGAffineTransform(scaleX: 5, y: 5), scale: CGAffineTransform(translationX: 0, y: 0), blur: 0, cvscale: CGAffineTransform(scaleX: 0.2, y: 0.1), cvalpha: 0, text: "COLOR ME") : (backscale: CGAffineTransform(scaleX: 6, y: 6),scale: CGAffineTransform(translationX: 0, y: 20), blur: 0.8, cvscale: CGAffineTransform(scaleX: 1, y: 1), cvalpha: 1, text: "RECENT PICS")
         }()
@@ -101,8 +156,9 @@ class MenuController: UIViewController, UIImagePickerControllerDelegate, UINavig
             self.background.transform = backscale
             self.logoLabel.transform = scale
             self.recentCV.transform = cvscale
-            self.blurView.alpha = CGFloat(blur)
             self.recentCV.alpha = CGFloat(cvalpha)
+            self.blurView.alpha = CGFloat(blur)
+  
         }, completion: nil)
         UIView.animate(withDuration: 0.2, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 20, options: .curveEaseIn, animations: {
             
@@ -112,23 +168,7 @@ class MenuController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     
     func setupUIandConstraints() {
-        background = UIImageView(frame: view.frame)
-        background.image = #imageLiteral(resourceName: "IMG_0534") //#imageLiteral(resourceName: "Colorful-Cube-Block-Art-Pattern-iphone-6-wallpaper-ilikewallpaper_com")
-        background.contentMode = .scaleAspectFill
-        background.transform = CGAffineTransform(scaleX: 5, y: 5)
-        view.addSubview(background)
-        
-        let vev = UIVisualEffectView(effect: UIBlurEffect(style: .light))
-        vev.layer.cornerRadius = 0
-        vev.layer.masksToBounds = true
-        vev.frame = view.frame
-        vev.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        background.addSubview(vev)
-        
-        blurView  = UIVisualEffectView(effect: UIBlurEffect(style: .dark))
-        blurView.alpha = 0
-        blurView.frame = view.frame
-        background.addSubview(blurView)
+
         
         logoLabel = PSLabel(fontSize: 60, type: [.standard], text: "COLOR ME")
         logoLabel.backgroundColor = UIColor.MNGray.withAlphaComponent(0.6)
@@ -144,22 +184,8 @@ class MenuController: UIViewController, UIImagePickerControllerDelegate, UINavig
             logoLabel.trailingAnchor.constraint(lessThanOrEqualTo: view.trailingAnchor, constant: -35),
         ]
         buttonLayoutGuide = UILayoutGuide()
-        let recentWidth = recentCV.widthAnchor.constraint(equalToConstant: 320)
-        recentWidth.priority = 749
-        recentCVConstraints = [
-            recentCV.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            recentWidth,
-            recentCV.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: 20),
-            recentCV.heightAnchor.constraint(equalTo: recentCV.widthAnchor, multiplier: 1.1),
-            recentCV.bottomAnchor.constraint(lessThanOrEqualTo: buttonLayoutGuide.topAnchor, constant: -40),
-            recentCV.leadingAnchor.constraint(greaterThanOrEqualTo: view.leadingAnchor, constant: 60),
-            recentCV.trailingAnchor.constraint(lessThanOrEqualTo: view.trailingAnchor, constant: -60),
-        ]
- 
-        
-        recentCV.dataSource = self
-        recentCV.delegate = self
-        
+
+
         buttonLayoutGuideConstraints = [
             buttonLayoutGuide.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             buttonLayoutGuide.widthAnchor.constraint(lessThanOrEqualToConstant: 320),
@@ -207,23 +233,31 @@ class MenuController: UIViewController, UIImagePickerControllerDelegate, UINavig
         view.addSubview(recentButton)
         
         NSLayoutConstraint.activate(logoLabelConstraints)
+        let recentWidth = recentCV.widthAnchor.constraint(equalToConstant: 320)
+        recentWidth.priority = 749
+        recentCVConstraints = [
+            recentCV.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            recentWidth,
+            recentCV.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: 20),
+            recentCV.heightAnchor.constraint(equalTo: recentCV.widthAnchor, multiplier: 1.1),
+            recentCV.bottomAnchor.constraint(lessThanOrEqualTo: buttonLayoutGuide.topAnchor, constant: -40),
+            recentCV.leadingAnchor.constraint(greaterThanOrEqualTo: view.leadingAnchor, constant: 60),
+            recentCV.trailingAnchor.constraint(lessThanOrEqualTo: view.trailingAnchor, constant: -60),
+        ]
+
         NSLayoutConstraint.activate(recentCVConstraints)
         NSLayoutConstraint.activate(buttonLayoutGuideConstraints)
         NSLayoutConstraint.activate(cameraButtonConstraints)
         NSLayoutConstraint.activate(photosButtonConstraints)
         NSLayoutConstraint.activate(recentButtonConstraints)
         
-        print(recentCV.frame)
-        
-        animate()
-        animate()
-  
+
+   
     }
-    
+ 
     var images:[UIImage] = [] // <-- Array to hold the fetched images
     var numImagesNeeded:Int = 12 // <-- The number of images to fetch
-    
-    func grabPhotos(){
+    func snatchImages(completion: @escaping () -> Void)  {
         
         let imgManager = PHImageManager.default()
         
@@ -253,10 +287,46 @@ class MenuController: UIViewController, UIImagePickerControllerDelegate, UINavig
                     
                 })
             }
+            self.setDelegate = true
+            
+            if setDelegate {
+
+                recentCV.dataSource = self
+                recentCV.delegate = self
+                self.pop1.dismiss()
+                completion()
+            }
         }
         else{
             print("you got no photos")
+            //check if they've allowed access
+            let status = PHPhotoLibrary.authorizationStatus()
+            if status == PHAuthorizationStatus.authorized {
+                //no photos
             
+            } else if status == PHAuthorizationStatus.notDetermined || status == PHAuthorizationStatus.denied {
+                //havent declined nor accepted
+                //user has previously denied access. ask them again.
+                PHPhotoLibrary.requestAuthorization({ (newstat) in
+                    if newstat == PHAuthorizationStatus.authorized {
+                        //unk cool
+                        //dont set the delete of the recent cv yet because we still need to snatch some images, if they are there after authorization to the photo library has been granted
+                        self.setDelegate = false
+                        
+     
+
+                        //grab photos once more
+                        self.snatchImages(completion: {
+                            completion()
+                        })
+                    }
+                    else if newstat == PHAuthorizationStatus.denied {
+                        //hmm weird why tho.
+                    }
+                    
+                })
+            }
+
         }
         
     }

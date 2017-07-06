@@ -1,15 +1,18 @@
 PODS:
   - AKImageCropperView (2.0.0)
   - Font-Awesome-Swift (1.6.2)
+  - PopupDialog (0.5.4)
 
 DEPENDENCIES:
   - AKImageCropperView
   - Font-Awesome-Swift (~> 1.6.2)
+  - PopupDialog (~> 0.5)
 
 SPEC CHECKSUMS:
   AKImageCropperView: 9c80fd45512daa69426161ad51c248655c1b5182
   Font-Awesome-Swift: 4dc96df73b5f32aaccdee50a454c3ec253ee4977
+  PopupDialog: 75cf955693590b0cb2fdde00223fb65d99c57247
 
-PODFILE CHECKSUM: 420d56c33bcf12554733bba391009059cf995668
+PODFILE CHECKSUM: f34bf7c018d046b3f6d7bcdc1ca9bfd95f441e79
 
 COCOAPODS: 1.2.1
