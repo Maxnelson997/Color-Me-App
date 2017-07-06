@@ -92,14 +92,14 @@ class MenuController: UIViewController, UIImagePickerControllerDelegate, UINavig
             UIView.animate(withDuration: 1, delay: 0, options: UIViewAnimationOptions.curveEaseOut, animations: {
                 self.background.alpha = 1
             }, completion: { finished in
-                DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 4, execute: {
+                DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 3, execute: {
                     self.animateBg(img: self.bgArray[self.bgIndex])
                 })
             })
 
             self.prevBGIndex = self.bgIndex
             self.bgIndex += 1
-            if self.bgIndex == 3 {
+            if self.bgIndex == 4 {
                 self.bgIndex = 0
             }
             
@@ -107,7 +107,7 @@ class MenuController: UIViewController, UIImagePickerControllerDelegate, UINavig
  
     }
     
-    var bgArray:[UIImage] = [#imageLiteral(resourceName: "8A403A02-9055-4F63-A7AA-23CDBC4883A0"), #imageLiteral(resourceName: "jer-1"), #imageLiteral(resourceName: "pol")]
+    var bgArray:[UIImage] = [#imageLiteral(resourceName: "8A403A02-9055-4F63-A7AA-23CDBC4883A0"), #imageLiteral(resourceName: "jer-1"),#imageLiteral(resourceName: "DSC04982-2"),#imageLiteral(resourceName: "pol")]
     var prevBGIndex:Int = -1
     
     var bgIndex:Int = 0
@@ -124,7 +124,9 @@ class MenuController: UIViewController, UIImagePickerControllerDelegate, UINavig
         background.contentMode = .scaleAspectFill
         background.transform = CGAffineTransform(scaleX: 1, y: 1)
         view.addSubview(background)
-        self.animateBg(img: self.bgArray[self.bgIndex])
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 3, execute: {
+            self.animateBg(img: self.bgArray[self.bgIndex])
+        })
 
 
         
@@ -179,7 +181,7 @@ class MenuController: UIViewController, UIImagePickerControllerDelegate, UINavig
     func animate() {
 
         let (backscale, scale, blur, cvscale, cvalpha, text) = {
-            open ? (backscale: CGAffineTransform(scaleX: 5, y: 5), scale: CGAffineTransform(translationX: 0, y: 0), blur: 0, cvscale: CGAffineTransform(scaleX: 0.2, y: 0.1), cvalpha: 0, text: "COLOR ME") : (backscale: CGAffineTransform(scaleX: 6, y: 6),scale: CGAffineTransform(translationX: 0, y: 20), blur: 0.8, cvscale: CGAffineTransform(scaleX: 1, y: 1), cvalpha: 1, text: "RECENT PICS")
+            open ? (backscale: CGAffineTransform(scaleX: 1, y: 1), scale: CGAffineTransform(translationX: 0, y: 0), blur: 0, cvscale: CGAffineTransform(scaleX: 0.2, y: 0.1), cvalpha: 0, text: "COLOR ME") : (backscale: CGAffineTransform(scaleX: 1.2, y: 1.2),scale: CGAffineTransform(translationX: 0, y: 20), blur: 0.8, cvscale: CGAffineTransform(scaleX: 1, y: 1), cvalpha: 1, text: "RECENT PICS")
         }()
         
         self.view.layoutIfNeeded()
