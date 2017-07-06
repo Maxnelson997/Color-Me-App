@@ -28,6 +28,18 @@ class CustomFilterManager: NSObject, CIFilterConstructor {
             classAttributes: [
                 kCIAttributeFilterCategories: [CategoryCustomFilters]
             ])
+        CIFilter.registerName(
+            "MNMono",
+            constructor: CustomFilterManager(),
+            classAttributes: [
+                kCIAttributeFilterCategories: [CategoryCustomFilters]
+            ])
+        CIFilter.registerName(
+            "MNSmoothThreshold",
+            constructor: CustomFilterManager(),
+            classAttributes: [
+                kCIAttributeFilterCategories: [CategoryCustomFilters]
+            ])
         
     }
     func filter(withName name: String) -> CIFilter? {
@@ -38,6 +50,10 @@ class CustomFilterManager: NSObject, CIFilterConstructor {
             return KuwaharaFilter()
         case "MNCausticRefraction":
             return CausticRefraction()
+        case "MNMono":
+            return MNMonoFilter()
+        case "MNSmoothThreshold":
+            return MNSmoothThreshold()
         default:
             return nil
         }

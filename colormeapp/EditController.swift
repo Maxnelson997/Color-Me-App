@@ -1055,6 +1055,7 @@ extension EditController {
             let ciContext = CIContext(options: nil)
             let coreImage = CIImage(image: singleton.imagePicked) //cropView.image!
             let filter = CIFilter(name: "\(createfilters[i])" )
+            print(createfilters[i])
             filter!.setDefaults()
             filter!.setValue(coreImage, forKey: kCIInputImageKey)
             let filteredImageData = filter!.value(forKey: kCIOutputImageKey) as! CIImage
@@ -1086,7 +1087,7 @@ extension EditController {
         let summer_pack:[String] = ["CISepiaTone", "CIPhotoEffectTransfer", "CIPhotoEffectInstant", "CIPhotoEffectFade"]
         let sunlit_pack:[String] = ["CIPhotoEffectChrome"]
         let shady_pack:[String] = ["CIPhotoEffectNoir", "CIPhotoEffectTonal"]
-        let glow_pack:[String] = ["MNEdgeGlow"]
+        let glow_pack:[String] = ["MNEdgeGlow", "MNMono", "MNSmoothThreshold"]
         let cartoon_pack:[String] = ["MNKuwahara"]
         
         
@@ -1094,7 +1095,7 @@ extension EditController {
         let summer_names:[String] = ["plastic", "nitefest", "berry", "sinking"]
         let sunlit_names:[String] = ["blaze"]
         let shady_names:[String] = ["elayno","nitetone"]
-        let glow_names:[String] = ["trimmed"]
+        let glow_names:[String] = ["trimmed", "space", "smooth"]
         let cartoon_names:[String] = ["cartoon"]
         
         //rose filter pack

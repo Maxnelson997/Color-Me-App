@@ -52,6 +52,19 @@ class KuwaharaFilter: CIFilter
     }
         
     let kuwaharaKernel = CIKernel(string:
+//        "kernel vec4 myHazeRemovalKernel(sampler src, __color color, float distance, float slope) \n" +
+//            "{" +
+//            "vec4   t;" +
+//            "float  d;" +
+//            
+//            "d = destCoord().y * slope  +  distance;" +             // 2
+//            "t = unpremultiply(sample(src, samplerCoord(src)));" +  // 3
+//            "t = (t - d*color) / (1.0-d);" +                        // 4
+//            
+//            
+//            "return premultiply(t);" +                              // 5
+//        "}"
+        
         "kernel vec4 kuwahara(sampler image, float r) \n" +
         "{" +
         "   vec2 d = destCoord();" +

@@ -9,6 +9,7 @@
 import UIKit
 import Photos
 import PopupDialog
+import CoreImage
 
 class MenuController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
@@ -109,7 +110,6 @@ class MenuController: UIViewController, UIImagePickerControllerDelegate, UINavig
     
     var bgArray:[UIImage] = [#imageLiteral(resourceName: "8A403A02-9055-4F63-A7AA-23CDBC4883A0"), #imageLiteral(resourceName: "jer-1"),#imageLiteral(resourceName: "DSC04982-2"),#imageLiteral(resourceName: "pol")]
     var prevBGIndex:Int = -1
-    
     var bgIndex:Int = 0
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -126,8 +126,9 @@ class MenuController: UIViewController, UIImagePickerControllerDelegate, UINavig
         view.addSubview(background)
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 3, execute: {
             self.animateBg(img: self.bgArray[self.bgIndex])
+//            let n = MNMono(image: CIImage(image: self.background.image!)!, inputColorFade: 10)
+//            self.background.image = n.image
         })
-
 
         
         let vev = UIVisualEffectView(effect: UIBlurEffect(style: .light))
