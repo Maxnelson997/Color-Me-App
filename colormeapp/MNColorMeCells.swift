@@ -12,7 +12,7 @@ class recentCell:UICollectionViewCell {
     var imageView:UIImageView = {
         var imageView = UIImageView()
         imageView.isUserInteractionEnabled = true
-        imageView.layer.cornerRadius = 10
+        imageView.layer.cornerRadius = 7
         imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 1
         imageView.layer.borderColor = UIColor.MNBlack.cgColor
@@ -57,7 +57,7 @@ class ControlCell:UICollectionViewCell {
     }()
     fileprivate var visualEffectView: UIVisualEffectView = {
         let vev = UIVisualEffectView(effect: UIBlurEffect(style: .dark))
-        vev.layer.cornerRadius = 10
+        vev.layer.cornerRadius = 7
         vev.layer.masksToBounds = true
         vev.isUserInteractionEnabled = false
         vev.translatesAutoresizingMaskIntoConstraints = false
@@ -174,7 +174,7 @@ class AdjustControlCell:UICollectionViewCell {
     
     fileprivate var visualEffectView: UIVisualEffectView = {
         let vev = UIVisualEffectView(effect: UIBlurEffect(style: .dark))
-        vev.layer.cornerRadius = 10
+        vev.layer.cornerRadius = 7
         vev.layer.masksToBounds = true
         vev.isUserInteractionEnabled = false
         vev.translatesAutoresizingMaskIntoConstraints = false
@@ -219,7 +219,8 @@ class FilterPackControlCell:UICollectionViewCell, UICollectionViewDelegate, UICo
     var awoken:Bool = false
     
     override func awakeFromNib() {
-
+//        filtersCollection.layout.minimumLineSpacing = 0
+//        filtersCollection.layout.minimumInteritemSpacing = 0
         if !awoken
         {
             contentView.addSubview(visualEffectView)
@@ -244,13 +245,17 @@ class FilterPackControlCell:UICollectionViewCell, UICollectionViewDelegate, UICo
             
             label.frame = CGRect(x: 0, y: contentView.frame.maxY - (contentView.frame.height * 0.5), width: contentView.frame.width, height: contentView.frame.height * 0.5)
             awoken = true
-        }
-         filtersCollection.frame = CGRect(x: contentView.frame.maxX, y: 0, width: contentView.frame.width * CGFloat(filterPack.count) + 15 * CGFloat(filterPack.count), height: contentView.frame.height)
+        
+        }//+ 15 * CGFloat(filterPack.count) <--- add on the width
+         filtersCollection.frame = CGRect(x: contentView.frame.maxX, y: 0, width: contentView.frame.width * CGFloat(filterPack.count) + 15 * CGFloat(filterPack.count) , height: contentView.frame.height)
         contentView.addSubview(imageView)
         contentView.addSubview(filtersCollection)
         print(filtersCollection.frame.width)
         filtersCollection.reloadData()
-        
+        if previousCell != nil
+        {
+            previousCell.backgroundColor = .clear
+        }
 //        NSLayoutConstraint.activate([
 //            imageView.leadingAnchor.constraint(greaterThanOrEqualTo: leadingAnchor),
 //            imageView.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor),
@@ -273,7 +278,7 @@ class FilterPackControlCell:UICollectionViewCell, UICollectionViewDelegate, UICo
     
     fileprivate var visualEffectView: UIVisualEffectView = {
         let vev = UIVisualEffectView(effect: UIBlurEffect(style: .dark))
-        vev.layer.cornerRadius = 10
+        vev.layer.cornerRadius = 7
         vev.layer.masksToBounds = true
         vev.isUserInteractionEnabled = false
         vev.translatesAutoresizingMaskIntoConstraints = false
@@ -286,12 +291,12 @@ class FilterPackControlCell:UICollectionViewCell, UICollectionViewDelegate, UICo
         cell.awakeFromNib()
         cell.imageView.image = filterPack[indexPath.item].image
         cell.label.text = filterPack[indexPath.item].name
-        
+        cell.layer.cornerRadius = 7
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: collectionView.frame.height + 1, height: collectionView.frame.height)
+        return CGSize(width: collectionView.frame.height, height: collectionView.frame.height)
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -301,8 +306,15 @@ class FilterPackControlCell:UICollectionViewCell, UICollectionViewDelegate, UICo
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
-    
+    var previousCell:UICollectionViewCell!
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let cell = collectionView.cellForItem(at: indexPath)
+        cell?.backgroundColor = UIColor.MNLightBlue.withAlphaComponent(0.4)
+        
+        if previousCell != nil && previousCell != cell {
+            previousCell.backgroundColor = UIColor.clear
+        }
+        previousCell = cell
         delegate?.ApplyFilter(filter: filterPack[indexPath.item].image, name: filterPack[indexPath.item].filterName)
     }
     

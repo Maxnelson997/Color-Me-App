@@ -147,15 +147,29 @@ extension EditController: AKImageCropperViewDelegate {
             cropView.setInteraction = true
         
         }
+        
     }
     
     func rotateAction() {
         angle += .pi/2
-        cropView.rotate(angle, withDuration: 0.3, completion: { _ in
-            if self.angle == 2 * .pi {
-                self.angle = 0.0
-            }
+        if self.angle == .pi || self.angle == 3 * .pi {
+            self.size = self.cropView.croppedSize.size
+        } else {
+            self.size = CGSize(width: self.cropView.croppedSize.size.height, height: self.cropView.croppedSize.size.width)
+        }
+        self.cropConstraints()
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1, execute: {
+            
+            
+            self.cropView.rotate(self.angle, withDuration: 0.3, completion: { _ in
+                if self.angle == 2 * .pi {
+                    self.angle = 0.0
+                }
+
+                
+            })
         })
+
     }
     
     func removeEffects() {
@@ -550,8 +564,8 @@ class EditController: UIViewController, SetFilter {
         mainControlsImages = [#imageLiteral(resourceName: "reload-2"),#imageLiteral(resourceName: "move"),#imageLiteral(resourceName: "rgb-symbol"),#imageLiteral(resourceName: "settings-2"),#imageLiteral(resourceName: "bucket-with-paint")]
         mainControlsText = ["reset all","crop", "filters", "adjust", "color"]
         
-        cropControlsImages = [#imageLiteral(resourceName: "reload-2") ,#imageLiteral(resourceName: "fit"),#imageLiteral(resourceName: "reload-4"),#imageLiteral(resourceName: "check")]
-        cropControlsText = ["reset", "crop", "rotate", "finish"]
+        cropControlsImages = [#imageLiteral(resourceName: "reload-2") ,#imageLiteral(resourceName: "fit"),#imageLiteral(resourceName: "check")]
+        cropControlsText = ["reset", "crop", "finish"]
         //
         //        paintControlsImages = [#imageLiteral(resourceName: "one-finger-click"),#imageLiteral(resourceName: "bucket-with-paint"),#imageLiteral(resourceName: "speech-bubble"),#imageLiteral(resourceName: "rotate-arrow")]
         //        paintControlsText = ["draw", "paint", "text", "undo"]
@@ -563,8 +577,8 @@ class EditController: UIViewController, SetFilter {
         adjustControlsImages = [[#imageLiteral(resourceName: "haze-1"),#imageLiteral(resourceName: "brightness-symbol"),#imageLiteral(resourceName: "contrast-symbol")],[#imageLiteral(resourceName: "pie-chart"), #imageLiteral(resourceName: "circular-frames"),#imageLiteral(resourceName: "star-1")], [#imageLiteral(resourceName: "cloudy-1")],[#imageLiteral(resourceName: "spray-bottle-with-dots") ],[#imageLiteral(resourceName: "snowflake")],[#imageLiteral(resourceName: "devil")]]
         adjustControlsText = [["saturation","brightness", "contrast"] ,["radius","shadows","highlights"], ["exposure"], ["colors"],["temperature"], ["intensity"]]
         
-        filterControlsImages = [#imageLiteral(resourceName: "three-layers"),#imageLiteral(resourceName: "three-layers"),#imageLiteral(resourceName: "three-layers"),#imageLiteral(resourceName: "three-layers"),#imageLiteral(resourceName: "three-layers"),#imageLiteral(resourceName: "three-layers")]
-        filterControlsText = ["super","summer", "sunlit" ,"shady", "glow", "cartoon"]
+        filterControlsImages = [#imageLiteral(resourceName: "three-layers"),#imageLiteral(resourceName: "three-layers"),#imageLiteral(resourceName: "three-layers"),#imageLiteral(resourceName: "three-layers"),#imageLiteral(resourceName: "three-layers"),#imageLiteral(resourceName: "three-layers"),#imageLiteral(resourceName: "three-layers")]
+        filterControlsText = ["super","loom","summer", "sunlit" ,"shady", "glow", "cartoon"]
 
         mainControlsCollection.dataSource = self
         mainControlsCollection.delegate = self
@@ -620,7 +634,7 @@ class EditController: UIViewController, SetFilter {
             cropControlsCollection.bottomAnchor.constraint(equalTo: controlsStack.bottomAnchor),
             cropControlsCollection.topAnchor.constraint(equalTo: controlsStack.topAnchor),
             cropControlsCollection.heightAnchor.constraint(equalToConstant: 70),
-            cropControlsCollection.widthAnchor.constraint(equalToConstant: 60*4 + 55)
+            cropControlsCollection.widthAnchor.constraint(equalToConstant: 60*3 + 55)
         ]
         //PAINT
         let pw = paintControlsCollection.widthAnchor.constraint(equalToConstant: 60*9 + 145)
@@ -772,8 +786,9 @@ class EditController: UIViewController, SetFilter {
                 if self.lastCellIndexPath != nil {
                     let previousCell = self.mainControlsCollection.cellForItem(at: self.lastCellIndexPath)
                     previousCell?.backgroundColor = UIColor.clear
+                    
                 }
-                cell?.backgroundColor = UIColor.white
+                cell?.backgroundColor = UIColor.MNLightBlue
             })
             UIView.addKeyframe(withRelativeStartTime: 0.4, relativeDuration: 0.4, animations: {
                 cell?.alpha = 1
@@ -798,7 +813,7 @@ extension EditController: UICollectionViewDelegate, UICollectionViewDelegateFlow
             
             cell.scalarFilterParam = descriptors[indexPath.section][indexPath.item]
             
-            cell.layer.cornerRadius = 5
+            cell.layer.cornerRadius = 7
             cell.delegate = filteredImageView
             
             cell.awakeFromNib()
@@ -814,7 +829,7 @@ extension EditController: UICollectionViewDelegate, UICollectionViewDelegateFlow
             
             cell.delegate = self
             cell.awakeFromNib()
-            cell.layer.cornerRadius = 5
+            cell.layer.cornerRadius = 7
             return cell
         } else {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "control", for: indexPath) as! ControlCell
@@ -831,7 +846,7 @@ extension EditController: UICollectionViewDelegate, UICollectionViewDelegateFlow
                 cell.imageView.image = paintControlsImages[indexPath.item].withRenderingMode(.alwaysTemplate)
                 cell.label.text = paintControlsText[indexPath.item]
             }
-            cell.layer.cornerRadius = 5
+            cell.layer.cornerRadius = 7
             return cell
         }
         
@@ -879,7 +894,7 @@ extension EditController: UICollectionViewDelegate, UICollectionViewDelegateFlow
             return filterObjects.count
         }
         if collectionView == cropControlsCollection {
-            return 4
+            return cropControlsText.count
         }
         if collectionView == paintControlsCollection {
             return paintControlsText.count
@@ -940,7 +955,9 @@ extension EditController: UICollectionViewDelegate, UICollectionViewDelegateFlow
             case 1:
                 showHideOverlayAction()
             case 2:
-                rotateAction()
+//                rotateAction()
+                //temporarilty removed rotate action. will add in next version
+                cropImageAction()
             case 3:
                 cropImageAction()
             default:
@@ -1083,20 +1100,22 @@ extension EditController {
 //        let filterNames3:[String] = ["transfer", "noir"]
 //        let filterNames4:[String] = ["sepia", "instant"]
 //        let customNames1:[String] = ["bronze", "Kuwahara"]
-        let super_pack:[String] = ["CIPhotoEffectProcess"]
+        let super_pack:[String] = ["CIPhotoEffectProcess", "MNMaxBloom"]
+        let loom_pack:[String] = ["MNRedLoom", "MNBlueLoom","MNBlueLoom1","MNGreenLoom", "MNPurpleLoom"]
         let summer_pack:[String] = ["CISepiaTone", "CIPhotoEffectTransfer", "CIPhotoEffectInstant", "CIPhotoEffectFade"]
-        let sunlit_pack:[String] = ["CIPhotoEffectChrome"]
-        let shady_pack:[String] = ["MNSmoothThreshold","CIPhotoEffectNoir", "CIPhotoEffectTonal"]
-        let glow_pack:[String] = ["MNEdgeGlow", "MNMono"]
-        let cartoon_pack:[String] = ["MNKuwahara"]
+        let sunlit_pack:[String] = ["CIPhotoEffectChrome", "MNLit", "MNRed"]
+        let shady_pack:[String] = ["MNSmoothThreshold","CIPhotoEffectNoir", "CIPhotoEffectTonal", "MNChroma"]
+        let glow_pack:[String] = ["MNEdgeGlow", "MNMono", "MNMars", "MNVenus"]
+        let cartoon_pack:[String] = ["MNKuwahara", "MNEightBit"]
         
         
-        let super_names:[String] = ["double"]
+        let super_names:[String] = ["double", "expose"]
+        let loom_names:[String] = ["redloom", "blo", "bloom", "gloom", "ploom"]
         let summer_names:[String] = ["plastic", "nitefest", "berry", "sinking"]
-        let sunlit_names:[String] = ["blaze"]
-        let shady_names:[String] = ["thresh","elayno","nitetone"]
-        let glow_names:[String] = ["trimmed", "space"]
-        let cartoon_names:[String] = ["cartoon"]
+        let sunlit_names:[String] = ["blaze", "lit", "red"]
+        let shady_names:[String] = ["thresh","elayno","nitetone", "choma"]
+        let glow_names:[String] = ["space", "nepture", "mars", "venus"]
+        let cartoon_names:[String] = ["cartoon", "eightbit"]
         
         //rose filter pack
         //....
@@ -1106,6 +1125,7 @@ extension EditController {
         
         
         filterObjects = [ createFilters(createfilters: super_pack, createnames: super_names),
+                          createFilters(createfilters: loom_pack, createnames: loom_names),
                           createFilters(createfilters: summer_pack, createnames: summer_names),
                           createFilters(createfilters: sunlit_pack, createnames: sunlit_names),
                           createFilters(createfilters: shady_pack, createnames: shady_names),

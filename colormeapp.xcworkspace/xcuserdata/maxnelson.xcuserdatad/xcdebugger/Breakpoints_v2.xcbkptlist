@@ -68,12 +68,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Pods/AKImageCropperView/AKImageCropperView/AKImageCropperView.swift"
-            timestampString = "520896227.945256"
+            timestampString = "521079180.459708"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "646"
-            endingLineNumber = "646"
-            landmarkName = "reset(animationDuration:options:completion:)"
+            startingLineNumber = "669"
+            endingLineNumber = "669"
+            landmarkName = "startZoomingTimer()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -84,12 +84,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Pods/AKImageCropperView/AKImageCropperView/AKImageCropperView.swift"
-            timestampString = "520896227.945256"
+            timestampString = "521079180.459708"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "647"
-            endingLineNumber = "647"
-            landmarkName = "reset(animationDuration:options:completion:)"
+            startingLineNumber = "670"
+            endingLineNumber = "670"
+            landmarkName = "startZoomingTimer()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -100,12 +100,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Pods/AKImageCropperView/AKImageCropperView/AKImageCropperView.swift"
-            timestampString = "520896227.945256"
+            timestampString = "521079180.459708"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "648"
-            endingLineNumber = "648"
-            landmarkName = "reset(animationDuration:options:completion:)"
+            startingLineNumber = "671"
+            endingLineNumber = "671"
+            landmarkName = "startZoomingTimer()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -116,11 +116,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "colormeapp/MNColorMeCells.swift"
-            timestampString = "520806489.854676"
+            timestampString = "521150688.500509"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "230"
-            endingLineNumber = "230"
+            startingLineNumber = "231"
+            endingLineNumber = "231"
             landmarkName = "awakeFromNib()"
             landmarkType = "7">
          </BreakpointContent>
@@ -132,11 +132,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "colormeapp/EditController.swift"
-            timestampString = "521054746.106478"
+            timestampString = "521151730.222086"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1113"
-            endingLineNumber = "1113"
+            startingLineNumber = "1133"
+            endingLineNumber = "1133"
             landmarkName = "updateFilters()"
             landmarkType = "7">
          </BreakpointContent>
@@ -148,11 +148,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "colormeapp/EditController.swift"
-            timestampString = "521054748.937785"
+            timestampString = "521150129.063298"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1058"
-            endingLineNumber = "1058"
+            startingLineNumber = "1075"
+            endingLineNumber = "1075"
             landmarkName = "createFilters(createfilters:createnames:)"
             landmarkType = "7">
          </BreakpointContent>

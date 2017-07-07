@@ -19,6 +19,7 @@
 		79344DDD1EF5A44C0013C952 /* KuwaharaFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79344DDC1EF5A44C0013C952 /* KuwaharaFilter.swift */; };
 		79344DE11EF5A6C70013C952 /* LensFlare.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79344DE01EF5A6C70013C952 /* LensFlare.swift */; };
 		79344DE31EF5A9090013C952 /* CausticRefraction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79344DE21EF5A9090013C952 /* CausticRefraction.swift */; };
+		796C83B71F0F143400AABA96 /* EightBit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 796C83B61F0F143400AABA96 /* EightBit.swift */; };
 		797F38CC1F0EA03B000BBAB5 /* fadeToBW.cikernel in Sources */ = {isa = PBXBuildFile; fileRef = 797F38CB1F0EA03B000BBAB5 /* fadeToBW.cikernel */; };
 		797F38CE1F0EA4BB000BBAB5 /* MNMono.swift in Sources */ = {isa = PBXBuildFile; fileRef = 797F38CD1F0EA4BB000BBAB5 /* MNMono.swift */; };
 		797F38D01F0EADA0000BBAB5 /* MNSmoothThresh.swift in Sources */ = {isa = PBXBuildFile; fileRef = 797F38CF1F0EADA0000BBAB5 /* MNSmoothThresh.swift */; };
@@ -72,6 +73,7 @@
 		79344DDC1EF5A44C0013C952 /* KuwaharaFilter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KuwaharaFilter.swift; sourceTree = "<group>"; };
 		79344DE01EF5A6C70013C952 /* LensFlare.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LensFlare.swift; sourceTree = "<group>"; };
 		79344DE21EF5A9090013C952 /* CausticRefraction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CausticRefraction.swift; sourceTree = "<group>"; };
+		796C83B61F0F143400AABA96 /* EightBit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EightBit.swift; sourceTree = "<group>"; };
 		797F38CB1F0EA03B000BBAB5 /* fadeToBW.cikernel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = fadeToBW.cikernel; sourceTree = "<group>"; };
 		797F38CD1F0EA4BB000BBAB5 /* MNMono.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MNMono.swift; sourceTree = "<group>"; };
 		797F38CF1F0EADA0000BBAB5 /* MNSmoothThresh.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MNSmoothThresh.swift; sourceTree = "<group>"; };
@@ -174,6 +176,7 @@
 				79344DE01EF5A6C70013C952 /* LensFlare.swift */,
 				797F38CB1F0EA03B000BBAB5 /* fadeToBW.cikernel */,
 				797F38CD1F0EA4BB000BBAB5 /* MNMono.swift */,
+				796C83B61F0F143400AABA96 /* EightBit.swift */,
 				797F38CF1F0EADA0000BBAB5 /* MNSmoothThresh.swift */,
 			);
 			name = CustomFilters;
@@ -537,6 +540,7 @@
 				792C1D341ED38CFA00D242AF /* ColorMeSingleton.swift in Sources */,
 				7903BC6B1EF594BF00C686A4 /* EdgeGlowFilter.swift in Sources */,
 				79E8477B1ED2939B001B6C3C /* PSButton.swift in Sources */,
+				796C83B71F0F143400AABA96 /* EightBit.swift in Sources */,
 				79E847771ED29304001B6C3C /* Extensions.swift in Sources */,
 				7914BA1E1ED5CD9600EE9F7D /* ScalarFilterParamater.swift in Sources */,
 				79344DE31EF5A9090013C952 /* CausticRefraction.swift in Sources */,

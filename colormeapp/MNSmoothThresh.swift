@@ -23,20 +23,21 @@ class MNSmoothThreshold: CIFilter
             "    return vec4(threshold, threshold, threshold, 1.0);" +
         "}"
         
-//        "kernel vec4 chromaKey( __sample s, __color c, float threshold ) { \n" +
-//            "  vec4 diff = s.rgba - c;\n" +
-//            "  float distance = length( diff );\n" +
-//            "  float alpha = compare( distance - threshold, 0.0, 1.0 );\n" +
-//            "  return vec4( s.rgb, alpha ); \n" +
-//        "}"
+        
+        //        "kernel vec4 chromaKey( __sample s, __color c, float threshold ) { \n" +
+        //            "  vec4 diff = s.rgba - c;\n" +
+        //            "  float distance = length( diff );\n" +
+        //            "  float alpha = compare( distance - threshold, 0.0, 1.0 );\n" +
+        //            "  return vec4( s.rgb, alpha ); \n" +
+        //        "}"
     )
     
-        override func setDefaults()
-        {
-            inputEdgeO = 0.1
-            inputEdge1 = 0.5
-    
-        }
+    override func setDefaults()
+    {
+        inputEdgeO = 0.1
+        inputEdge1 = 0.5
+        
+    }
     
     override var outputImage: CIImage!
     {
@@ -52,7 +53,71 @@ class MNSmoothThreshold: CIFilter
                          inputEdge1] as [Any]
         
         return colorKernel.apply(withExtent: extent,
-                                           arguments: arguments)
+                                 arguments: arguments)
+    }
+}
+
+
+class ChromaKeyFilter : CIFilter {
+
+
+    var inputImage: CIImage?
+    var activeColor = CIColor(red: 2.0, green: 1.0, blue: 0.0)
+    var threshold: Float = 0.7
+    
+    override func setDefaults()
+    {
+        activeColor = CIColor(red: 1.0, green: 5.0, blue: 1.0)
+        threshold = 0.85
+    }
+
+    override var outputImage: CIImage? {
+        guard let inputImage = inputImage,
+            let colorKernel = colorKernel else
+        {
+            return nil
+        }
+            let extent = inputImage.extent
+            let arguments = [inputImage as AnyObject, activeColor as AnyObject, threshold as AnyObject]
+            return colorKernel.apply(withExtent: extent, arguments: arguments)
+   
+    }
+    
+    var colorKernel = CIColorKernel(string:
+        "kernel vec4 chromaKey( __sample s, __color c, float threshold ) { \n" +
+            "  vec4 diff = s.rgba - c;\n" +
+            "  float distance = length( diff );\n" +
+            "  float alpha = compare( distance - threshold, 0.0, 1.0 );\n" +
+            "  return vec4( s.rgb, alpha ); \n" +
+        "}"
+        
+        
+        //        "kernel vec4 chromaKey( __sample s, __color c, float threshold ) { \n" +
+        //            "  vec4 diff = s.rgba - c;\n" +
+        //            "  float distance = length( diff );\n" +
+        //            "  float alpha = compare( distance - threshold, 0.0, 1.0 );\n" +
+        //            "  return vec4( s.rgb, alpha ); \n" +
+        //        "}"
+    )
+
+}
+
+// MARK:- Filter parameter serialization
+extension ChromaKeyFilter {
+    func encodeFilterParameters() -> NSData {
+        var dataDict = [String : AnyObject]()
+        dataDict["activeColor"] = activeColor
+        dataDict["threshold"]   = threshold as AnyObject
+        return NSKeyedArchiver.archivedData(withRootObject: dataDict) as NSData
+    }
+    
+    func importFilterParameters(data: NSData?) {
+        if let data = data {
+            if let dataDict = NSKeyedUnarchiver.unarchiveObject(with: data as Data) as? [String : AnyObject] {
+                activeColor = (dataDict["color"] as? CIColor) ?? activeColor
+                threshold   = (dataDict["threshold"] as? Float) ?? threshold
+            }
+        }
     }
 }
 

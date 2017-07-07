@@ -40,6 +40,89 @@ class CustomFilterManager: NSObject, CIFilterConstructor {
             classAttributes: [
                 kCIAttributeFilterCategories: [CategoryCustomFilters]
             ])
+        CIFilter.registerName(
+            "MNChroma",
+            constructor: CustomFilterManager(),
+            classAttributes: [
+                kCIAttributeFilterCategories: [CategoryCustomFilters]
+            ])
+        CIFilter.registerName(
+            "MNEightBit",
+            constructor: CustomFilterManager(),
+            classAttributes: [
+                kCIAttributeFilterCategories: [CategoryCustomFilters]
+            ])
+        
+        CIFilter.registerName(
+            "MNMars",
+            constructor: CustomFilterManager(),
+            classAttributes: [
+                kCIAttributeFilterCategories: [CategoryCustomFilters]
+            ])
+        CIFilter.registerName(
+            "MNVenus",
+            constructor: CustomFilterManager(),
+            classAttributes: [
+                kCIAttributeFilterCategories: [CategoryCustomFilters]
+            ])
+        CIFilter.registerName(
+            "MNLit",
+            constructor: CustomFilterManager(),
+            classAttributes: [
+                kCIAttributeFilterCategories: [CategoryCustomFilters]
+            ])
+        CIFilter.registerName(
+            "MNRed",
+            constructor: CustomFilterManager(),
+            classAttributes: [
+                kCIAttributeFilterCategories: [CategoryCustomFilters]
+            ])
+        
+        CIFilter.registerName(
+            "MNRedLoom",
+            constructor: CustomFilterManager(),
+            classAttributes: [
+                kCIAttributeFilterCategories: [CategoryCustomFilters]
+            ])
+        
+
+
+        
+        CIFilter.registerName(
+            "MNBlueLoom",
+            constructor: CustomFilterManager(),
+            classAttributes: [
+                kCIAttributeFilterCategories: [CategoryCustomFilters]
+            ])
+
+        
+        CIFilter.registerName(
+            "MNBlueLoom1",
+            constructor: CustomFilterManager(),
+            classAttributes: [
+                kCIAttributeFilterCategories: [CategoryCustomFilters]
+            ])
+
+        CIFilter.registerName(
+            "MNGreenLoom",
+            constructor: CustomFilterManager(),
+            classAttributes: [
+                kCIAttributeFilterCategories: [CategoryCustomFilters]
+            ])
+
+        CIFilter.registerName(
+            "MNPurpleLoom",
+            constructor: CustomFilterManager(),
+            classAttributes: [
+                kCIAttributeFilterCategories: [CategoryCustomFilters]
+            ])
+        CIFilter.registerName(
+            "MNMaxBloom",
+            constructor: CustomFilterManager(),
+            classAttributes: [
+                kCIAttributeFilterCategories: [CategoryCustomFilters]
+            ])
+
         
     }
     func filter(withName name: String) -> CIFilter? {
@@ -54,6 +137,32 @@ class CustomFilterManager: NSObject, CIFilterConstructor {
             return MNMonoFilter()
         case "MNSmoothThreshold":
             return MNSmoothThreshold()
+        case "MNChroma":
+            return ChromaKeyFilter()
+        case "MNEightBit":
+            return EightBit()
+        case "MNMars":
+            return MNMarsFilter()
+        case "MNVenus":
+            return MNVenusFilter()
+        case "MNLit":
+            return LitFilter()
+
+        case "MNRed":
+            return red()
+        case "MNRedLoom":
+            return RedLoom()
+        case "MNBlueLoom":
+            return BlueLoom()
+        case "MNBlueLoom1":
+            return BlueLoom1()
+        case "MNGreenLoom":
+            return GreenLoom()
+        case "MNPurpleLoom":
+            return PurpleLoom()
+            
+        case "MNMaxBloom":
+            return MaxBloom()
         default:
             return nil
         }
