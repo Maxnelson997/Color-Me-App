@@ -122,6 +122,12 @@ class CustomFilterManager: NSObject, CIFilterConstructor {
             classAttributes: [
                 kCIAttributeFilterCategories: [CategoryCustomFilters]
             ])
+        CIFilter.registerName(
+            "MNComic",
+            constructor: CustomFilterManager(),
+            classAttributes: [
+                kCIAttributeFilterCategories: [CategoryCustomFilters]
+            ])
 
         
     }
@@ -163,6 +169,8 @@ class CustomFilterManager: NSObject, CIFilterConstructor {
             
         case "MNMaxBloom":
             return MaxBloom()
+        case "MNComic":
+            return Comic()
         default:
             return nil
         }

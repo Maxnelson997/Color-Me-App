@@ -66,20 +66,20 @@ class FilteredImageView: GLKView, ParameterAdjustmentDelegate {
         if ciContext != nil && inputImage != nil && filter != nil {
             var originalimage:CIImage = CIImage(image: singleton.imagePicked)!
             
-            var count:Int = 0
+//            var count:Int = 0
             for filters in singleton.filters {
                 filters.setValue(originalimage, forKey: kCIInputImageKey)
                 originalimage = filters.outputImage!
-                if count == singleton.filters.count - 1 {
-                    
+//                if count == singleton.filters.count - 1 {
+//                    
 //                    //last
 //                    filters.setValue(CIImage(image: singleton.drawnImage), forKey: kCIInputImageKey)
 //                    if filters.outputImage != nil {
 //                         originalimage = filters.outputImage!
 //                    }
-                   
-                }
-                count += 1
+//
+//                }
+//                count += 1
             }
             
             

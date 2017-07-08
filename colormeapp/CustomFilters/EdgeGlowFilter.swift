@@ -316,25 +316,55 @@ class MaxBloom: CIFilter
             .applyingFilter("CIColorControls", withInputParameters: [
                 kCIInputImageKey: inputImage,
                 kCIInputSaturationKey: 1.8,
-                kCIInputBrightnessKey: 0.25,
-                kCIInputContrastKey: 1.15
+                kCIInputBrightnessKey: 0.15,
+                kCIInputContrastKey: 1.5
                 ])
-        
-
-        
-        let withGloom = inputImage
             .applyingFilter("CIGloom", withInputParameters: [
-                kCIInputImageKey: withColorControls,
+                kCIInputImageKey: inputImage,
                 kCIInputRadiusKey: 45,
                 kCIInputIntensityKey: 1
                 ]).cropping(to: inputImage.extent)
         
-        let finalComposite = withGloom
-            .applyingFilter(
-                "CIAdditionCompositing",
-                withInputParameters: [
-                    kCIInputBackgroundImageKey:
-                        withGloom as Any])
+        
+        let finalComposite = inputImage
+            .applyingFilter("CIAdditionCompositing", withInputParameters: [
+                kCIInputBackgroundImageKey:withColorControls as Any
+                ])
+        
+        return finalComposite
+    }
+}
+
+
+class Comic: CIFilter
+{
+    var inputImage: CIImage?
+    override var outputImage: CIImage?
+    {
+        guard let inputImage = inputImage else
+        {
+            return nil
+        }
+        
+        let withColorControls = CIFilter(name: "CIColorControls", withInputParameters: [
+                kCIInputImageKey: inputImage,
+                kCIInputSaturationKey: 1,
+                kCIInputBrightnessKey: 1,
+                kCIInputContrastKey: 1
+                ])
+            
+            let withComic = withColorControls?.outputImage?
+            .applyingFilter("CIComicEffect", withInputParameters: [
+                kCIInputImageKey: inputImage
+                ]).cropping(to: inputImage.extent)
+        
+
+        
+        let finalComposite = withComic?
+            .applyingFilter("CIAdditionCompositing", withInputParameters: [
+                kCIInputBackgroundImageKey:withComic as Any
+                ])
+        
         return finalComposite
     }
 }

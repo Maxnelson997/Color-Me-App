@@ -693,7 +693,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 3BE5868D3657099C1866BF0C /* Pods-colormeapp.debug.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-6";
 				DEVELOPMENT_TEAM = G49JC8TMW5;
 				INFOPLIST_FILE = colormeapp/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
@@ -708,7 +708,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 5E0EC3C00C093CA60D8222C2 /* Pods-colormeapp.release.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-6";
 				DEVELOPMENT_TEAM = G49JC8TMW5;
 				INFOPLIST_FILE = colormeapp/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;

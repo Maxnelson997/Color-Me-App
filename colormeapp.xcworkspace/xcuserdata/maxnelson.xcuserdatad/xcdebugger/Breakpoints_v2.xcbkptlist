@@ -68,11 +68,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Pods/AKImageCropperView/AKImageCropperView/AKImageCropperView.swift"
-            timestampString = "521079180.459708"
+            timestampString = "521246433.844029"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "669"
-            endingLineNumber = "669"
+            startingLineNumber = "673"
+            endingLineNumber = "673"
             landmarkName = "startZoomingTimer()"
             landmarkType = "7">
          </BreakpointContent>
@@ -84,11 +84,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Pods/AKImageCropperView/AKImageCropperView/AKImageCropperView.swift"
-            timestampString = "521079180.459708"
+            timestampString = "521246433.844029"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "670"
-            endingLineNumber = "670"
+            startingLineNumber = "674"
+            endingLineNumber = "674"
             landmarkName = "startZoomingTimer()"
             landmarkType = "7">
          </BreakpointContent>
@@ -100,11 +100,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Pods/AKImageCropperView/AKImageCropperView/AKImageCropperView.swift"
-            timestampString = "521079180.459708"
+            timestampString = "521246433.844029"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "671"
-            endingLineNumber = "671"
+            startingLineNumber = "675"
+            endingLineNumber = "675"
             landmarkName = "startZoomingTimer()"
             landmarkType = "7">
          </BreakpointContent>
@@ -132,11 +132,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "colormeapp/EditController.swift"
-            timestampString = "521151730.222086"
+            timestampString = "521246484.466136"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1133"
-            endingLineNumber = "1133"
+            startingLineNumber = "1135"
+            endingLineNumber = "1135"
             landmarkName = "updateFilters()"
             landmarkType = "7">
          </BreakpointContent>
@@ -148,11 +148,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "colormeapp/EditController.swift"
-            timestampString = "521150129.063298"
+            timestampString = "521246484.466136"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1075"
-            endingLineNumber = "1075"
+            startingLineNumber = "1077"
+            endingLineNumber = "1077"
             landmarkName = "createFilters(createfilters:createnames:)"
             landmarkType = "7">
          </BreakpointContent>

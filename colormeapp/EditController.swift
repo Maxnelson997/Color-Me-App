@@ -216,7 +216,8 @@ class EditController: UIViewController, SetFilter {
     var imageToSave:UIImage!
     var pop:PopupDialog = PopupDialog(title: "hi", message: "pls wait.")
     func ApplyToCropView(image: UIImage!) {
-        self.cropView.image = image
+        //swapped cropview alpha to 0 and filteredimageview alpha to 1 bc filteredimageview has opengl implemented so I gotta display it/draw it on there rather than nastly doing it on the cropview
+//        self.cropView.image = image
         self.imageToSave = image
         print("edited image applied to cropview")
     }
@@ -347,7 +348,7 @@ class EditController: UIViewController, SetFilter {
     override func viewDidAppear(_ animated: Bool) {
         applyyet = true
         appDelegate = UIApplication.shared.delegate as! AppDelegate
-        updateFilters()
+//        updateFilters()
         filteredImageView.inputImage = singleton.imagePicked
         
         
@@ -549,13 +550,14 @@ class EditController: UIViewController, SetFilter {
         filteredImageView.backgroundColor = UIColor.MNBlack.withAlphaComponent(0.8)
         filteredImageView.delegate1 = self
         filteredImageView.filter = singleton.filters[0]
-        filteredImageView.alpha = 0
+        filteredImageView.alpha = 1
         view.addSubview(filteredImageView)
         
         cropView = AKImageCropperView(frame: view.bounds)
         cropView.delegate = self
         cropView.image = singleton.imagePicked
         cropView.imageToCrop = self.veryOriginalImage
+        cropView.alpha = 0
         cropView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(cropView)
         view.addSubview(drawImg)
@@ -1106,8 +1108,8 @@ extension EditController {
         let sunlit_pack:[String] = ["CIPhotoEffectChrome", "MNLit", "MNRed"]
         let shady_pack:[String] = ["MNSmoothThreshold","CIPhotoEffectNoir", "CIPhotoEffectTonal", "MNChroma"]
         let glow_pack:[String] = ["MNEdgeGlow", "MNMono", "MNMars", "MNVenus"]
-        let cartoon_pack:[String] = ["MNKuwahara", "MNEightBit"]
-        
+        let cartoon_pack:[String] = ["MNEightBit", "MNComic"]
+//        MNKuwahara
         
         let super_names:[String] = ["double", "expose"]
         let loom_names:[String] = ["redloom", "blo", "bloom", "gloom", "ploom"]
@@ -1115,7 +1117,7 @@ extension EditController {
         let sunlit_names:[String] = ["blaze", "lit", "red"]
         let shady_names:[String] = ["thresh","elayno","nitetone", "choma"]
         let glow_names:[String] = ["space", "nepture", "mars", "venus"]
-        let cartoon_names:[String] = ["cartoon", "eightbit"]
+        let cartoon_names:[String] = [ "eightbit", "comic"]
         
         //rose filter pack
         //....
