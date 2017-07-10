@@ -1,15 +1,4 @@
 ////
-////  backups.swift
-////  colormeapp
-////
-////  Created by Max Nelson on 7/8/17.
-////  Copyright © 2017 Maxnelson. All rights reserved.
-////
-//
-//import Foundation
-//
-//
-////
 ////  AKImageCropperView.swift
 ////
 ////  Created by Artem Krachulov.
@@ -143,8 +132,6 @@
 //    
 //    /** The image displayed in the image cropper view. Default is nil. */
 //    
-//    open var imageToCrop:UIImage?
-//    
 //    open var image: UIImage? {
 //        didSet {
 //            
@@ -152,6 +139,8 @@
 //                return
 //            }
 //            
+//            //            scrollView.alpha = 0.5
+//            //            overlayView?.alpha = 0.5
 //            scrollView.image = image
 //            overlayView?.image = image
 //            
@@ -169,15 +158,11 @@
 //        return scrollView.scaledVisibleRect
 //    }
 //    
+//    open var originalImage:UIImage?
 //    
 //    open var croppedImageToUse: UIImage? {
-//        return imageToCrop?.ic_imageInRect(scrollView.scaledVisibleRect)?.ic_rotateByAngle(angle)
+//        return originalImage?.ic_imageInRect(scrollView.scaledVisibleRect)?.ic_rotateByAngle(angle)
 //    }
-//    
-//    
-//    //    var croppedImageToUse: UIImage? {
-//    //        return i
-//    //    }
 //    open var setInteraction:Bool {
 //        get {
 //            return rotateView.isUserInteractionEnabled
@@ -291,6 +276,8 @@
 //        scrollView = AKImageCropperScrollView()
 //        scrollView.delegate = self
 //        rotateView.addSubview(scrollView)
+//        
+//        
 //        
 //        /* 2. Overlay view with crop rectangle */
 //        

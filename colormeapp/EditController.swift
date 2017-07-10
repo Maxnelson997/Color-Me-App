@@ -249,12 +249,11 @@ class EditController: UIViewController, SetFilter {
         image.draw(in: CGRect.init(x: 0, y: 0, width: sz.width, height: sz.height))
         drawImg.image?.draw(in: CGRect.init(x: 0, y: 0, width: sz.width, height: sz.height))
         let img = UIGraphicsGetImageFromCurrentImageContext()
-        imageToSave = img!
         UIGraphicsEndImageContext()
         
         
         //unk now we can save yu guys
-        let activityViewController:UIActivityViewController = UIActivityViewController(activityItems: [UIImage(data: imageToSave.generateJPEGRepresentation())!], applicationActivities: nil)
+        let activityViewController:UIActivityViewController = UIActivityViewController(activityItems: [UIImage(data: img!.generateJPEGRepresentation())!], applicationActivities: nil)
         activityViewController.popoverPresentationController?.barButtonItem = (btnOk)
         activityViewController.modalPresentationStyle = .popover
         self.present(activityViewController, animated: true, completion: { })
@@ -300,8 +299,6 @@ class EditController: UIViewController, SetFilter {
         //set cropped image with no filters on it then run layoutifneeded on the filterview so we can apply filters to the newly cropped image
         singleton.imagePicked = cropView.croppedImageToUse!
 
-
-        
         ///hide the overlayview on the cropview then hide the cropview entirely. at this point the cropview contains the old image but once the user hits crop again we will apply the fitlerd image to the cropview
         cropView.hideOverlayView(animationDuration: 0)
         cropView.setInteraction = false
@@ -471,9 +468,9 @@ class EditController: UIViewController, SetFilter {
     var selectedImage:UIImage!
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         if paintTabActive {
-            if let e = event?.touches(for: self.cropView){
+            if let e = event?.touches(for: self.filteredImageView){
                 if let touch = e.first {
-                    finalPoint = touch.preciseLocation(in: self.cropView)
+                    finalPoint = touch.preciseLocation(in: self.filteredImageView)
                 }
             }
         }
@@ -485,6 +482,7 @@ class EditController: UIViewController, SetFilter {
 
     var topY:CGFloat!
     func drawLines(fromPoint:CGPoint,toPoint:CGPoint) {
+//        print(cropView.image?.size)
         UIGraphicsBeginImageContext((cropView.image?.size)!)
 //        UIGraphicsBeginImageContext(cropView.frame.size)
 //        cropView.image?.draw(in: CGRect(x: 0, y: 0, width: cropView.frame.width, height: cropView.frame.height)) // + ((cropView.frame.height - imCondensedSize.height)/2)
@@ -494,7 +492,7 @@ class EditController: UIViewController, SetFilter {
         if (cropView.image?.size.width)! > (cropView.image?.size.height)! {
            ratio = (cropView.image?.size.width)! / (cropView.image?.size.height)!
         } else {
-            ratio = (cropView.image?.size.height)! / (cropView.image?.size.width)!
+           ratio = (cropView.image?.size.height)! / (cropView.image?.size.width)!
         }
         
         context?.move(to: CGPoint(x: fromPoint.x * ratio, y: fromPoint.y * ratio))
@@ -503,11 +501,10 @@ class EditController: UIViewController, SetFilter {
         context?.setLineCap(CGLineCap.round)
         context?.setLineWidth(brushSize)
         context?.setStrokeColor(UIColor(red: red, green: green, blue: blue, alpha: opacityValue).cgColor)
-        
         context?.strokePath()
-        let img = UIGraphicsGetImageFromCurrentImageContext()
+//        let img = UIGraphicsGetImageFromCurrentImageContext()
 
-        ApplyToCropView(image: img)
+//        ApplyToCropView(image: img)
 //                filteredImageView.inputImage = img
        
         UIGraphicsEndImageContext()
@@ -523,9 +520,9 @@ class EditController: UIViewController, SetFilter {
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
 //        self.isDrawing = true
         if paintTabActive {
-            if let e = event?.touches(for: self.cropView){
+            if let e = event?.touches(for: self.filteredImageView){
                 if let touch = e.first{
-                    if let d = self.cropView {
+                    if let d = self.filteredImageView {
                         
                         let currentCoordinate = touch.preciseLocation(in: d)
                         //UIGraphicsBeginImageContext(d.bounds.size)
@@ -557,16 +554,16 @@ class EditController: UIViewController, SetFilter {
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         
-//        finalPoint = CGPoint(x: 1, y: 1)
-//        if paintTabActive {
-//            if touches.first?.view == self.view {
-//                
-//            } else {
-//                if !swiped {
-//                    drawLines(fromPoint: lastPoint, toPoint: lastPoint)
-//                }
-//            }
-//        }
+        finalPoint = CGPoint(x: 1, y: 1)
+        if paintTabActive {
+            if touches.first?.view == self.view {
+                
+            } else {
+                if !swiped {
+                    drawLines(fromPoint: lastPoint, toPoint: lastPoint)
+                }
+            }
+        }
 
 
     }
@@ -673,6 +670,7 @@ class EditController: UIViewController, SetFilter {
         cropView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(cropView)
         view.addSubview(drawImg)
+//        drawImg.backgroundColor = UIColor.blue.withAlphaComponent(0.5)
 //        cropView.isUserInteractionEnabled = false
         
         mainControlsImages = [#imageLiteral(resourceName: "reload-2"),#imageLiteral(resourceName: "move"),#imageLiteral(resourceName: "rgb-symbol"),#imageLiteral(resourceName: "settings-2"),#imageLiteral(resourceName: "bucket-with-paint")]
