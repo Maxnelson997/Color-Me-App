@@ -62,6 +62,24 @@ class FilteredImageView: GLKView, ParameterAdjustmentDelegate {
     
     var currentAppliedFilter:String!
     
+    var isSnatching:Bool = false
+    func getImage() {
+        isSnatching = true
+        setNeedsLayout()
+    }
+
+    var isAboutToCrop:Bool = false
+    func setCropImageWithFilters() {
+        isAboutToCrop = true
+        setNeedsLayout()
+    }
+    
+    var isSaving:Bool = false
+    func getImageForSaving() {
+        isSaving = true
+        setNeedsLayout()
+    }
+    
     override func draw(_ rect: CGRect) {
         if ciContext != nil && inputImage != nil && filter != nil {
             var originalimage:CIImage = CIImage(image: singleton.imagePicked)!
@@ -111,7 +129,21 @@ class FilteredImageView: GLKView, ParameterAdjustmentDelegate {
                 let drawableBounds = CGRect(x: 0, y: 0, width: self.drawableWidth, height: self.drawableHeight)
                 let targetBounds = imageBoundsForContentMode(inputBounds, toRect: drawableBounds)
                 ciContext.draw(originalimage, in: targetBounds, from: inputBounds)
-                delegate1.ApplyToCropView(image: UIImage(ciImage: originalimage))
+                if isSnatching {
+                    isSnatching = false
+                    delegate1.ApplyToCropView(image: UIImage(ciImage: originalimage))
+                }
+                
+                if isAboutToCrop {
+                    isAboutToCrop = false
+                    delegate1.GetImageForCrop(image: UIImage(ciImage: originalimage), originalWithCrop: singleton.imagePicked)
+                }
+                if isSaving {
+                    isSaving = false
+                    delegate1.ImageForSaving(image: UIImage(ciImage: originalimage))
+                }
+                
+                
             }
         }
     }

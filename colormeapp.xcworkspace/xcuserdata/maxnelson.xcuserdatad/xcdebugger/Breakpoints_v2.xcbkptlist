@@ -68,12 +68,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Pods/AKImageCropperView/AKImageCropperView/AKImageCropperView.swift"
-            timestampString = "521246433.844029"
+            timestampString = "521349281.933219"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "673"
-            endingLineNumber = "673"
-            landmarkName = "startZoomingTimer()"
+            startingLineNumber = "694"
+            endingLineNumber = "694"
+            landmarkName = "cancelZoomingTimer()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -84,13 +84,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Pods/AKImageCropperView/AKImageCropperView/AKImageCropperView.swift"
-            timestampString = "521246433.844029"
+            timestampString = "521349281.933219"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "674"
-            endingLineNumber = "674"
-            landmarkName = "startZoomingTimer()"
-            landmarkType = "7">
+            startingLineNumber = "695"
+            endingLineNumber = "695"
+            landmarkName = "AKImageCropperView"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -100,13 +100,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Pods/AKImageCropperView/AKImageCropperView/AKImageCropperView.swift"
-            timestampString = "521246433.844029"
+            timestampString = "521349281.933219"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "675"
-            endingLineNumber = "675"
-            landmarkName = "startZoomingTimer()"
-            landmarkType = "7">
+            startingLineNumber = "696"
+            endingLineNumber = "696"
+            landmarkName = "AKImageCropperView"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -116,11 +116,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "colormeapp/MNColorMeCells.swift"
-            timestampString = "521150688.500509"
+            timestampString = "521348291.709607"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "231"
-            endingLineNumber = "231"
+            startingLineNumber = "233"
+            endingLineNumber = "233"
             landmarkName = "awakeFromNib()"
             landmarkType = "7">
          </BreakpointContent>
@@ -132,13 +132,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "colormeapp/EditController.swift"
-            timestampString = "521246484.466136"
+            timestampString = "521355965.607058"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1135"
-            endingLineNumber = "1135"
-            landmarkName = "updateFilters()"
-            landmarkType = "7">
+            startingLineNumber = "1358"
+            endingLineNumber = "1358">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -148,12 +146,26 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "colormeapp/EditController.swift"
-            timestampString = "521246484.466136"
+            timestampString = "521355965.607058"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1077"
-            endingLineNumber = "1077"
-            landmarkName = "createFilters(createfilters:createnames:)"
+            startingLineNumber = "1300"
+            endingLineNumber = "1300">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "colormeapp/EditController.swift"
+            timestampString = "521355965.607058"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "202"
+            endingLineNumber = "202"
+            landmarkName = "resetAction()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

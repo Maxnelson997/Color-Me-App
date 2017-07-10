@@ -191,6 +191,8 @@ class AdjustControlCell:UICollectionViewCell {
 protocol SetFilter {
     func ApplyFilter(filter:UIImage!, name:String!)
     func ApplyToCropView(image:UIImage!)
+    func GetImageForCrop(image:UIImage!, originalWithCrop:UIImage!)
+    func ImageForSaving(image:UIImage!)
 }
 class FilterPackControlCell:UICollectionViewCell, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
     

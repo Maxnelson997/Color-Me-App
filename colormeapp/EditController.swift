@@ -37,49 +37,15 @@ extension EditController: UIImagePickerControllerDelegate {
     //optimal way of saving images
     func share(sender:UIButton) -> Void {
         
-        let btn = UIBarButtonItem(customView: sender)
+        btnOk = UIBarButtonItem(customView: sender)
         //apply the drawings to the image right quick
 
-   
-        let sz = imageToSave.size
-        UIGraphicsBeginImageContextWithOptions(sz, false, 0.0)
-        imageToSave.draw(in: CGRect.init(x: 0, y: 0, width: sz.width, height: sz.height))
-        drawImg.image?.draw(in: CGRect.init(x: 0, y: 0, width: sz.width, height: sz.height))
-        let img = UIGraphicsGetImageFromCurrentImageContext()
-        imageToSave = img!
-        UIGraphicsEndImageContext()
- 
-        
-        //unk now we can save yu guys
-        let activityViewController:UIActivityViewController = UIActivityViewController(activityItems: [UIImage(data: imageToSave.generateJPEGRepresentation())!], applicationActivities: nil)
-        activityViewController.popoverPresentationController?.barButtonItem = (btn)
-        activityViewController.modalPresentationStyle = .popover
-        self.present(activityViewController, animated: true, completion: { })
-        activityViewController.completionWithItemsHandler = { (activityType: UIActivityType?, completed: Bool, returnedItems: [Any]?, error: Error?) -> Void in
-            if completed == true {
-                
-                self.pop = PopupDialog(title: "Success", message: "image successfuly shared/saved")
-                self.present(self.pop, animated: true, completion: {
-                    
-                })
-                DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 2, execute: {
-                    self.pop.dismiss()
-                })
-                
-            } else {
-                
-                self.pop = PopupDialog(title: "Cancelled/Error", message: "User cancelled or an error occured")
-                self.present(self.pop, animated: true, completion: {
-                    
-                })
-                DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 2, execute: {
-                    self.pop.dismiss()
-                })
-                
-            }
-        }
-        
+        //get the image from the filteredimageview.
+        filteredImageView.getImageForSaving()
+
     }
+    
+
     
 }
 extension UIImage {
@@ -119,20 +85,7 @@ extension EditController: AKImageCropperViewDelegate {
     
     func cropImageAction() {
         if cropView.isOverlayViewActive {
-            singleton.imagePicked = cropView.croppedImageToUse!
-            cropView.hideOverlayView(animationDuration: 0)
-            cropView.setInteraction = false
-            updateFilters()
-            filteredImageView.setNeedsLayout()
-            NSLayoutConstraint.deactivate(cropperImageViewConstraints)
-
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1, execute: {
-
-                self.size = self.cropView.croppedSize.size
-                self.cropConstraints()
-            })
-
-            
+            filteredImageView.getImage()
         }
     }
     
@@ -141,13 +94,68 @@ extension EditController: AKImageCropperViewDelegate {
         if cropView.isOverlayViewActive {
             cropView.hideOverlayView(animationDuration: 0.3)
             cropView.setInteraction = false
+            cropView.alpha = 0
+            filteredImageView.alpha = 1
+            
+            
         } else {
+            
 //               resetAction()
-            cropView.showOverlayView(animationDuration: 0.3)
-            cropView.setInteraction = true
+//            filteredImageView.setCropImageWithFilters()
+            singleton.imagePicked = self.veryOriginalImage
+//            filteredImageView.setNeedsLayout()
+            print(self.size)
+//            self.size = resetOriginalSize
+            print(self.size)
+            
+            print("sizz")
+
+//            cropView.originalImage = self.veryOriginalImage
+//            cropView.image = self.veryOriginalImage
+//          
+            //use this instead of those two lines commented out right above ^^^^
+            filteredImageView.setCropImageWithFilters()
+            
+            print(self.cropView.croppedSize)
+
+            //deactivate the current constraints
+            NSLayoutConstraint.deactivate(cropperImageViewConstraints)
+            self.cropConstraints()
+            
+            
+//            
+//            //            filteredImageView.setCropImageWithFilters()
+//            singleton.imagePicked = self.veryOriginalImage
+//            filteredImageView.setCropImageWithFilters()
+//            
+//            //get orig size
+//            self.size = resetOriginalSize
+//            
+//            //deactivate the current constraints and apply original size
+//            NSLayoutConstraint.deactivate(cropperImageViewConstraints)
+//            self.cropConstraints()
+//            cropView.reset(animationDuration: 0)
+//            cropView.showOverlayView(animationDuration: 0.3)
+//            cropView.setInteraction = true
+//            cropView.alpha = 1
+//            filteredImageView.alpha = 0
+//            
+            
+        
         
         }
         
+    }
+    
+    func GetImageForCrop(image: UIImage!, originalWithCrop:UIImage!) {
+        //in here set the newly filtered image to the cropview so the user is displayed the filtered image after they have just tapped crop
+        cropView.image = image
+        cropView.originalImage = originalWithCrop
+        self.cropView.reset(animationDuration: 0)
+        self.cropView.showOverlayView(animationDuration: 0.3)
+        self.cropView.setInteraction = true
+        self.cropView.alpha = 1
+        self.filteredImageView.alpha = 0
     }
     
     func rotateAction() {
@@ -190,24 +198,91 @@ extension EditController: AKImageCropperViewDelegate {
     }
     
     func resetAction() {
-        singleton.imagePicked = self.veryOriginalImage
-        cropView.reset(animationDuration: 0)
-        angle = 0.0
-
-        filteredImageView.setNeedsLayout()
-        NSLayoutConstraint.deactivate(cropperImageViewConstraints)
-
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1, execute: {
-            self.size = self.resetOriginalSize
-            print(self.size)
-            self.cropConstraints()
-        })
+        //check if there has even been a crop change if not then just dont do shit
+        if self.size != self.resetOriginalSize {
+            //set the filterdimageview image to the original image then setneedlayout on the filtered image view
+            singleton.imagePicked = self.veryOriginalImage
+            filteredImageView.setNeedsLayout()
+            
+            //set the image of the cropview to the very original image. set the croppedimage to the very original iamge
+            cropView.image = self.veryOriginalImage
+//            cropView.croppedImageToUse = self.veryOriginalImage
+//            cropView.croppedImage = self.veryOriginalImage
+            
+            //reset the cropview...
+            cropView.reset(animationDuration: 0)
+            //reset the rotation angle
+            angle = 0.0
+            
+            //deactivate the current constraints
+            NSLayoutConstraint.deactivate(cropperImageViewConstraints)
+            
+//            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now(), execute: {
+            
+                
+                print("ayy")
+                print(self.size)
+                self.size = self.resetOriginalSize
+                print(self.size)
+                //reset the constraints to the original size
+                self.cropConstraints()
+    
+                
+                
+//            })
+        } else {
+            
+            
+            print("same size cannot reset!")
+        }
     }
     
     
 }
 
 class EditController: UIViewController, SetFilter {
+
+
+    func ImageForSaving(image:UIImage!) {
+        let sz = image.size
+        UIGraphicsBeginImageContextWithOptions(sz, false, 0.0)
+        image.draw(in: CGRect.init(x: 0, y: 0, width: sz.width, height: sz.height))
+        drawImg.image?.draw(in: CGRect.init(x: 0, y: 0, width: sz.width, height: sz.height))
+        let img = UIGraphicsGetImageFromCurrentImageContext()
+        imageToSave = img!
+        UIGraphicsEndImageContext()
+        
+        
+        //unk now we can save yu guys
+        let activityViewController:UIActivityViewController = UIActivityViewController(activityItems: [UIImage(data: imageToSave.generateJPEGRepresentation())!], applicationActivities: nil)
+        activityViewController.popoverPresentationController?.barButtonItem = (btnOk)
+        activityViewController.modalPresentationStyle = .popover
+        self.present(activityViewController, animated: true, completion: { })
+        activityViewController.completionWithItemsHandler = { (activityType: UIActivityType?, completed: Bool, returnedItems: [Any]?, error: Error?) -> Void in
+            if completed == true {
+                
+                self.pop = PopupDialog(title: "Success", message: "image successfuly shared/saved")
+                self.present(self.pop, animated: true, completion: {
+                    
+                })
+                DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 2, execute: {
+                    self.pop.dismiss()
+                })
+                
+            } else {
+                
+                self.pop = PopupDialog(title: "Cancelled/Error", message: "User cancelled or an error occured")
+                self.present(self.pop, animated: true, completion: {
+                    
+                })
+                DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 2, execute: {
+                    self.pop.dismiss()
+                })
+                
+            }
+        }
+        
+    }
     var angle: Double = 0.0
     var applyyet:Bool = false
     var resetOriginalSize:CGSize!
@@ -215,10 +290,37 @@ class EditController: UIViewController, SetFilter {
     var singleton = ColorMeSingleton.sharedInstance
     var imageToSave:UIImage!
     var pop:PopupDialog = PopupDialog(title: "hi", message: "pls wait.")
+    var btnOk:UIBarButtonItem!
     func ApplyToCropView(image: UIImage!) {
         //swapped cropview alpha to 0 and filteredimageview alpha to 1 bc filteredimageview has opengl implemented so I gotta display it/draw it on there rather than nastly doing it on the cropview
-//        self.cropView.image = image
-        self.imageToSave = image
+
+        print(self.cropView.croppedSize)
+        // self.cropView.image = UIImage(cgImage: (image?.cgImage?.cropping(to: CGRect(x: 0, y: 0, width: self.cropView.croppedSize.size.width, height: self.cropView.croppedSize.size.height)))!)
+        self.size = self.cropView.croppedSize.size
+        //set cropped image with no filters on it then run layoutifneeded on the filterview so we can apply filters to the newly cropped image
+        singleton.imagePicked = cropView.croppedImageToUse!
+
+
+        
+        ///hide the overlayview on the cropview then hide the cropview entirely. at this point the cropview contains the old image but once the user hits crop again we will apply the fitlerd image to the cropview
+        cropView.hideOverlayView(animationDuration: 0)
+        cropView.setInteraction = false
+
+        //show the filteredimageview and hide the cropview
+        filteredImageView.alpha = 1
+        cropView.alpha = 0
+
+        //updateFilters()
+        //deactivate the constraints on the image views
+        NSLayoutConstraint.deactivate(cropperImageViewConstraints)
+        
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1, execute: {
+            print(self.size)
+            //set the new constraints
+//        self.size = self.resetOriginalSize //YOOO DELETE THIS
+            self.cropConstraints()
+            self.cropView.reset(animationDuration: 0)
+        })
         print("edited image applied to cropview")
     }
     
@@ -384,7 +486,6 @@ class EditController: UIViewController, SetFilter {
     var topY:CGFloat!
     func drawLines(fromPoint:CGPoint,toPoint:CGPoint) {
         UIGraphicsBeginImageContext((cropView.image?.size)!)
-        
 //        UIGraphicsBeginImageContext(cropView.frame.size)
 //        cropView.image?.draw(in: CGRect(x: 0, y: 0, width: cropView.frame.width, height: cropView.frame.height)) // + ((cropView.frame.height - imCondensedSize.height)/2)
 //        cropView.image?.draw(in: CGRect(x: 0, y: 0, width: (cropView.image?.size.width)!, height: (cropView.image?.size.height)!))
@@ -472,6 +573,7 @@ class EditController: UIViewController, SetFilter {
     func cropConstraints() {
 //        cropView.backgroundColor = UIColor.cyan
         //reset draw img..
+              filteredImageView.backgroundColor = UIColor.orange.withAlphaComponent(0.4)
         self.drawImg.image = UIImage()
 
         print(size)
@@ -493,6 +595,11 @@ class EditController: UIViewController, SetFilter {
                 cropView.heightAnchor.constraint(equalTo: centG.heightAnchor, multiplier: 1),
                 cropView.widthAnchor.constraint(equalTo: centG.heightAnchor, multiplier: (imWidth/imHeight)),
                 
+                filteredImageView.centerXAnchor.constraint(equalTo: centG.centerXAnchor),
+                filteredImageView.centerYAnchor.constraint(equalTo: centG.centerYAnchor),
+                filteredImageView.heightAnchor.constraint(equalTo: centG.heightAnchor, multiplier: 1),
+                filteredImageView.widthAnchor.constraint(equalTo: centG.heightAnchor, multiplier: (imWidth/imHeight)),
+          
                 drawImg.centerXAnchor.constraint(equalTo: centG.centerXAnchor),
                 drawImg.centerYAnchor.constraint(equalTo: centG.centerYAnchor),
                 drawImg.heightAnchor.constraint(equalTo: cropView.heightAnchor),
@@ -514,6 +621,10 @@ class EditController: UIViewController, SetFilter {
                 cropView.centerYAnchor.constraint(equalTo: centG.centerYAnchor),
                 cropView.widthAnchor.constraint(equalTo: centG.widthAnchor, multiplier: 1),
                 cropView.heightAnchor.constraint(equalTo: centG.widthAnchor, multiplier: (imHeight/imWidth)),
+                filteredImageView.centerXAnchor.constraint(equalTo: centG.centerXAnchor),
+                filteredImageView.centerYAnchor.constraint(equalTo: centG.centerYAnchor),
+                filteredImageView.widthAnchor.constraint(equalTo: centG.widthAnchor, multiplier: 1),
+                filteredImageView.heightAnchor.constraint(equalTo: centG.widthAnchor, multiplier: (imHeight/imWidth)),
                 drawImg.centerXAnchor.constraint(equalTo: centG.centerXAnchor),
                 drawImg.centerYAnchor.constraint(equalTo: centG.centerYAnchor),
                 drawImg.heightAnchor.constraint(equalTo: cropView.heightAnchor),
@@ -556,7 +667,8 @@ class EditController: UIViewController, SetFilter {
         cropView = AKImageCropperView(frame: view.bounds)
         cropView.delegate = self
         cropView.image = singleton.imagePicked
-        cropView.imageToCrop = self.veryOriginalImage
+//        cropView.imageToCrop = self.veryOriginalImage
+        cropView.originalImage = self.veryOriginalImage
         cropView.alpha = 0
         cropView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(cropView)
@@ -596,14 +708,14 @@ class EditController: UIViewController, SetFilter {
         
         centG = UILayoutGuide()
         view.addLayoutGuide(centG)
-        
-        imageViewConstraints = [
-            filteredImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            filteredImageView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            filteredImageView.topAnchor.constraint(equalTo: view.topAnchor, constant: appDelegate.navigationController.navigationBar.frame.height),
-            filteredImageView.bottomAnchor.constraint(equalTo: controlsLayoutGuide.topAnchor),
-            filteredImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor)
-        ]
+//        
+//        imageViewConstraints = [
+//            filteredImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+//            filteredImageView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+//            filteredImageView.topAnchor.constraint(equalTo: view.topAnchor, constant: appDelegate.navigationController.navigationBar.frame.height),
+//            filteredImageView.bottomAnchor.constraint(equalTo: controlsLayoutGuide.topAnchor),
+//            filteredImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor)
+//        ]
 
 
 
@@ -707,7 +819,7 @@ class EditController: UIViewController, SetFilter {
 
         cropConstraints()
         
-        NSLayoutConstraint.activate(imageViewConstraints)
+//        NSLayoutConstraint.activate(imageViewConstraints)
 //        NSLayoutConstraint.activate(cropperImageViewConstraints)
         NSLayoutConstraint.activate(controlsLayoutGuideConstraints)
         NSLayoutConstraint.activate(controlsStackConstraints)
