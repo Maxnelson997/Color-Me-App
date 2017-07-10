@@ -381,7 +381,8 @@ class MenuController: UIViewController, UIImagePickerControllerDelegate, UINavig
             let imagePicker = UIImagePickerController()
             imagePicker.delegate = self
             imagePicker.sourceType = UIImagePickerControllerSourceType.photoLibrary
-            imagePicker.allowsEditing = true
+            imagePicker.allowsEditing = false
+            
             self.present(imagePicker, animated: true, completion: nil)
         }
         

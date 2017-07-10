@@ -36,7 +36,6 @@ class MNSmoothThreshold: CIFilter
     {
         inputEdgeO = 0.1
         inputEdge1 = 0.5
-        
     }
     
     override var outputImage: CIImage!
@@ -78,7 +77,7 @@ class ChromaKeyFilter : CIFilter {
             return nil
         }
             let extent = inputImage.extent
-            let arguments = [inputImage as AnyObject, activeColor as AnyObject, threshold as AnyObject]
+            let arguments = [inputImage, activeColor, threshold] as [Any]
             return colorKernel.apply(withExtent: extent, arguments: arguments)
    
     }

@@ -208,7 +208,7 @@ class PSButton: UIButton {
     
     
     fileprivate var visualEffectView: UIVisualEffectView = {
-        let vev = UIVisualEffectView(effect: UIBlurEffect(style: .dark))
+        let vev = UIVisualEffectView(effect: UIBlurEffect(style: .regular))
         vev.layer.cornerRadius = 15
         vev.layer.masksToBounds = true
         vev.isUserInteractionEnabled = false

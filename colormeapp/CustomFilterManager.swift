@@ -128,7 +128,42 @@ class CustomFilterManager: NSObject, CIFilterConstructor {
             classAttributes: [
                 kCIAttributeFilterCategories: [CategoryCustomFilters]
             ])
-
+        CIFilter.registerName(
+            "MNTile",
+            constructor: CustomFilterManager(),
+            classAttributes: [
+                kCIAttributeFilterCategories: [CategoryCustomFilters]
+            ])
+        CIFilter.registerName(
+            "MNCombine",
+            constructor: CustomFilterManager(),
+            classAttributes: [
+                kCIAttributeFilterCategories: [CategoryCustomFilters]
+            ])
+        CIFilter.registerName(
+            "MNCopy",
+            constructor: CustomFilterManager(),
+            classAttributes: [
+                kCIAttributeFilterCategories: [CategoryCustomFilters]
+            ])
+        CIFilter.registerName(
+            "MNBlend",
+            constructor: CustomFilterManager(),
+            classAttributes: [
+                kCIAttributeFilterCategories: [CategoryCustomFilters]
+            ])
+        CIFilter.registerName(
+            "MNEdgeWork",
+            constructor: CustomFilterManager(),
+            classAttributes: [
+                kCIAttributeFilterCategories: [CategoryCustomFilters]
+            ])
+        CIFilter.registerName(
+            "MNPoint",
+            constructor: CustomFilterManager(),
+            classAttributes: [
+                kCIAttributeFilterCategories: [CategoryCustomFilters]
+            ])
         
     }
     func filter(withName name: String) -> CIFilter? {
@@ -171,7 +206,22 @@ class CustomFilterManager: NSObject, CIFilterConstructor {
             return MaxBloom()
         case "MNComic":
             return Comic()
-        default:
+            
+        case "MNTile":
+            return Tile()
+        case "MNCombine":
+            return Combine()
+        case "MNCopy":
+            return Copy()
+        case "MNBlend":
+            return Blend()
+            
+        case "MNEdgeWork":
+            return EdgeWork()
+            
+        case "MNPoint":
+            return Point()
+default:
             return nil
         }
     }

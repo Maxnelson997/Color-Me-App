@@ -449,7 +449,7 @@ class EditController: UIViewController, SetFilter {
         appDelegate = UIApplication.shared.delegate as! AppDelegate
 //        updateFilters()
         filteredImageView.inputImage = singleton.imagePicked
-        
+//        self.navigationController?.navigationItem.leftBarButtonItem?.tintColor = .blue
         
         
     }
@@ -1218,7 +1218,7 @@ extension EditController {
         let sunlit_pack:[String] = ["CIPhotoEffectChrome", "MNLit", "MNRed"]
         let shady_pack:[String] = ["MNSmoothThreshold","CIPhotoEffectNoir", "CIPhotoEffectTonal", "MNChroma"]
         let glow_pack:[String] = ["MNEdgeGlow", "MNMono", "MNMars", "MNVenus"]
-        let cartoon_pack:[String] = ["MNEightBit", "MNComic"]
+        let cartoon_pack:[String] = ["MNEightBit", "MNComic", "MNTile", "MNCombine", "MNCopy", "MNBlend", "MNEdgeWork", "MNPoint"]
 //        MNKuwahara
         
         let super_names:[String] = ["double", "expose"]
@@ -1227,7 +1227,7 @@ extension EditController {
         let sunlit_names:[String] = ["blaze", "lit", "red"]
         let shady_names:[String] = ["thresh","elayno","nitetone", "choma"]
         let glow_names:[String] = ["space", "nepture", "mars", "venus"]
-        let cartoon_names:[String] = [ "eightbit", "comic"]
+        let cartoon_names:[String] = [ "eightbit", "comic", "tile", "combine", "copy", "blend", "edgework", "point"]
         
         //rose filter pack
         //....

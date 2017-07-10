@@ -56,7 +56,7 @@ class ControlCell:UICollectionViewCell {
         return l
     }()
     fileprivate var visualEffectView: UIVisualEffectView = {
-        let vev = UIVisualEffectView(effect: UIBlurEffect(style: .dark))
+        let vev = UIVisualEffectView(effect: UIBlurEffect(style: .regular))
         vev.layer.cornerRadius = 7
         vev.layer.masksToBounds = true
         vev.isUserInteractionEnabled = false
@@ -279,7 +279,7 @@ class FilterPackControlCell:UICollectionViewCell, UICollectionViewDelegate, UICo
     }
     
     fileprivate var visualEffectView: UIVisualEffectView = {
-        let vev = UIVisualEffectView(effect: UIBlurEffect(style: .dark))
+        let vev = UIVisualEffectView(effect: UIBlurEffect(style: .regular))
         vev.layer.cornerRadius = 7
         vev.layer.masksToBounds = true
         vev.isUserInteractionEnabled = false
