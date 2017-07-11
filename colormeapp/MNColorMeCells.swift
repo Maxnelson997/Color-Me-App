@@ -15,7 +15,8 @@ class recentCell:UICollectionViewCell {
         imageView.layer.cornerRadius = 7
         imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 1
-        imageView.layer.borderColor = UIColor.MNBlack.cgColor
+        imageView.backgroundColor = UIColor.MNGray.withAlphaComponent(0.5)
+        imageView.layer.borderColor = UIColor.MNGray.cgColor
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.tintColor = .white
         return imageView

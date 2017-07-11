@@ -364,6 +364,241 @@ class EdgeWork: CIFilter
 
 
 
+class Crystalize: CIFilter
+{
+    var inputImage: CIImage?
+    override var outputImage: CIImage?
+    {
+        guard let inputImage = inputImage else
+        {
+            return nil
+        }
+        let gamma = CIFilter(name: "CIGammaAdjust")
+        gamma?.setValue(inputImage, forKey: "inputImage")
+        gamma?.setValue(1.5, forKey: "inputPower")
+        
+        print(gamma?.inputKeys ?? "input keys")
+        
+        let vibrance = CIFilter(name: "CIVibrance")
+        vibrance?.setValue(gamma?.outputImage, forKey: "inputImage")
+        vibrance?.setValue(1, forKey: "inputAmount")
+        print(vibrance?.inputKeys ?? "input keys")
+        
+        let colorControls = CIFilter(name: "CIColorControls")
+        colorControls?.setValue(gamma?.outputImage, forKey: "inputImage")
+        colorControls?.setValue(-0.25, forKey: "inputBrightness")
+        colorControls?.setValue(2, forKey: "inputContrast")
+        print(colorControls?.inputKeys ?? "input keys")
+        
+        let mono = CIFilter(name: "CIColorMonochrome")
+        mono?.setValue(vibrance?.outputImage, forKey: "inputImage")
+        mono?.setValue(0.55, forKey: "inputIntensity")
+        mono?.setValue(CIColor(red: 163, green: 146, blue: 166), forKey: "inputColor")
+        print(mono?.inputKeys ?? "input keys")
+        
+        let noise = CIFilter(name: "CINoiseReduction")
+        noise?.setValue(mono?.outputImage, forKey: "inputImage")
+        noise?.setValue(0, forKey: "inputNoiseLevel")
+        noise?.setValue(1.2, forKey: "inputSharpness")
+        print(noise?.inputKeys ?? "input keys")
+        
+        let crystal = CIFilter(name: "CICrystallize")
+        crystal?.setValue(noise?.outputImage?.cropping(to: inputImage.extent), forKey: "inputImage")
+        crystal?.setValue(CIVector(cgPoint: CGPoint(x: 300, y: 500)), forKey: "inputCenter")
+        crystal?.setValue(50, forKey: "inputRadius")
+        print(crystal?.inputKeys ?? "input keys")
+        
+        let finalComposite = crystal?.outputImage?.cropping(to: inputImage.extent)
+            .applyingFilter(
+                "CIAdditionCompositing",
+                withInputParameters: [
+                    kCIInputBackgroundImageKey:
+                    inputImage])
+        
+        
+        return finalComposite
+        
+    }
+}
+
+
+
+
+class Expo: CIFilter
+{
+    var inputImage: CIImage?
+    override var outputImage: CIImage?
+    {
+        guard let inputImage = inputImage else
+        {
+            return nil
+        }
+        let gamma = CIFilter(name: "CIGammaAdjust")
+        gamma?.setValue(inputImage, forKey: "inputImage")
+        gamma?.setValue(1.5, forKey: "inputPower")
+        
+        print(gamma?.inputKeys ?? "input keys")
+        
+        let vibrance = CIFilter(name: "CIVibrance")
+        vibrance?.setValue(gamma?.outputImage, forKey: "inputImage")
+        vibrance?.setValue(1, forKey: "inputAmount")
+        print(vibrance?.inputKeys ?? "input keys")
+        
+        let colorControls = CIFilter(name: "CIColorControls")
+        colorControls?.setValue(gamma?.outputImage, forKey: "inputImage")
+        colorControls?.setValue(-0.25, forKey: "inputBrightness")
+        colorControls?.setValue(2, forKey: "inputContrast")
+        print(colorControls?.inputKeys ?? "input keys")
+        
+        let mono = CIFilter(name: "CIColorMonochrome")
+        mono?.setValue(vibrance?.outputImage, forKey: "inputImage")
+        mono?.setValue(0.55, forKey: "inputIntensity")
+        mono?.setValue(CIColor(red: 163, green: 146, blue: 166), forKey: "inputColor")
+        print(mono?.inputKeys ?? "input keys")
+        
+        let noise = CIFilter(name: "CINoiseReduction")
+        noise?.setValue(mono?.outputImage, forKey: "inputImage")
+        noise?.setValue(0, forKey: "inputNoiseLevel")
+        noise?.setValue(1.2, forKey: "inputSharpness")
+        print(noise?.inputKeys ?? "input keys")
+        
+        
+        
+        let finalComposite = noise?.outputImage?.cropping(to: inputImage.extent)
+            .applyingFilter(
+                "CIAdditionCompositing",
+                withInputParameters: [
+                    kCIInputBackgroundImageKey:
+                    inputImage])
+        
+        return finalComposite
+        
+    }
+}
+
+
+
+class Blur: CIFilter
+{
+    var inputImage: CIImage?
+    override var outputImage: CIImage?
+    {
+        guard let inputImage = inputImage else
+        {
+            return nil
+        }
+        
+        let blur = CIFilter(name: "CIBoxBlur")
+        blur?.setValue(inputImage, forKey: "inputImage")
+        blur?.setValue(15, forKey: "inputRadius")
+        print(blur?.inputKeys ?? "input keys")
+        
+        let finalComposite = blur?.outputImage?.cropping(to: inputImage.extent)
+            .applyingFilter(
+                "CIAdditionCompositing",
+                withInputParameters: [
+                    kCIInputBackgroundImageKey:
+                    inputImage])
+            .applyingFilter("CIColorControls", withInputParameters: [
+//                kCIInputImageKey: inputImage,
+//                kCIInputSaturationKey: 1,
+                kCIInputBrightnessKey: -0.05,
+//                kCIInputContrastKey: 1.5
+                ])
+        
+        return finalComposite
+    }
+}
+
+
+class BlurGamma: CIFilter
+{
+    var inputImage: CIImage?
+    override var outputImage: CIImage?
+    {
+        guard let inputImage = inputImage else
+        {
+            return nil
+        }
+        
+        let gamma = CIFilter(name: "CIGammaAdjust")
+        gamma?.setValue(inputImage, forKey: "inputImage")
+        gamma?.setValue(1.5, forKey: "inputPower")
+        
+        print(gamma?.inputKeys ?? "input keys")
+        
+        let blur = CIFilter(name: "CIBoxBlur")
+        blur?.setValue(gamma?.outputImage, forKey: "inputImage")
+        blur?.setValue(45, forKey: "inputRadius")
+        print(blur?.inputKeys ?? "input keys")
+        
+        let noise = CIFilter(name: "CINoiseReduction")
+        noise?.setValue(blur?.outputImage, forKey: "inputImage")
+        noise?.setValue(0, forKey: "inputNoiseLevel")
+        noise?.setValue(1.2, forKey: "inputSharpness")
+        print(noise?.inputKeys ?? "input keys")
+        
+        
+        
+        let finalComposite = noise?.outputImage?.cropping(to: inputImage.extent)
+            .applyingFilter(
+                "CIAdditionCompositing",
+                withInputParameters: [
+                    kCIInputBackgroundImageKey:
+                    inputImage])
+            .applyingFilter("CIColorControls", withInputParameters: [
+                
+                //                kCIInputSaturationKey: 1,
+                kCIInputBrightnessKey: -0.05,
+                //                kCIInputContrastKey: 1.5
+                ])
+        
+        return finalComposite
+        
+    }
+}
+
+
+class litty: CIFilter
+{
+    var inputImage: CIImage?
+    override var outputImage: CIImage?
+    {
+        guard let inputImage = inputImage else
+        {
+            return nil
+        }
+        
+        let gamma = CIFilter(name: "CIGammaAdjust")
+        gamma?.setValue(inputImage, forKey: "inputImage")
+        gamma?.setValue(1.55, forKey: "inputPower")
+        
+        print(gamma?.inputKeys ?? "input keys")
+        
+        let colorImg = inputImage.cropping(to: inputImage.extent)
+            .applyingFilter("CIColorControls", withInputParameters: [
+                kCIInputImageKey: gamma?.outputImage!,
+                kCIInputSaturationKey: 1.043,
+                kCIInputBrightnessKey: 0.07403,
+                kCIInputContrastKey: 1.136
+                ])
+    
+        
+        let finalComposite = inputImage.cropping(to: inputImage.extent)
+            .applyingFilter(
+                "CIAdditionCompositing",
+                withInputParameters: [
+                    kCIInputBackgroundImageKey:
+                    colorImg])
+        
+        return finalComposite
+        
+    }
+}
+
+
+
+
 class BlueLoom: CIFilter
 {
     var inputImage: CIImage?
@@ -404,6 +639,7 @@ class BlueLoom: CIFilter
                 withInputParameters: [
                     kCIInputBackgroundImageKey:
                         withGloom as Any])
+        
         return finalComposite
     }
 }

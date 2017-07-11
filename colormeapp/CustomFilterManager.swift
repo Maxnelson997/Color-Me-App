@@ -165,6 +165,39 @@ class CustomFilterManager: NSObject, CIFilterConstructor {
                 kCIAttributeFilterCategories: [CategoryCustomFilters]
             ])
         
+        CIFilter.registerName(
+            "MNCrystalize",
+            constructor: CustomFilterManager(),
+            classAttributes: [
+                kCIAttributeFilterCategories: [CategoryCustomFilters]
+            ])
+        CIFilter.registerName(
+            "MNExpo",
+            constructor: CustomFilterManager(),
+            classAttributes: [
+                kCIAttributeFilterCategories: [CategoryCustomFilters]
+            ])
+        CIFilter.registerName(
+            "MNBlur",
+            constructor: CustomFilterManager(),
+            classAttributes: [
+                kCIAttributeFilterCategories: [CategoryCustomFilters]
+            ])
+        
+        CIFilter.registerName(
+            "MNBlurGamma",
+            constructor: CustomFilterManager(),
+            classAttributes: [
+                kCIAttributeFilterCategories: [CategoryCustomFilters]
+            ])
+        
+        CIFilter.registerName(
+            "MNLitty",
+            constructor: CustomFilterManager(),
+            classAttributes: [
+                kCIAttributeFilterCategories: [CategoryCustomFilters]
+            ])
+        
     }
     func filter(withName name: String) -> CIFilter? {
         switch name {
@@ -221,6 +254,23 @@ class CustomFilterManager: NSObject, CIFilterConstructor {
             
         case "MNPoint":
             return Point()
+            
+        case "MNCrystalize":
+            return Crystalize()
+            
+        case "MNExpo":
+            return Expo()
+            
+        case "MNBlur":
+            return Blur()
+        case "MNBlurGamma":
+            return BlurGamma()
+            
+        case "MNLitty":
+            return litty()
+            
+            
+            
 default:
             return nil
         }

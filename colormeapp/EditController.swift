@@ -244,9 +244,20 @@ class EditController: UIViewController, SetFilter {
 
 
     func ImageForSaving(image:UIImage!) {
+        
         let sz = image.size
         UIGraphicsBeginImageContextWithOptions(sz, false, 0.0)
+        //give gray background bc of opacity affected images
+        let context = UIGraphicsGetCurrentContext()
+        context?.setBlendMode(.multiply)
+        
+        let rect = CGRect(x: 0, y: 0, width: sz.width, height: sz.height)
+        
+        UIColor.MNGray.setFill()
+        context?.fill(rect)
         image.draw(in: CGRect.init(x: 0, y: 0, width: sz.width, height: sz.height))
+
+        
         drawImg.image?.draw(in: CGRect.init(x: 0, y: 0, width: sz.width, height: sz.height))
         let img = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
@@ -570,7 +581,7 @@ class EditController: UIViewController, SetFilter {
     func cropConstraints() {
 //        cropView.backgroundColor = UIColor.cyan
         //reset draw img..
-              filteredImageView.backgroundColor = UIColor.orange.withAlphaComponent(0.4)
+        
         self.drawImg.image = UIImage()
 
         print(size)
@@ -642,6 +653,7 @@ class EditController: UIViewController, SetFilter {
         CustomFilterManager.registerFilters()
         
         view.backgroundColor = UIColor.MNGray
+//        drawImg.backgroundColor = UIColor.MNGray
         appDelegate = UIApplication.shared.delegate as! AppDelegate
         
         veryOriginalImage = singleton.imagePicked
@@ -689,8 +701,8 @@ class EditController: UIViewController, SetFilter {
         adjustControlsImages = [[#imageLiteral(resourceName: "haze-1"),#imageLiteral(resourceName: "brightness-symbol"),#imageLiteral(resourceName: "contrast-symbol")],[#imageLiteral(resourceName: "pie-chart"), #imageLiteral(resourceName: "circular-frames"),#imageLiteral(resourceName: "star-1")], [#imageLiteral(resourceName: "cloudy-1")],[#imageLiteral(resourceName: "spray-bottle-with-dots") ],[#imageLiteral(resourceName: "snowflake")],[#imageLiteral(resourceName: "devil")]]
         adjustControlsText = [["saturation","brightness", "contrast"] ,["radius","shadows","highlights"], ["exposure"], ["colors"],["temperature"], ["intensity"]]
         
-        filterControlsImages = [#imageLiteral(resourceName: "three-layers"),#imageLiteral(resourceName: "three-layers"),#imageLiteral(resourceName: "three-layers"),#imageLiteral(resourceName: "three-layers"),#imageLiteral(resourceName: "three-layers"),#imageLiteral(resourceName: "three-layers"),#imageLiteral(resourceName: "three-layers")]
-        filterControlsText = ["super","loom","summer", "sunlit" ,"shady", "glow", "cartoon"]
+        filterControlsImages = [#imageLiteral(resourceName: "three-layers"),#imageLiteral(resourceName: "three-layers"),#imageLiteral(resourceName: "three-layers"),#imageLiteral(resourceName: "three-layers"),#imageLiteral(resourceName: "three-layers"),#imageLiteral(resourceName: "three-layers"),#imageLiteral(resourceName: "three-layers"),#imageLiteral(resourceName: "three-layers")]
+        filterControlsText = ["super","colors","summer", "sunlit","blur" ,"shady", "glow", "effects"]
 
         mainControlsCollection.dataSource = self
         mainControlsCollection.delegate = self
@@ -1187,6 +1199,7 @@ extension EditController {
             print(createfilters[i])
             filter!.setDefaults()
             filter!.setValue(coreImage, forKey: kCIInputImageKey)
+            
             let filteredImageData = filter!.value(forKey: kCIOutputImageKey) as! CIImage
             let filteredImageRef = ciContext.createCGImage(filteredImageData, from: filteredImageData.extent)
             let imageForButton = UIImage(cgImage: filteredImageRef!)
@@ -1212,22 +1225,25 @@ extension EditController {
 //        let filterNames3:[String] = ["transfer", "noir"]
 //        let filterNames4:[String] = ["sepia", "instant"]
 //        let customNames1:[String] = ["bronze", "Kuwahara"]
-        let super_pack:[String] = ["CIPhotoEffectProcess", "MNMaxBloom"]
+        let super_pack:[String] = ["CIPhotoEffectProcess", "MNMaxBloom", "MNLitty"]
         let loom_pack:[String] = ["MNRedLoom", "MNBlueLoom","MNBlueLoom1","MNGreenLoom", "MNPurpleLoom"]
         let summer_pack:[String] = ["CISepiaTone", "CIPhotoEffectTransfer", "CIPhotoEffectInstant", "CIPhotoEffectFade"]
-        let sunlit_pack:[String] = ["CIPhotoEffectChrome", "MNLit", "MNRed"]
+        let sunlit_pack:[String] = ["CIPhotoEffectChrome", "MNLit", "MNRed", "MNExpo"]
+        let blur_pack:[String] = ["MNBlur", "MNBlurGamma"]
         let shady_pack:[String] = ["MNSmoothThreshold","CIPhotoEffectNoir", "CIPhotoEffectTonal", "MNChroma"]
         let glow_pack:[String] = ["MNEdgeGlow", "MNMono", "MNMars", "MNVenus"]
-        let cartoon_pack:[String] = ["MNEightBit", "MNComic", "MNTile", "MNCombine", "MNCopy", "MNBlend", "MNEdgeWork", "MNPoint"]
+//        let cartoon_pack:[String] = ["MNEightBit", "MNComic", "MNTile", "MNCombine", "MNCopy", "MNBlend", "MNEdgeWork", "MNPoint"]
+        let cartoon_pack:[String] = ["MNCrystalize", "MNComic", "MNTile", "MNEdgeWork", "MNPoint", "MNEightBit"]
 //        MNKuwahara
         
-        let super_names:[String] = ["double", "expose"]
+        let super_names:[String] = ["double", "expose", "litty"]
         let loom_names:[String] = ["redloom", "blo", "bloom", "gloom", "ploom"]
         let summer_names:[String] = ["plastic", "nitefest", "berry", "sinking"]
-        let sunlit_names:[String] = ["blaze", "lit", "red"]
+        let sunlit_names:[String] = ["blaze", "lit", "red", "expo"]
+        let blur_names:[String] = ["blur", "gamma"]
         let shady_names:[String] = ["thresh","elayno","nitetone", "choma"]
         let glow_names:[String] = ["space", "nepture", "mars", "venus"]
-        let cartoon_names:[String] = [ "eightbit", "comic", "tile", "combine", "copy", "blend", "edgework", "point"]
+        let cartoon_names:[String] = ["crystal", "comic", "tile", "edgework", "point", "eightbit"]
         
         //rose filter pack
         //....
@@ -1240,6 +1256,7 @@ extension EditController {
                           createFilters(createfilters: loom_pack, createnames: loom_names),
                           createFilters(createfilters: summer_pack, createnames: summer_names),
                           createFilters(createfilters: sunlit_pack, createnames: sunlit_names),
+                          createFilters(createfilters: blur_pack, createnames: blur_names),
                           createFilters(createfilters: shady_pack, createnames: shady_names),
                           createFilters(createfilters: glow_pack, createnames: glow_names),
                           createFilters(createfilters: cartoon_pack, createnames: cartoon_names)

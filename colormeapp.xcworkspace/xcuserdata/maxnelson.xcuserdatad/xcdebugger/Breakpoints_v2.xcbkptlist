@@ -51,22 +51,6 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "colormeapp/MNColorMeCells.swift"
-            timestampString = "520806489.854676"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "144"
-            endingLineNumber = "144"
-            landmarkName = "sliderValueDidChange(_:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "Pods/AKImageCropperView/AKImageCropperView/AKImageCropperView.swift"
             timestampString = "521349281.933219"
             startingColumnNumber = "9223372036854775807"
@@ -115,14 +99,12 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "colormeapp/MNColorMeCells.swift"
-            timestampString = "521348291.709607"
+            filePath = "colormeapp/EditController.swift"
+            timestampString = "521438993.145171"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "233"
-            endingLineNumber = "233"
-            landmarkName = "awakeFromNib()"
-            landmarkType = "7">
+            startingLineNumber = "1375"
+            endingLineNumber = "1375">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -132,25 +114,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "colormeapp/EditController.swift"
-            timestampString = "521407590.812772"
+            timestampString = "521438993.145171"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1358"
-            endingLineNumber = "1358">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "colormeapp/EditController.swift"
-            timestampString = "521407590.812772"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1300"
-            endingLineNumber = "1300">
+            startingLineNumber = "1317"
+            endingLineNumber = "1317">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy

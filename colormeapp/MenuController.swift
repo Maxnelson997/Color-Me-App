@@ -108,7 +108,8 @@ class MenuController: UIViewController, UIImagePickerControllerDelegate, UINavig
  
     }
     
-    var bgArray:[UIImage] = [#imageLiteral(resourceName: "8A403A02-9055-4F63-A7AA-23CDBC4883A0"), #imageLiteral(resourceName: "jer-1"),#imageLiteral(resourceName: "DSC04982-2"),#imageLiteral(resourceName: "pol")]
+//    var bgArray:[UIImage] = [#imageLiteral(resourceName: "8A403A02-9055-4F63-A7AA-23CDBC4883A0"), #imageLiteral(resourceName: "jer-1"),#imageLiteral(resourceName: "DSC04982-2"),#imageLiteral(resourceName: "pol")]
+    var bgArray:[UIImage] = [#imageLiteral(resourceName: "DSC06802"), #imageLiteral(resourceName: "jer-1"),#imageLiteral(resourceName: "DSC04982-2"),#imageLiteral(resourceName: "pol")]
     var prevBGIndex:Int = -1
     var bgIndex:Int = 0
     override func viewDidLoad() {
@@ -131,17 +132,18 @@ class MenuController: UIViewController, UIImagePickerControllerDelegate, UINavig
         })
 
         
-        let vev = UIVisualEffectView(effect: UIBlurEffect(style: .light))
+        let vev = UIVisualEffectView(effect: UIBlurEffect(style: .regular))
         vev.layer.cornerRadius = 0
         vev.layer.masksToBounds = true
         vev.frame = view.frame
         vev.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         background.addSubview(vev)
         
-        blurView  = UIVisualEffectView(effect: UIBlurEffect(style: .dark))
+        blurView  = UIVisualEffectView(effect: UIBlurEffect(style: .regular))
         blurView.alpha = 0
         blurView.frame = view.frame
         background.addSubview(blurView)
+        
         snatchImages(completion: {
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1, execute: {
                 self.setupUIandConstraints()
@@ -238,7 +240,7 @@ class MenuController: UIViewController, UIImagePickerControllerDelegate, UINavig
             buttonLayoutGuide.trailingAnchor.constraint(lessThanOrEqualTo: view.trailingAnchor, constant: -60),
         ]
         
-        cameraButton = PSButton(animationtype: [.slideDown], image: #imageLiteral(resourceName: "camera-shutter"))
+        cameraButton = PSButton(animationtype: [.slideDown], image: #imageLiteral(resourceName: "camera-shutter"), style:.dark)
         cameraButtonConstraints = [
             cameraButton.widthAnchor.constraint(lessThanOrEqualToConstant: 80),
             cameraButton.heightAnchor.constraint(equalTo: cameraButton.widthAnchor),
@@ -247,7 +249,7 @@ class MenuController: UIViewController, UIImagePickerControllerDelegate, UINavig
             cameraButton.bottomAnchor.constraint(equalTo: buttonLayoutGuide.bottomAnchor),
         ]
         
-        photosButton = PSButton(animationtype: [.slideDown], image: #imageLiteral(resourceName: "picture-with-frame"))
+        photosButton = PSButton(animationtype: [.slideDown], image: #imageLiteral(resourceName: "picture-with-frame"), style:.dark)
         photosButtonConstraints = [
             photosButton.widthAnchor.constraint(lessThanOrEqualToConstant: 80),
             photosButton.heightAnchor.constraint(equalTo: photosButton.widthAnchor),
@@ -256,7 +258,7 @@ class MenuController: UIViewController, UIImagePickerControllerDelegate, UINavig
             photosButton.bottomAnchor.constraint(equalTo: buttonLayoutGuide.bottomAnchor),
         ]
         
-        recentButton = PSButton(animationtype: [.slideDown], image: #imageLiteral(resourceName: "microssoft-logo"))
+        recentButton = PSButton(animationtype: [.slideDown], image: #imageLiteral(resourceName: "microssoft-logo"), style:.dark)
     
         recentButtonConstraints = [
             recentButton.widthAnchor.constraint(lessThanOrEqualToConstant: 80),
@@ -415,6 +417,7 @@ class MenuController: UIViewController, UIImagePickerControllerDelegate, UINavig
         cell.awakeFromNib()
         cell.imageView.image = images[indexPath.item]
         cell.imageView.tag = indexPath.item
+        
         cell.imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.selectRecentImage(sender:))))
         cell.imageView.contentMode = .scaleAspectFit
         return cell

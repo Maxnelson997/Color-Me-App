@@ -20,12 +20,13 @@ class PSButton: UIButton {
     }
     
     //no frame
-    init(animationtype: [PSButtonAnimationType], text: String, buttonstyle: [PSLabelType]?) {
+    init(animationtype: [PSButtonAnimationType], text: String, buttonstyle: [PSLabelType]?, style:UIBlurEffectStyle) {
         super.init(frame: .zero)
         if let newstyle = buttonstyle {
             self.label = PSLabel(fontSize: 25, type: newstyle)
             self.buttonStyle = newstyle
         }
+        self.style = style
         self.animationtype = animationtype
         self.label.text = text
         self.translatesAutoresizingMaskIntoConstraints = false
@@ -33,10 +34,10 @@ class PSButton: UIButton {
         initWithLabel()
     }
     
-    init(animationtype: [PSButtonAnimationType], image:UIImage) {
+    init(animationtype: [PSButtonAnimationType], image:UIImage, style:UIBlurEffectStyle) {
         super.init(frame: .zero)
         self.animationtype = animationtype
-        
+          self.style = style
         self.translatesAutoresizingMaskIntoConstraints = false
         self.imView.image = image.withRenderingMode(.alwaysTemplate)
         self.imView.tintColor = UIColor.white
@@ -44,10 +45,10 @@ class PSButton: UIButton {
         InitWithImage()
     }
     
-    init(animationtype: [PSButtonAnimationType], image:UIImage, text:String) {
+    init(animationtype: [PSButtonAnimationType], image:UIImage, text:String, style:UIBlurEffectStyle) {
         super.init(frame: .zero)
         self.animationtype = animationtype
-        
+          self.style = style
         self.translatesAutoresizingMaskIntoConstraints = false
         self.imView.image = image.withRenderingMode(.alwaysTemplate)
         self.imView.tintColor = UIColor.white
@@ -63,7 +64,10 @@ class PSButton: UIButton {
         initPhaseTwo()
     }
     
+    var style:UIBlurEffectStyle!
+    
     func initPhaseTwo() {
+        visualEffectView = createVev(style: style)
         //button styling
         backgroundColor = .clear
         layer.borderColor = UIColor.MNGray.cgColor
@@ -207,15 +211,17 @@ class PSButton: UIButton {
     }()
     
     
-    fileprivate var visualEffectView: UIVisualEffectView = {
-        let vev = UIVisualEffectView(effect: UIBlurEffect(style: .regular))
+    fileprivate var visualEffectView: UIVisualEffectView!
+    
+    func createVev(style:UIBlurEffectStyle) -> UIVisualEffectView {
+        let vev = UIVisualEffectView(effect: UIBlurEffect(style: style))
         vev.layer.cornerRadius = 15
         vev.layer.masksToBounds = true
         vev.isUserInteractionEnabled = false
         vev.translatesAutoresizingMaskIntoConstraints = false
         vev.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         return vev
-    }()
+    }
     
     fileprivate var animationtype:[PSButtonAnimationType] = {
         return [PSButtonAnimationType.expand]

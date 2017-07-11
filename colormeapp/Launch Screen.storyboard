@@ -21,12 +21,12 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="IMG_0585" translatesAutoresizingMaskIntoConstraints="NO" id="bKJ-rd-mcs">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="cottoncandybackground" translatesAutoresizingMaskIntoConstraints="NO" id="bKJ-rd-mcs">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             </imageView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" preservesSuperviewLayoutMargins="YES" image="Asset 9" translatesAutoresizingMaskIntoConstraints="NO" id="IBq-Vb-aqL">
-                                <rect key="frame" x="65" y="301" width="240" height="68"/>
+                                <rect key="frame" x="67" y="299" width="240" height="68"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                             </imageView>
                         </subviews>
@@ -40,6 +40,6 @@
     </scenes>
     <resources>
         <image name="Asset 9" width="827" height="268"/>
-        <image name="IMG_0585" width="1536" height="2006"/>
+        <image name="cottoncandybackground" width="1242" height="2208"/>
     </resources>
 </document>
