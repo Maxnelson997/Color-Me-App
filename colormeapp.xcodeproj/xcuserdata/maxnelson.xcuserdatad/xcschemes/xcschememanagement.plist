@@ -4,15 +4,10 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
-		<key>colormeapp 2.xcscheme</key>
-		<dict>
-			<key>orderHint</key>
-			<integer>8</integer>
-		</dict>
 		<key>colormeapp.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>0</integer>
+			<integer>7</integer>
 		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>

@@ -17,7 +17,7 @@
                BlueprintIdentifier = "79E8473F1ED28924001B6C3C"
                BuildableName = "colormeapp.app"
                BlueprintName = "colormeapp"
-               ReferencedContainer = "container:Color On Me.xcodeproj">
+               ReferencedContainer = "container:colormeapp.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -35,7 +35,7 @@
                BlueprintIdentifier = "79E847561ED28924001B6C3C"
                BuildableName = "colormeappTests.xctest"
                BlueprintName = "colormeappTests"
-               ReferencedContainer = "container:Color On Me.xcodeproj">
+               ReferencedContainer = "container:colormeapp.xcodeproj">
             </BuildableReference>
          </TestableReference>
          <TestableReference
@@ -45,7 +45,7 @@
                BlueprintIdentifier = "79E847611ED28924001B6C3C"
                BuildableName = "colormeappUITests.xctest"
                BlueprintName = "colormeappUITests"
-               ReferencedContainer = "container:Color On Me.xcodeproj">
+               ReferencedContainer = "container:colormeapp.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -55,7 +55,7 @@
             BlueprintIdentifier = "79E8473F1ED28924001B6C3C"
             BuildableName = "colormeapp.app"
             BlueprintName = "colormeapp"
-            ReferencedContainer = "container:Color On Me.xcodeproj">
+            ReferencedContainer = "container:colormeapp.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -78,7 +78,7 @@
             BlueprintIdentifier = "79E8473F1ED28924001B6C3C"
             BuildableName = "colormeapp.app"
             BlueprintName = "colormeapp"
-            ReferencedContainer = "container:Color On Me.xcodeproj">
+            ReferencedContainer = "container:colormeapp.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -97,7 +97,7 @@
             BlueprintIdentifier = "79E8473F1ED28924001B6C3C"
             BuildableName = "colormeapp.app"
             BlueprintName = "colormeapp"
-            ReferencedContainer = "container:Color On Me.xcodeproj">
+            ReferencedContainer = "container:colormeapp.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
