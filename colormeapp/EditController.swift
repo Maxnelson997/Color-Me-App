@@ -973,10 +973,7 @@ extension EditController: UICollectionViewDelegate, UICollectionViewDelegateFlow
             cell.layer.cornerRadius = 7
             return cell
         }
-        
-        
-        let cell:UICollectionViewCell!
-        return cell
+
     }
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         

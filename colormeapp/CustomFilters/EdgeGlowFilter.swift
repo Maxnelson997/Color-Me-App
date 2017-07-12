@@ -216,7 +216,7 @@ class Copy: CIFilter
         //        fi?.setValue(75, forKey: "inputWidth")
         let secondImage = CIImage(image: #imageLiteral(resourceName: "DSC06802"))
         let f = CIFilter(name: "CICopyMachineTransition")
-        print(f?.inputKeys)
+//        print(f?.inputKeys)
         f?.setValue(inputImage, forKey: "inputImage")
         f?.setValue(secondImage, forKey: "inputTargetImage")
         f?.setValue(0.1, forKey: "inputOpacity")
