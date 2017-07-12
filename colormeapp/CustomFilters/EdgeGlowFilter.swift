@@ -827,7 +827,7 @@ class litty: CIFilter
         
         let colorImg = inputImage.cropping(to: inputImage.extent)
             .applyingFilter("CIColorControls", withInputParameters: [
-                kCIInputImageKey: gamma?.outputImage!,
+                kCIInputImageKey: gamma?.outputImage! as Any,
                 kCIInputSaturationKey: 1.043,
                 kCIInputBrightnessKey: 0.07403,
                 kCIInputContrastKey: 1.136
