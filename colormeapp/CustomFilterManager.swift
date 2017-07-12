@@ -197,6 +197,49 @@ class CustomFilterManager: NSObject, CIFilterConstructor {
             classAttributes: [
                 kCIAttributeFilterCategories: [CategoryCustomFilters]
             ])
+        CIFilter.registerName(
+            "MNPosterize",
+            constructor: CustomFilterManager(),
+            classAttributes: [
+                kCIAttributeFilterCategories: [CategoryCustomFilters]
+            ])
+        
+        CIFilter.registerName(
+            "MNHDR",
+            constructor: CustomFilterManager(),
+            classAttributes: [
+                kCIAttributeFilterCategories: [CategoryCustomFilters]
+            ])
+        CIFilter.registerName(
+            "MNMotionBlur",
+            constructor: CustomFilterManager(),
+            classAttributes: [
+                kCIAttributeFilterCategories: [CategoryCustomFilters]
+            ])
+        CIFilter.registerName(
+            "MNGaussBlur",
+            constructor: CustomFilterManager(),
+            classAttributes: [
+                kCIAttributeFilterCategories: [CategoryCustomFilters]
+            ])
+        CIFilter.registerName(
+            "MNZoomBlur",
+            constructor: CustomFilterManager(),
+            classAttributes: [
+                kCIAttributeFilterCategories: [CategoryCustomFilters]
+            ])
+        CIFilter.registerName(
+            "MNDiscBlur",
+            constructor: CustomFilterManager(),
+            classAttributes: [
+                kCIAttributeFilterCategories: [CategoryCustomFilters]
+            ])
+        CIFilter.registerName(
+            "MNVintageOrange",
+            constructor: CustomFilterManager(),
+            classAttributes: [
+                kCIAttributeFilterCategories: [CategoryCustomFilters]
+            ])
         
     }
     func filter(withName name: String) -> CIFilter? {
@@ -268,6 +311,22 @@ class CustomFilterManager: NSObject, CIFilterConstructor {
             
         case "MNLitty":
             return litty()
+            
+        case "MNPosterize":
+            return posterize()
+            
+        case "MNHDR":
+            return HDR()
+        case "MNMotionBlur":
+            return MotionBlur()
+        case "MNGaussBlur":
+            return GaussBlur()
+        case "MNZoomBlur":
+            return ZoomBlur()
+        case "MNDiscBlur":
+            return DiscBlur()
+        case "MNVintageOrange":
+            return VintageOrange()
             
             
             

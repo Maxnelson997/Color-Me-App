@@ -87,26 +87,9 @@ class FilteredImageView: GLKView, ParameterAdjustmentDelegate {
 //            var count:Int = 0
     
             for filters in singleton.filters {
-                
                 filters.setValue(originalimage, forKey: kCIInputImageKey)
-                
                 originalimage = filters.outputImage!
-//                if count == singleton.filters.count - 1 {
-//                    
-//                    //last
-//                    filters.setValue(CIImage(image: singleton.drawnImage), forKey: kCIInputImageKey)
-//                    if filters.outputImage != nil {
-//                         originalimage = filters.outputImage!
-//                    }
-//
-//                }
-//                count += 1
-
-
             }
-            
-            
-            
 
             if currentAppliedFilter != nil {
                 if currentAppliedFilter != "reset" {
@@ -116,7 +99,7 @@ class FilteredImageView: GLKView, ParameterAdjustmentDelegate {
                     let filterz = CIFilter(name: currentAppliedFilter)
                     filterz!.setDefaults()
                     filterz!.setValue(coreImage, forKey: kCIInputImageKey)
-                    filterz!.setValue(coreImage.applyingFilter("CIExposureAdjust", withInputParameters: [kCIInputEVKey: -1]), forKey: kCIInputImageKey)
+                    filterz!.setValue(coreImage.applyingFilter("CIExposureAdjust", withInputParameters: [kCIInputEVKey: -0.5]), forKey: kCIInputImageKey)
                     let filteredImageData = filterz!.value(forKey: kCIOutputImageKey) as! CIImage
                     let filteredImageRef = ciContext.createCGImage(filteredImageData, from: filteredImageData.extent)
                     originalimage = CIImage(image: UIImage(cgImage: filteredImageRef!))!

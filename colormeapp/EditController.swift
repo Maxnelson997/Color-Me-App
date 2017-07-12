@@ -182,7 +182,7 @@ extension EditController: AKImageCropperViewDelegate {
     
     func removeEffects() {
         singleton.imagePicked = self.veryOriginalImage
-        updateFilters()
+//        updateFilters()
         filteredImageView.resetFilters()
         filteredImageView.currentAppliedFilter = "reset"
         
@@ -702,7 +702,7 @@ class EditController: UIViewController, SetFilter {
         adjustControlsText = [["saturation","brightness", "contrast"] ,["radius","shadows","highlights"], ["exposure"], ["colors"],["temperature"], ["intensity"]]
         
         filterControlsImages = [#imageLiteral(resourceName: "three-layers"),#imageLiteral(resourceName: "three-layers"),#imageLiteral(resourceName: "three-layers"),#imageLiteral(resourceName: "three-layers"),#imageLiteral(resourceName: "three-layers"),#imageLiteral(resourceName: "three-layers"),#imageLiteral(resourceName: "three-layers"),#imageLiteral(resourceName: "three-layers")]
-        filterControlsText = ["super","colors","summer", "sunlit","blur" ,"shady", "glow", "effects"]
+        filterControlsText = ["super","colors","sunlit","blur","glow", "effects","summer" ,"shady"]
 
         mainControlsCollection.dataSource = self
         mainControlsCollection.delegate = self
@@ -1225,22 +1225,22 @@ extension EditController {
 //        let filterNames3:[String] = ["transfer", "noir"]
 //        let filterNames4:[String] = ["sepia", "instant"]
 //        let customNames1:[String] = ["bronze", "Kuwahara"]
-        let super_pack:[String] = ["CIPhotoEffectProcess", "MNMaxBloom", "MNLitty"]
-        let loom_pack:[String] = ["MNRedLoom", "MNBlueLoom","MNBlueLoom1","MNGreenLoom", "MNPurpleLoom"]
+        let super_pack:[String] = ["MNHDR","MNExpo","MNMaxBloom", "MNLitty", "MNPosterize"]
+        let loom_pack:[String] = ["MNRedLoom", "MNBlueLoom","MNBlueLoom1","MNPurpleLoom","MNGreenLoom", "CIPhotoEffectProcess"]
         let summer_pack:[String] = ["CISepiaTone", "CIPhotoEffectTransfer", "CIPhotoEffectInstant", "CIPhotoEffectFade"]
-        let sunlit_pack:[String] = ["CIPhotoEffectChrome", "MNLit", "MNRed", "MNExpo"]
-        let blur_pack:[String] = ["MNBlur", "MNBlurGamma"]
+        let sunlit_pack:[String] = ["MNVintageOrange", "MNLit", "MNRed", "CIPhotoEffectChrome"]
+        let blur_pack:[String] = ["MNMotionBlur", "MNGaussBlur", "MNZoomBlur", "MNDiscBlur", "MNBlur", "MNBlurGamma"]
         let shady_pack:[String] = ["MNSmoothThreshold","CIPhotoEffectNoir", "CIPhotoEffectTonal", "MNChroma"]
         let glow_pack:[String] = ["MNEdgeGlow", "MNMono", "MNMars", "MNVenus"]
 //        let cartoon_pack:[String] = ["MNEightBit", "MNComic", "MNTile", "MNCombine", "MNCopy", "MNBlend", "MNEdgeWork", "MNPoint"]
         let cartoon_pack:[String] = ["MNCrystalize", "MNComic", "MNTile", "MNEdgeWork", "MNPoint", "MNEightBit"]
 //        MNKuwahara
         
-        let super_names:[String] = ["double", "expose", "litty"]
-        let loom_names:[String] = ["redloom", "blo", "bloom", "gloom", "ploom"]
+        let super_names:[String] = ["HDR","expo","dry", "litty", "posterize"]
+        let loom_names:[String] = ["pucker", "hard-P", "ice", "frost", "vintage","double"]
         let summer_names:[String] = ["plastic", "nitefest", "berry", "sinking"]
-        let sunlit_names:[String] = ["blaze", "lit", "red", "expo"]
-        let blur_names:[String] = ["blur", "gamma"]
+        let sunlit_names:[String] = ["Vint-OJ", "lit", "red", "blaze"]
+        let blur_names:[String] = ["motion", "gauss", "warp", "disc", "bocks", "gamma"]
         let shady_names:[String] = ["thresh","elayno","nitetone", "choma"]
         let glow_names:[String] = ["space", "nepture", "mars", "venus"]
         let cartoon_names:[String] = ["crystal", "comic", "tile", "edgework", "point", "eightbit"]
@@ -1250,16 +1250,18 @@ extension EditController {
         
         //sunny filter pack
         //....
-        
+ 
         
         filterObjects = [ createFilters(createfilters: super_pack, createnames: super_names),
                           createFilters(createfilters: loom_pack, createnames: loom_names),
-                          createFilters(createfilters: summer_pack, createnames: summer_names),
                           createFilters(createfilters: sunlit_pack, createnames: sunlit_names),
-                          createFilters(createfilters: blur_pack, createnames: blur_names),
-                          createFilters(createfilters: shady_pack, createnames: shady_names),
+                 
                           createFilters(createfilters: glow_pack, createnames: glow_names),
-                          createFilters(createfilters: cartoon_pack, createnames: cartoon_names)
+                          createFilters(createfilters: cartoon_pack, createnames: cartoon_names),
+                          createFilters(createfilters: blur_pack, createnames: blur_names),
+                          createFilters(createfilters: summer_pack, createnames: summer_names),
+                          createFilters(createfilters: shady_pack, createnames: shady_names)
+
         ]
         
         
