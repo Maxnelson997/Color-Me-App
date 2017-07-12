@@ -21,7 +21,6 @@
 		79344DE31EF5A9090013C952 /* CausticRefraction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79344DE21EF5A9090013C952 /* CausticRefraction.swift */; };
 		7954C6CA1F11B53600495E02 /* backups.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7954C6C91F11B53600495E02 /* backups.swift */; };
 		796C83B71F0F143400AABA96 /* EightBit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 796C83B61F0F143400AABA96 /* EightBit.swift */; };
-		797F38CC1F0EA03B000BBAB5 /* fadeToBW.cikernel in Sources */ = {isa = PBXBuildFile; fileRef = 797F38CB1F0EA03B000BBAB5 /* fadeToBW.cikernel */; };
 		797F38CE1F0EA4BB000BBAB5 /* MNMono.swift in Sources */ = {isa = PBXBuildFile; fileRef = 797F38CD1F0EA4BB000BBAB5 /* MNMono.swift */; };
 		797F38D01F0EADA0000BBAB5 /* MNSmoothThresh.swift in Sources */ = {isa = PBXBuildFile; fileRef = 797F38CF1F0EADA0000BBAB5 /* MNSmoothThresh.swift */; };
 		79C704C41ED387F30086400E /* CameraController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79C704C31ED387F30086400E /* CameraController.swift */; };
@@ -76,7 +75,6 @@
 		79344DE21EF5A9090013C952 /* CausticRefraction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CausticRefraction.swift; sourceTree = "<group>"; };
 		7954C6C91F11B53600495E02 /* backups.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = backups.swift; sourceTree = "<group>"; };
 		796C83B61F0F143400AABA96 /* EightBit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EightBit.swift; sourceTree = "<group>"; };
-		797F38CB1F0EA03B000BBAB5 /* fadeToBW.cikernel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = fadeToBW.cikernel; sourceTree = "<group>"; };
 		797F38CD1F0EA4BB000BBAB5 /* MNMono.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MNMono.swift; sourceTree = "<group>"; };
 		797F38CF1F0EADA0000BBAB5 /* MNSmoothThresh.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MNSmoothThresh.swift; sourceTree = "<group>"; };
 		79C704C31ED387F30086400E /* CameraController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraController.swift; sourceTree = "<group>"; };
@@ -177,7 +175,6 @@
 				79344DDC1EF5A44C0013C952 /* KuwaharaFilter.swift */,
 				79344DE21EF5A9090013C952 /* CausticRefraction.swift */,
 				79344DE01EF5A6C70013C952 /* LensFlare.swift */,
-				797F38CB1F0EA03B000BBAB5 /* fadeToBW.cikernel */,
 				797F38CD1F0EA4BB000BBAB5 /* MNMono.swift */,
 				796C83B61F0F143400AABA96 /* EightBit.swift */,
 				797F38CF1F0EADA0000BBAB5 /* MNSmoothThresh.swift */,
@@ -553,7 +550,6 @@
 				792C1D3B1ED3C26B00D242AF /* ControlCollection.swift in Sources */,
 				79E847751ED292DF001B6C3C /* EditController.swift in Sources */,
 				79344DDD1EF5A44C0013C952 /* KuwaharaFilter.swift in Sources */,
-				797F38CC1F0EA03B000BBAB5 /* fadeToBW.cikernel in Sources */,
 				79344DE11EF5A6C70013C952 /* LensFlare.swift in Sources */,
 				79E847441ED28924001B6C3C /* AppDelegate.swift in Sources */,
 				79E8477D1ED293DA001B6C3C /* PSLabel.swift in Sources */,
